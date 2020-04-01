@@ -1,18 +1,16 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 
 import './App.css';
-import {CanvasScreen} from "./screens/canvas_screen";
+import {CanvasScreen} from "./screens/CanvasScreen";
+import { AppBar } from './components/AppBar/AppBar';
 
 function App() {
   return (
-    <div>
+    <div className="App">
       
-      <Button variant="contained" color="primary">
-        Hello World
-      </Button>
-
-      <div className="App">
+      <AppBar></AppBar>
+      
+      <div>
         <CanvasScreen/>
       </div>
 
