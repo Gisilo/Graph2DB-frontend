@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Navbar, Nav, NavDropdown, FormControl, Form, Button } from 'react-bootstrap/';
+import { Navbar, Nav, NavDropdown, FormControl, Form, Button} from 'react-bootstrap/';
 
 export class AppBar extends React.Component {
 
@@ -22,6 +22,11 @@ export class AppBar extends React.Component {
               <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
             </NavDropdown>
           </Nav>
+          <Button className="btn-primary">erere</Button>{' '}
+          <Button variant="secondary">erere</Button>{' '}
+          <Button variant="success">erere</Button>{' '}
+          <Button variant="info">erere</Button>{' '}
+          <Button variant="danger">erere</Button>{' '}
           <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
             <Button variant="outline-success">Search</Button>

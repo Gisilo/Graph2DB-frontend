@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './App.css';
+import './App.scss';
 import {CanvasScreen} from "./screens/CanvasScreen";
 import { AppBar } from './components/AppBar/AppBar';
 import {Footer} from "./components/Footer/Footer";
