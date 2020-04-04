@@ -15,10 +15,10 @@ function App() {
             </Row >
             <Row>
                 <div style={{padding: "auto"}}>
-                    <Button className="btn-primary">erere</Button>{' '}
-                    <Button variant="secondary">erere</Button>{' '}
-                    <Button variant="success">erere</Button>{' '}
-                    <Button variant="info">erere</Button>{' '}
+                    <Button className="btn-primary">Salva</Button>{' '}
+                    <Button variant="secondary">Carica</Button>{' '}
+                    <Button variant="success">Nuovo</Button>{' '}
+                    <Button variant="info">Genera schema</Button>{' '}
                     <Button variant="danger">erere</Button>{' '}
                 </div>
             </Row>
