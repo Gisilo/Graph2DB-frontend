@@ -4,7 +4,7 @@ import React from 'react';
 import * as go from 'gojs';
 import { ReactDiagram } from 'gojs-react';
 
-import './graph_editor.css';  // contains .diagram-component CSS
+import './GraphEditor.css';  // contains .diagram-component CSS
 
 // ...
 

@@ -2,11 +2,9 @@
 
 exports[`Matches the snapshot 1`] = `
 <div>
-  <div
-    className="./graph_editor.css"
-  >
-    <script
-      src="./graph_editor.js"
+  <div>
+    <div
+      className="diagram-component"
     />
   </div>
 </div>

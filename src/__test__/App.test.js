@@ -2,9 +2,9 @@ import React from 'react';
 
 import { create } from "react-test-renderer";
 
-import { CanvasScreen } from '../screens/CanvasScreen';
+import { EditorScreen } from '../screens/EditorScreen';
 
 test("Matches the snapshot", () => {
-    const button = create(<CanvasScreen />);
+    const button = create(<EditorScreen />);
     expect(button.toJSON()).toMatchSnapshot();
   });

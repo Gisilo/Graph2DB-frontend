@@ -8,7 +8,7 @@ export class AppBar extends React.Component {
 
     return (
       <Navbar bg="danger" expand="lg" className="shadow-sm rounded-lg">
-        <Navbar.Brand href="#home">Grask</Navbar.Brand>
+        <Navbar.Brand href="#home">Gra.sk</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
