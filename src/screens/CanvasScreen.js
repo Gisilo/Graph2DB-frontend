@@ -5,7 +5,7 @@ export class CanvasScreen extends React.Component {
 
     render() {
         return <div>
-            <GraphEditor></GraphEditor>
+            <GraphEditor/>
         </div>
     }
 
