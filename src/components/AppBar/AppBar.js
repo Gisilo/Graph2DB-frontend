@@ -7,8 +7,8 @@ export class AppBar extends React.Component {
   render() {
 
     return (
-      <Navbar bg="light" expand="lg" className="shadow">
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+      <Navbar bg="danger" expand="lg" className="shadow-sm rounded-lg">
+        <Navbar.Brand href="#home">Grask</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
@@ -23,13 +23,9 @@ export class AppBar extends React.Component {
             </NavDropdown>
           </Nav>
           <Button className="btn-primary">erere</Button>{' '}
-          <Button variant="secondary">erere</Button>{' '}
-          <Button variant="success">erere</Button>{' '}
-          <Button variant="info">erere</Button>{' '}
-          <Button variant="danger">erere</Button>{' '}
           <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-secondary">Search</Button>
           </Form>
         </Navbar.Collapse>
       </Navbar>
