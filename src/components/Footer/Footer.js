@@ -5,8 +5,7 @@ export class Footer extends React.Component {
 
 	render() {
 		return (
-			<footer style={{bottom: 0, position: "absolute", 
-											boxShadow: "0 -8px 16px rgba(0,0,0,.15)"}} 
+			<footer style={{boxShadow: "0 -8px 16px rgba(0,0,0,.15)"}}
 			className="page-foot container-fluid text-center text-md-left font-small blue pt-4">
 
 					<div className="row justify-content-md-around">
