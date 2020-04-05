@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 
-export class GraphEditor extends Component {
+import cytoscape from 'cytoscape';
+import edgehandles from 'cytoscape-edgehandles';
+cytoscape.use( edgehandles );
 
+
+export class GraphEditor extends Component {
 
     state = {
         w: 0,
@@ -12,33 +16,92 @@ export class GraphEditor extends Component {
             { data: { id: 'two', label: 'Node 2' }, position: { x: 100, y: 100 }},
             { data: { source: 'one', target: 'two', label: 'Edge from Node1 to Node2'}}
         ],
+        style: [
+            {
+                selector: 'edge',
+                style: {
+                    'curve-style': 'bezier',
+                    'target-arrow-shape': 'triangle'
+                }
+            },
 
+            // some style for the extension
+
+            {
+                selector: '.eh-handle',
+                style: {
+                    'background-color': 'red',
+                    'width': 12,
+                    'height': 12,
+                    'shape': 'ellipse',
+                    'label': '+',
+                    'overlay-opacity': 0,
+                    'border-width': 12, // makes the handle easier to hit
+                    'border-opacity': 0
+                }
+            },
+
+            {
+                selector: '.eh-hover',
+                style: {
+                    'background-color': 'red'
+                }
+            },
+
+            {
+                selector: '.eh-source',
+                style: {
+                    'border-width': 2,
+                    'border-color': 'red'
+                }
+            },
+
+            {
+                selector: '.eh-target',
+                style: {
+                    'border-width': 2,
+                    'border-color': 'red'
+                }
+            },
+
+            {
+                selector: '.eh-preview, .eh-ghost-edge',
+                style: {
+                    'background-color': 'red',
+                    'line-color': 'red',
+                    'target-arrow-color': 'red',
+                    'source-arrow-color': 'red'
+                }
+            },
+
+            {
+                selector: '.eh-ghost-edge.eh-preview-active',
+                style: {
+                    'opacity': 0
+                }
+            }
+        ],
     };
-
-    options = {
-        name: 'grid',
-
-        };
 
     componentDidMount = () => {
         let nid = 0;
         this.setState({
             w: window.innerWidth,
             h: window.innerHeight,
-            layout: {name: 'cose'}
+            //layout: {name: 'cose'},
         });
+        let eh = this.cy.edgehandles();
+        eh.disableDrawMode();
         //let la = this.cy.layout( this.options );
         //la.run();
         console.log("DFF");
         this.cy.on('click', (event) => {
-            console.log("dddddddddddddddd");
             nid = nid +1;
             this.new_node(nid, event.position.x, event.position.y);
-            this.cy.layout(this.state.layout).run();
-            this.cy.fit();
+            //this.cy.layout(this.state.layout).run();
+            //this.cy.fit();
 
         });
-
     };
 
     new_node = (id, pos_x, pos_y) => {
@@ -54,11 +117,10 @@ export class GraphEditor extends Component {
             <div>
                 <CytoscapeComponent
                     elements={this.state.elements}
+                    stylesheet={this.state.style}
                     style={{width: this.state.w, height: this.state.h}}
                     cy={(cy) => {
                         this.cy = cy;
-
-
                     }}
 
                 />
