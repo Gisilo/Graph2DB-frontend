@@ -1,32 +1,25 @@
 import React from 'react';
 
-import { Navbar, Nav, NavDropdown, FormControl, Form, Button} from 'react-bootstrap/';
+import { Navbar, Nav, Button} from 'react-bootstrap/';
 
 export class AppBar extends React.Component {
 
   render() {
 
     return (
-      <Navbar bg="danger" expand="lg" className="shadow-sm rounded-lg">
-        <Navbar.Brand href="#home">Gra.sk</Navbar.Brand>
+      <Navbar bg="primary" expand="lg" className="shadow-sm rounded-lg border">
+        <Navbar.Brand href="#home">
+      Gra.sk
+    </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
+          <Nav className="ml-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-            </NavDropdown>
+            <Nav.Link href="#project">New Project</Nav.Link>
+            <Nav.Link href="#docs">Docs</Nav.Link>
           </Nav>
-          <Button className="btn-primary">erere</Button>{' '}
-          <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-secondary">Search</Button>
-          </Form>
+          <Button variant="outline-info" style={{"border-radius": "35px"}} size="sm" className="ml-2  ">Log In</Button>{' '}
+          <Button variant="info" style={{"border-radius": "35px"}} className="ml-2">Sign Up</Button>{' '}
         </Navbar.Collapse>
       </Navbar>
     );
