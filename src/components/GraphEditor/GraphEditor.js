@@ -3,6 +3,10 @@ import CytoscapeComponent from 'react-cytoscapejs'
 
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
+import dblclick from 'cytoscape-dblclick';
+import {event} from "cytoscape/src/is";
+
+cytoscape.use( dblclick );
 cytoscape.use( edgehandles );
 
 
@@ -86,7 +90,7 @@ export class GraphEditor extends Component {
     componentDidMount = () => {
         let nid = 0;
         this.setState({
-            w: window.innerWidth,
+            w: window.width,
             h: window.innerHeight,
             //layout: {name: 'cose'},
         });
@@ -95,7 +99,21 @@ export class GraphEditor extends Component {
         //let la = this.cy.layout( this.options );
         //la.run();
         console.log("DFF");
-        this.cy.on('click', (event) => {
+
+        this.cy.ready(function() {
+            console.log("ready");
+        });
+        this.cy.dblclick();
+
+        this.cy.on('dblclick', (event) => {
+            console.log("doppio click", event);
+            nid = nid +1;
+            this.new_node(nid, event.position.x, event.position.y);
+
+        });
+
+        this.cy.bind('click', 'node', (event) => {
+            console.log(event);
             nid = nid +1;
             this.new_node(nid, event.position.x, event.position.y);
             //this.cy.layout(this.state.layout).run();
