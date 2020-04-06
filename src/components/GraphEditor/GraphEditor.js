@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import dblclick from 'cytoscape-dblclick';
-import {event} from "cytoscape/src/is";
 
 cytoscape.use( dblclick );
 cytoscape.use( edgehandles );
@@ -16,9 +15,9 @@ export class GraphEditor extends Component {
         w: 0,
         h: 0,
         elements: [
-            { data: { id: 'one', label: 'Node 1wwww' }, position: { x: 200, y: 200 } },
-            { data: { id: 'two', label: 'Node 2' }, position: { x: 100, y: 100 }},
-            { data: { source: 'one', target: 'two', label: 'Edge from Node1 to Node2'}}
+            { data: { id: 1, label: 'Node 1wwww' }, position: { x: 200, y: 200 } },
+            { data: { id: 2, label: 'Node 2' }, position: { x: 100, y: 100 }},
+            { data: { source: 1, target: 2, label: 'Edge from Node1 to Node2'}}
         ],
         style: [
             {
@@ -88,7 +87,8 @@ export class GraphEditor extends Component {
     };
 
     componentDidMount = () => {
-        let nid = 0;
+        this.cy.dblclick(); // For double click
+        //let nid = 3;
         this.setState({
             w: window.width,
             h: window.innerHeight,
@@ -98,35 +98,49 @@ export class GraphEditor extends Component {
         eh.disableDrawMode();
         //let la = this.cy.layout( this.options );
         //la.run();
-        console.log("DFF");
 
-        this.cy.ready(function() {
-            console.log("ready");
+        // Double click event on canvas -> create new node
+        this.cy.on('dblclick', (event, renderedPosition) => {
+            let new_id = this.get_max_mode_id();
+            this.new_node(new_id, renderedPosition.position.x, renderedPosition.position.y);
         });
-        this.cy.dblclick();
-
-        this.cy.on('dblclick', (event) => {
-            console.log("doppio click", event);
-            nid = nid +1;
-            this.new_node(nid, event.position.x, event.position.y);
-
-        });
-
+        
+        // click on node
         this.cy.bind('click', 'node', (event) => {
-            console.log(event);
-            nid = nid +1;
-            this.new_node(nid, event.position.x, event.position.y);
+            console.log("click on node");
             //this.cy.layout(this.state.layout).run();
             //this.cy.fit();
+        });
 
+        // click on edge
+        this.cy.bind('click', 'edge', (event) => {
+            console.log("click on edge");
+        });
+
+        this.cy.on('keydown', (e) => {
+            console.log(e);
         });
     };
 
+    logKey = (e) => {
+        console.log(e);
+    }
+
+    // Create new node
     new_node = (id, pos_x, pos_y) => {
         this.cy.add({
             data: { id: id, label: 'Node ' + id },
             position: { x: pos_x, y: pos_y } }
         ).css({'background-color' : 'blue'});
+    };
+
+    // Get max value of id for create new node
+    get_max_mode_id = () => {
+        let id_list = [];
+        this.cy.nodes().forEach((node) => {
+            id_list.push(parseInt(node.data('id')));
+        });
+        return Math.max.apply(Math, id_list) + 1
     };
 
 
@@ -137,6 +151,10 @@ export class GraphEditor extends Component {
                     elements={this.state.elements}
                     stylesheet={this.state.style}
                     style={{width: this.state.w, height: this.state.h}}
+                    onKeyUp={(e) => {
+                        console.log("ssssssssss");
+                        this.logKey(e)}}
+                    tabIndex="0"
                     cy={(cy) => {
                         this.cy = cy;
                     }}
