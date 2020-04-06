@@ -9,7 +9,7 @@ export class Footer extends React.Component {
 				// style={{
 				// 	boxShadow: "0 -8px 16px rgba(0,0,0,.15)"
 				// }}
-				className="container-fluid text-center text-md-left font-small info pt-2 shadow-lg
+				className="bg-primary container-fluid text-center text-md-left font-small info pt-2 shadow-lg
 				rounded border-info">
 
 				<div className="row justify-content-md-around">
