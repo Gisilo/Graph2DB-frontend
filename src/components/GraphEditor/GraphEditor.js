@@ -101,7 +101,7 @@ export class GraphEditor extends Component {
 
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
-            let new_id = this.get_max_mode_id();
+            let new_id = this.get_max_mode_id() + 1;
             this.new_node(new_id, renderedPosition.position.x, renderedPosition.position.y);
         });
         
@@ -140,7 +140,7 @@ export class GraphEditor extends Component {
         this.cy.nodes().forEach((node) => {
             id_list.push(parseInt(node.data('id')));
         });
-        return Math.max.apply(Math, id_list) + 1
+        return Math.max.apply(Math, id_list)
     };
 
 
