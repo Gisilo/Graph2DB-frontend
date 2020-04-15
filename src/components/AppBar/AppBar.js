@@ -7,7 +7,7 @@ export class AppBar extends React.Component {
   render() {
 
     return (
-      <Navbar bg="primary" expand="lg" className="shadow-sm rounded-lg border">
+      <Navbar bg="primary" expand="lg" className="shadow">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>

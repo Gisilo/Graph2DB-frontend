@@ -17,7 +17,7 @@ export class GraphEditor extends Component {
     componentDidMount = () => {
         let nid = 0;
         this.setState({
-            w: window.innerWidth,
+            w: window.width,
             h: window.innerHeight
         });
         console.log("DFF");
