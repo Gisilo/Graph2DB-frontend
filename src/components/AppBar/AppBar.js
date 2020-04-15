@@ -16,7 +16,7 @@ export class AppBar extends React.Component {
             <Nav.Link href="#docs">Docs</Nav.Link>
           </Nav>
           <Navbar.Brand href="#home" className="mx-auto" style={{"font-family":"Pacifico-Regular"}}>
-            Gra.sk
+            Grask
           </Navbar.Brand>
           <Button variant="outline-secondary" style={{ "border-radius": "35px" }} className="ml-2  ">Log In</Button>{' '}
           <Button variant="info" style={{ "border-radius": "35px" }} className="ml-2">Sign Up</Button>{' '}
