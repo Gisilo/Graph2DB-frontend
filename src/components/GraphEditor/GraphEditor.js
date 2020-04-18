@@ -37,12 +37,13 @@ export class GraphEditor extends Component {
 
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
-            let new_id = this.get_max_mode_id() + 1;
+            let new_id = this.get_max_node_id() + 1;
             this.new_node(new_id, renderedPosition.position.x, renderedPosition.position.y);
         });
 
         // click on node
         this.cy.bind('click', 'node', (event) => {
+            console.log(this.get_JSON());
             console.log("click on node");
             //this.cy.layout(this.state.layout).run();
             //this.cy.fit();
@@ -60,7 +61,7 @@ export class GraphEditor extends Component {
 
     logKey = (e) => {
         console.log(e);
-    }
+    };
 
     // Create new node
     new_node = (id, pos_x, pos_y) => {
@@ -72,13 +73,22 @@ export class GraphEditor extends Component {
     };
 
     // Get max value of id for create new node
-    get_max_mode_id = () => {
+    get_max_node_id = () => {
         let id_list = [];
         this.cy.nodes().forEach((node) => {
             id_list.push(parseInt(node.data('id')));
         });
         return Math.max.apply(Math, id_list)
     };
+
+    // Get JSON of graph
+    get_JSON = () =>{
+        // get all: graph + style + more => this.cy.json()
+        // get only nodes and edges
+        return this.cy.elements().jsons()
+    };
+
+
 
 
     render() {
