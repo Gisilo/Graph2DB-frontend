@@ -12,10 +12,10 @@ export function EditorScreen() {
 						<Button className="px-5" variant="outline-secondary">Carica</Button>{' '}
 					</Row>
 					<Row className="mt-2 justify-content-center">
-						<ButtonRedux text="Nuovo"></ButtonRedux>
+						<ButtonRedux variant="success" text="Nuovo"></ButtonRedux>
 					</Row>
 					<Row className="mt-2 justify-content-center">
-						<Button className="px-5" variant="outline-success">Salva</Button>{' '}
+						<ButtonRedux variant="outline-success" text="Salva"></ButtonRedux>
 					</Row>
 				</Col>
 				<Col sm={10}>

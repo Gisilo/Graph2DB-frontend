@@ -1,28 +1,23 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { saveProject } from '../redux/actions/SaveAction';
 
 function mapStateToProps(state, ownProps) {
 	return {
-		numero: state.numero
+		nameProject: state.nameProject
 	}
 }
-
-const actionCreators = { // this is the mapDispatchToProps
-	saveProject          // it just needs the name of the actions
-}
-
 
 class ButtonRedux extends React.Component {
 
 	render() {
 		return (
-			<Button onClick={this.props.saveProject} className="px-5" variant="success">
-				{this.props.text} {this.props.numero} </Button>
+			<Button onClick={() => console.log("Sono simonfox")} className="px-5" variant={this.props.variant}>
+				{this.props.text}
+			</Button>
 		);
 	}
 
 }
 
-export default connect(mapStateToProps, actionCreators)(ButtonRedux);
+export default connect(mapStateToProps, null)(ButtonRedux);

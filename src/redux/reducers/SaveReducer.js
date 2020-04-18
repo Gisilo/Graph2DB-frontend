@@ -1,5 +1,6 @@
 const initialState = {
-    numero: 10
+    nameProject: "ProvaReact",
+    graph: {}
 }
 
 const saveReducer = (state = initialState, action) => {
