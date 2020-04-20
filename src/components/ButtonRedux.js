@@ -12,25 +12,37 @@ function mapStateToProps(state, ownProps) {
 class ButtonRedux extends React.Component {
 
 	saveWork = () => {
-		let responsePromise = axios.post('127.0.0.1:8000/graphql', {
-			query: {
-				allGrabits: {
-					edges: {
-						node:
-							[
-								"id",
-								"nameProject",
-								"nameDb"
-							]
-					}
-				}
+		//const newGraph = this.props.trigger();
+		const query = `mutation CreateGrabitByName{
+						createGrabit(
+							input: {
+								nameProject: "aa5"
+								graph: $newGraph
+						){grabit{
+							nameProject
+							graph
+							}
+						}
+					}`;
+
+		let responsePromise = axios.post('http://127.0.0.1:8000/graphql',
+			JSON.stringify({
+				query: query,
+				variables: {
+					newGraph: "this.props.trigger()"
+				},
+			}));
+
+		let res = responsePromise.then(
+			(response) => {
+				return response.data
+			},
+			(error) => {
+				console.log(error);
 			}
-		});
-		responsePromise.then(
-			(response) => { console.log(response); },
-			(error) => { console.log(error); }
 		);
-	}
+		console.log(this.props.trigger());
+	};
 
 	render() {
 		return (
