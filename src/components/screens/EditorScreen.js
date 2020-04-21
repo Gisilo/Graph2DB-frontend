@@ -1,7 +1,8 @@
 import React from 'react';
 import { GraphEditor } from '../GraphEditor/GraphEditor';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { ButtonRedux } from '../ButtonRedux';
+import SaveButton from '../ButtonRedux';
+
 
 export class EditorScreen extends React.Component{
 
@@ -12,7 +13,7 @@ export class EditorScreen extends React.Component{
 
 	triggerGetJSON = () => {
 		return this.editor.current.get_JSON()
-	}
+	};
 
 	render() {
 		return (
@@ -23,10 +24,10 @@ export class EditorScreen extends React.Component{
 							<Button className="px-5" variant="outline-secondary">Carica</Button>{' '}
 						</Row>
 						<Row className="mt-2 justify-content-center">
-							<ButtonRedux trigger={this.triggerGetJSON} variant="success" text="Nuovo"></ButtonRedux>
+							<SaveButton trigger={this.triggerGetJSON} variant="success" text="Nuovo"/>
 						</Row>
 						<Row className="mt-2 justify-content-center">
-							<ButtonRedux variant="outline-success" text="Salva"></ButtonRedux>
+							<SaveButton variant="outline-success" text="Salva"/>
 						</Row>
 					</Col>
 					<Col sm={10}>
