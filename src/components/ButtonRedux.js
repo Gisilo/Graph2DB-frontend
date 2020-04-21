@@ -33,9 +33,9 @@ class ButtonRedux extends React.Component {
 				},
 			}));
 
-		let res = responsePromise.then(
+		responsePromise.then(
 			(response) => {
-				return response.data
+				console.log(response)
 			},
 			(error) => {
 				console.log(error);
