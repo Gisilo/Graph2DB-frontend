@@ -1,15 +1,9 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import axios from 'axios';
 
-function mapStateToProps(state, ownProps) {
-	return {
-		nameProject: state.nameProject
-	}
-}
 
-class ButtonRedux extends React.Component {
+
+export class ButtonRedux extends React.Component {
 
 	saveWork = () => {
 		//const newGraph = this.props.trigger();
@@ -25,22 +19,7 @@ class ButtonRedux extends React.Component {
 						}
 					}`;
 
-		let responsePromise = axios.post('http://127.0.0.1:8000/graphql',
-			JSON.stringify({
-				query: query,
-				variables: {
-					newGraph: "this.props.trigger()"
-				},
-			}));
 
-		responsePromise.then(
-			(response) => {
-				console.log(response)
-			},
-			(error) => {
-				console.log(error);
-			}
-		);
 		console.log(this.props.trigger());
 	};
 
@@ -53,5 +32,3 @@ class ButtonRedux extends React.Component {
 	}
 
 }
-
-export default connect(mapStateToProps, null)(ButtonRedux);

@@ -1,7 +1,7 @@
 import React from 'react';
-import { GraphEditor } from '../components/GraphEditor/GraphEditor';
+import { GraphEditor } from '../GraphEditor/GraphEditor';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import ButtonRedux from '../components/ButtonRedux';
+import { ButtonRedux } from '../ButtonRedux';
 
 export class EditorScreen extends React.Component{
 
