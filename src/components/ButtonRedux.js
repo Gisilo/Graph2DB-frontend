@@ -5,11 +5,11 @@ import gql from 'graphql-tag'
 import { withApollo } from 'react-apollo';
 import { Mutation } from "react-apollo";
 
-const query = gql`mutation CreateGrabitByName{
+const mutate = gql`mutation CreateGrabitByName{
 					createGrabit(
 					input: {
-					  nameProject: "prova_graph_88"
-					  graph: "$newGraph"
+					  nameProject: "prova_graph_3212"
+					  graph: $newGraph
 					  
 					}
 					 ){grabit{
@@ -20,13 +20,42 @@ const query = gql`mutation CreateGrabitByName{
 				  
 					}`;
 
-
+const query = gql`query GrabitIDAndName{
+				allGrabits(nameProject: $name){
+					edges{
+						node{
+							id,
+								nameProject
+							graph
+						}
+					}
+			
+				}
+			}`;
 
 class SaveButton extends React.Component {
 
 	saveWork = () => {
-		let promise = this.props.client.query({
-			query: query,
+		const newGraph = JSON.stringify(this.props.trigger());
+		console.log(newGraph);
+		const mutation = gql`mutation CreateGrabitByName{
+					createGrabit(
+					input: {
+					  nameProject: "prova_graph_88888"
+					  graph: "${newGraph}"
+					  
+					}
+					 ){grabit{
+					nameProject
+					graph
+					  }
+				  }
+				  
+					}`;
+		let promise = this.props.client.mutate({
+			//query: query,
+			mutation: mutation,
+
 		});
 		promise.then(
 			(success) => console.log("suc", success),
@@ -37,14 +66,9 @@ class SaveButton extends React.Component {
 
 	render() {
 		return (
-			<Mutation mutation={query}>
-				{(mutate, {data}) =>
-					<Button onClick={() => {mutate({ variables: { newGraph: this.props.trigger() } });
-					console.log("data", data)}} className="px-5" variant={this.props.variant}>
-						{this.props.text}
-					</Button>
-				}
-			</Mutation>
+			<Button onClick={this.saveWork} className="px-5" variant={this.props.variant}>
+				{this.props.text}
+			</Button>
 
 		);
 	}
