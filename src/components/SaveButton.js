@@ -36,33 +36,31 @@ const query = gql`query GrabitIDAndName{
 class SaveButton extends React.Component {
 
 	saveWork = () => {
-		const newGraph = JSON.stringify(this.props.trigger());
+		let newGraph = JSON.stringify(this.props.trigger());
 		console.log(newGraph);
-		const mutation = gql`mutation CreateGrabitByName{
-					createGrabit(
-					input: {
-					  nameProject: "prova_graph_88888"
-					  graph: "${newGraph}"
-					  
-					}
-					 ){grabit{
-					nameProject
-					graph
-					  }
-				  }
-				  
-					}`;
-		let promise = this.props.client.mutate({
-			//query: query,
-			mutation: mutation,
-
-		});
-		promise.then(
+		this.props.client.mutate({
+			mutation: gql
+				`mutation CreateGrabitByName($nGraph: String!){
+						createGrabit(
+								input: {
+										nameProject: "a5",
+										graph: $nGraph
+								}
+						){
+								grabit {
+										nameProject
+										graph
+								}
+						}
+				}`,
+			variables: {
+				nGraph: newGraph
+			}
+		}).then(
 			(success) => console.log("suc", success),
 			(error) => console.log("err", error))
+
 	};
-
-
 
 	render() {
 		return (
