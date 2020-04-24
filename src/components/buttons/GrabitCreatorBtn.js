@@ -1,12 +1,36 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import { Button, Modal } from 'react-bootstrap';
 
-const MySwal = withReactContent(Swal);
+function MyVerticallyCenteredModal(props) {
+	return (
+		<Modal
+			{...props}
+			size="lg"
+			aria-labelledby="contained-modal-title-vcenter"
+			centered
+		>
+			<Modal.Header closeButton>
+				<Modal.Title id="contained-modal-title-vcenter">
+					Modal heading
+		  </Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<h4>Centered Modal</h4>
+				<p>
+					Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+					dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+					consectetur ac, vestibulum at eros.
+		  </p>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button onClick={props.onHide}>Close</Button>
+			</Modal.Footer>
+		</Modal>
+	);
+}
 
 
-export default class GrabitCreatorBtn extends React.Component {
+export default function GrabitCreatorBtn() {
 
 	// Dati necessari:
 	// Name project
@@ -14,34 +38,20 @@ export default class GrabitCreatorBtn extends React.Component {
 	// DBMS Type: MySQL, SQLite, Neo4j
 	// description
 	// port (?)
+	const [modalShow, setModalShow] = React.useState(false);
 
-	handleClick = async () => {
-		const {value: formValues} = await MySwal.fire({
-			title: 'Create a new Grabit',
-			html:
-				'<input id="swal-input1" class="swal2-input">' +
-				'<input id="swal-input2" class="swal2-input">',
-			focusConfirm: false,
-			showCancelButton: true,
-			preConfirm: () => {
-				return [
-					document.getElementById('swal-input1').value,
-					document.getElementById('swal-input2').value,
-				]
-			}
-		});
-		console.log(formValues);
-	}
+	return (
+		<>
+			<Button variant="primary" onClick={() => setModalShow(true)}>
+				New Project
+      </Button>
 
-	render() {
-		return (
-			<div>
-
-				<Button onClick={this.handleClick} variant="outline-success">Nuovo</Button>{' '}
-			</div>
-		);
-	}
-
+			<MyVerticallyCenteredModal
+				show={modalShow}
+				onHide={() => setModalShow(false)}
+			/>
+		</>
+	);
 }
 
 
