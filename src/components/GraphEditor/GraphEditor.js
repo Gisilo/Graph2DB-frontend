@@ -14,11 +14,6 @@ export class GraphEditor extends Component {
     state = {
         w: 0,
         h: 0,
-        elements: [
-            { data: { id: 1, label: 'Node 1wwww' }, position: { x: 200, y: 200 } },
-            { data: { id: 2, label: 'Node 2' }, position: { x: 100, y: 100 } },
-            { data: { source: 1, target: 2, label: 'Edge from Node1 to Node2' } }
-        ],
 
     };
 
@@ -57,6 +52,12 @@ export class GraphEditor extends Component {
         this.cy.on('keydown', (e) => {
             console.log(e);
         });
+    };
+
+    loadGraph = (newGraph) => {
+        this.setState({
+            elements: newGraph,
+        })
     };
 
     logKey = (e) => {

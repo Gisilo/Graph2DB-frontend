@@ -17,13 +17,17 @@ export class EditorScreen extends React.Component{
 		return this.editor.current.get_JSON()
 	};
 
+	triggerLoadGraph = (newGraph) => {
+		return this.editor.current.loadGraph(newGraph)
+	};
+
 	render() {
 		return (
 			< Container fluid>
 				<Row className="vh-100">
 					<Col sm={2} className="px-0 border border-secondary">
 						<Row className="mt-4 justify-content-center">
-							<LoadButton variant="outline-secondary" text="Carica"/>
+							<LoadButton variant="outline-secondary" trigger={this.triggerLoadGraph} text="Carica"/>
 						</Row>
 						<Row className="mt-2 justify-content-center">
 							<Button variant="success" text="Nuovo">Nuovo</Button>{' '}

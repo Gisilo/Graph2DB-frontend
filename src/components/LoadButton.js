@@ -34,8 +34,9 @@ class LoadButton extends React.Component {
             (success) => {
                 console.log("suc", success);
                 const currentProject = success.data.allGrabits.edges[0].node;
+                console.log(currentProject.graph);
                 currentProject.graph = JSON.parse(currentProject.graph);
-                console.log(currentProject);
+                this.props.trigger(currentProject.graph);
 
             },
 
