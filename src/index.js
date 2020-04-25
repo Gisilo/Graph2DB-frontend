@@ -14,9 +14,22 @@ const httpLink = createHttpLink({
     uri: 'http://localhost:8000/graphql'
 });
 
+// Disable cache when load the same Grabit project
+const DefaultOptions = {
+    watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+    },
+    query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+    },
+}
+
 const client = new ApolloClient({
     link: httpLink,
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    defaultOptions: DefaultOptions,
 });
 
 ReactDOM.render(
