@@ -1,7 +1,13 @@
 import React from 'react';
-import { Button, Modal, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
+import { Formik, ErrorMessage, Form } from 'formik';
+import { InputTitleLeft } from '../inputs/InputTitleLeft';
 
 function MyVerticallyCenteredModal(props) {
+
+	const handleClick = () => {
+		console.log("AO");
+	}
 
 	// Dati necessari:
 	// Name project
@@ -9,6 +15,8 @@ function MyVerticallyCenteredModal(props) {
 	// DBMS Type: MySQL, SQLite, Neo4j
 	// description
 	// port (?)
+
+	const dbOptions = ['MySQL', 'SQLite', 'Neo4j'];
 
 	return (
 		<Modal
@@ -23,60 +31,50 @@ function MyVerticallyCenteredModal(props) {
 		  </Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div>
-					<InputGroup className="mb-3">
-						<InputGroup.Prepend>
-							<InputGroup.Text id="basic-addon1">Grabit Name</InputGroup.Text>
-						</InputGroup.Prepend>
-						<FormControl
-							placeholder="Name"
-							aria-label="Name"
-							aria-describedby="basic-addon1"
-						/>
-					</InputGroup>
+				<Formik 
+				initialValues={	{ grabitName: "", dbName: "", dbType: "", description: "", port: "" }} 
+				validate={values => {
+					const errors = {};
+					if (!values.grabitName) {
+					  errors.grabitName = 'Required';
+					}
+					return errors;
+				  }}
+				onSubmit={(data, {setSubmitting}) => {
+					setSubmitting(true);
+					console.log("submit: ", data);
+					// TODO make graphql request with apollo
+					setSubmitting(false);
+				} }>
+					{({ values, isSubmitting }) => (
+						<Form>
+							<ErrorMessage name="grabitName" component="div" />
+							<InputTitleLeft id="ig1" title="Grabit Name" placeholder="Grabit Name" name="grabitName" />
+							<InputTitleLeft id="ig2" title="Database Name" placeholder="Database Name" name="dbName" />
+							<InputTitleLeft id="ig3" title="Port Number" placeholder="Port Numer" name="port" />
 
-					<InputGroup className="mb-3">
 
-						<InputGroup.Prepend>
-							<InputGroup.Text id="basic-addon2">Database Name</InputGroup.Text>
-						</InputGroup.Prepend>
-						<FormControl
-							placeholder="DB Name"
-							aria-label="DB Name"
-							aria-describedby="basic-addon2"
-						/>
-					</InputGroup>
-					<InputGroup className="mb-3">
-						<InputGroup.Prepend>
-							<InputGroup.Text id="basic-addon3">
-								Database Type
-      </InputGroup.Text>
-						</InputGroup.Prepend>
-						<FormControl id="basic-select" aria-describedby="basic-addon3" as="select">
-							<option>MySQL</option>
-							<option>SQLite</option>
-							<option>Neo4j</option>
-						</FormControl>
-					</InputGroup>
-
-					<InputGroup className="mb-3">
-						<InputGroup.Prepend>
-							<InputGroup.Text>Port</InputGroup.Text>
-						</InputGroup.Prepend>
-						<FormControl placeholder="Port Number" aria-label="Port" />
-					</InputGroup>
-
-					<InputGroup>
-						<InputGroup.Prepend>
-							<InputGroup.Text>Description</InputGroup.Text>
-						</InputGroup.Prepend>
-						<FormControl as="textarea" placeholder="Description (Optional)" aria-label="Description" />
-					</InputGroup>
-				</div>
+							<Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
+						<div>
+							{JSON.stringify(values, null, 2)}
+						</div>
+						</Form>
+					)}
+					{/* <Formik initialValues={ { name:'' } } onSubmit={(data) => console.log(data)}>
+				{({ values, handleChange, handleBlur, handleSubmit }) => (
+					<form>
+						<InputGroupLeftTitle onChange={handleChange} id="inputForm1" title="Grabit Name" label="Name"/>
+						<InputGroupLeftTitle id="inputForm2" title="Database Name" label="DB Name"/>
+						<InputGroupLeftTitle id="inputForm3" title="Database Type" type="select"
+							options={dbOptions}/>
+						<InputGroupLeftTitle id="inputForm4" title="Port" label="Port Number"/>
+						<InputGroupLeftTitle id="inputForm5" title="Description" label="Description (Optional)" 
+							type="textarea" size="sm"/>
+       					<form/>
+				)}
+				</Formik> */}
+				</Formik>
 			</Modal.Body>
-			<Modal.Footer>
-				<Button onClick={props.onHide}>Close</Button>
-			</Modal.Footer>
 		</Modal>
 	);
 }
