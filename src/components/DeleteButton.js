@@ -13,7 +13,7 @@ class DeleteButton extends React.Component {
                 `mutation DeleteGrabitByName{
                     deleteGrabit(
                         input: {
-                            nameProject: "prova_graph_6"
+                            nameProject: "prova6"
                     }){
                         msg
                     }
