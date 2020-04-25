@@ -14,7 +14,7 @@ class SaveButton extends React.Component {
 				`mutation CreateGrabitByName($nGraph: String!){
 						createGrabit(
 								input: {
-										nameProject: "dddd",
+										nameProject: "prova8",
 										graph: $nGraph
 								}
 						){
