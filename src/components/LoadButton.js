@@ -28,15 +28,15 @@ class LoadButton extends React.Component {
                     }
 				}`,
             variables: {
-                projectName: "dddd"
+                projectName: "prova8"
             }
         }).then(
             (success) => {
                 console.log("suc", success);
-                const currentProject = success.data.allGrabits.edges[0].node;
-                console.log(currentProject.graph);
-                currentProject.graph = JSON.parse(currentProject.graph);
-                this.props.trigger(currentProject.graph);
+                let currentGrabit = success.data.allGrabits.edges[0].node;
+                let graphLoaded = JSON.parse(currentGrabit.graph);
+                console.log("graphLoaded", graphLoaded);
+                this.props.loadGraph(graphLoaded);
 
             },
 
