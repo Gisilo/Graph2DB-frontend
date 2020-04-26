@@ -4,13 +4,15 @@ import { Field } from 'formik';
 
 
 
-export const InputTitleLeft = ({id, title, placeholder, name, ...props}) =>  {
-    return (
+export const InputTitleLeft = ({ id, title, placeholder, name, ...props }) => {
+  return (
+    <Form.Group controlId={id}>
       <InputGroup className="mb-3">
-      <InputGroup.Prepend>
-        <InputGroup.Text id={id}>{title}</InputGroup.Text>
-      </InputGroup.Prepend>
-      <Field placeholder={placeholder} name={name} type="input" as={Form.Control}/>
-    </InputGroup>
-    );
+        <InputGroup.Prepend>
+          <InputGroup.Text>{title}</InputGroup.Text>
+        </InputGroup.Prepend>
+        <Field placeholder={placeholder} name={name} type="input" as={Form.Control} />
+      </InputGroup>
+    </Form.Group>
+  );
 }
