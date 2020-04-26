@@ -11,7 +11,7 @@ const MyTextArea = (props) => {
   );
 };
 
-export const TextAreaTitleLeft = ({ id, title, placeholder, name, ...props }) => {
+const TextAreaTitleLeft = ({ id, title, placeholder, name, ...props }) => {
   return (
     <InputGroup className="mb-3">
       <InputGroup.Prepend>
@@ -21,3 +21,5 @@ export const TextAreaTitleLeft = ({ id, title, placeholder, name, ...props }) =>
     </InputGroup>
   );
 };
+
+export default TextAreaTitleLeft;

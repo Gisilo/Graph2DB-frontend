@@ -2,9 +2,7 @@ import React from 'react';
 import { InputGroup, Form } from 'react-bootstrap';
 import { Field } from 'formik';
 
-
-
-export const InputTitleLeft = ({ id, title, placeholder, name, ...props }) => {
+const InputTitleLeft = ({ id, title, placeholder, name, ...props }) => {
   return (
     <Form.Group controlId={id}>
       <InputGroup className="mb-3">
@@ -16,3 +14,5 @@ export const InputTitleLeft = ({ id, title, placeholder, name, ...props }) => {
     </Form.Group>
   );
 }
+
+export default InputTitleLeft;

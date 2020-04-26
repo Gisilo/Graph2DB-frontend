@@ -1,21 +1,14 @@
 import React from 'react';
-import { Button, Modal, FormGroup } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { Formik, ErrorMessage, Form } from 'formik';
-import { InputTitleLeft } from '../inputs/InputTitleLeft';
-import { TextAreaTitleLeft } from '../inputs/TextAreaTitleLeft';
+import { InputTitleLeft, TextAreaTitleLeft, SelectTitleLeft } from '../inputs';
+
+import gql from 'graphql-tag'
+import { withApollo } from 'react-apollo';
+
+
 
 function MyVerticallyCenteredModal(props) {
-
-	const handleClick = () => {
-		console.log("AO");
-	}
-
-	// Dati necessari:
-	// Name project
-	// Name DB 
-	// DBMS Type: MySQL, SQLite, Neo4j
-	// description
-	// port (?)
 
 	const dbOptions = ['MySQL', 'SQLite', 'Neo4j'];
 
@@ -33,7 +26,7 @@ function MyVerticallyCenteredModal(props) {
 			</Modal.Header>
 			<Modal.Body>
 				<Formik
-					initialValues={{ grabitName: "", dbName: "", dbType: "", description: "", port: "" }}
+					initialValues={{ grabitName: "", dbName: "", dbType: dbOptions[0], description: "" }}
 					validate={values => {
 						const errors = {};
 						if (!values.grabitName) {
@@ -45,6 +38,7 @@ function MyVerticallyCenteredModal(props) {
 						setSubmitting(true);
 						console.log("submit: ", data);
 						// TODO make graphql request with apollo
+
 						setSubmitting(false);
 					}}>
 					{({ values, isSubmitting }) => (
@@ -52,7 +46,7 @@ function MyVerticallyCenteredModal(props) {
 								<ErrorMessage name="grabitName" component="div" />
 								<InputTitleLeft id="ig1" title="Grabit Name" placeholder="Grabit Name" name="grabitName" />
 								<InputTitleLeft id="ig2" title="Database Name" placeholder="Database Name" name="dbName" />
-								<InputTitleLeft id="ig3" title="Port Number" placeholder="Port Numer" name="port" />
+								<SelectTitleLeft id="ig3" title="Database Type" options={dbOptions} name="dbType"/>
 								<TextAreaTitleLeft id="ig4" title="Description" placeholder="Description (Optional)" name="description" />
 
 								<Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
@@ -61,19 +55,6 @@ function MyVerticallyCenteredModal(props) {
 							</div>
 						</Form>
 					)}
-					{/* <Formik initialValues={ { name:'' } } onSubmit={(data) => console.log(data)}>
-				{({ values, handleChange, handleBlur, handleSubmit }) => (
-					<form>
-						<InputGroupLeftTitle onChange={handleChange} id="inputForm1" title="Grabit Name" label="Name"/>
-						<InputGroupLeftTitle id="inputForm2" title="Database Name" label="DB Name"/>
-						<InputGroupLeftTitle id="inputForm3" title="Database Type" type="select"
-							options={dbOptions}/>
-						<InputGroupLeftTitle id="inputForm4" title="Port" label="Port Number"/>
-						<InputGroupLeftTitle id="inputForm5" title="Description" label="Description (Optional)" 
-							type="textarea" size="sm"/>
-       					<form/>
-				)}
-				</Formik> */}
 				</Formik>
 			</Modal.Body>
 		</Modal>
@@ -81,7 +62,7 @@ function MyVerticallyCenteredModal(props) {
 }
 
 
-export default function GrabitCreatorBtn() {
+function GrabitCreatorBtn() {
 	const [modalShow, setModalShow] = React.useState(false);
 
 	return (
@@ -97,5 +78,8 @@ export default function GrabitCreatorBtn() {
 		</>
 	);
 }
+
+
+export default withApollo(GrabitCreatorBtn);
 
 
