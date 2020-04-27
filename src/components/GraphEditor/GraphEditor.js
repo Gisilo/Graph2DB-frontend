@@ -31,8 +31,8 @@ export class GraphEditor extends Component {
             //layout: {name: 'cose'},
         });
         let eh = this.cy.edgehandles();
-        //eh.enableDrawMode();
-        eh.disableDrawMode();
+        eh.enableDrawMode();
+        //eh.disableDrawMode();
         //let la = this.cy.layout( this.options );
         //la.run();
 
@@ -79,6 +79,9 @@ export class GraphEditor extends Component {
             typeNode: "GraphNode",
         }
         ).css({ 'background-color': 'blue' });
+        this.setState({
+            elements: this.cy.elements(),
+        });
 
     };
 
@@ -109,10 +112,7 @@ export class GraphEditor extends Component {
                     elements={this.state.elements}
                     stylesheet={graphStyle.style}
                     style={{ width: this.state.w, height: this.state.h }}
-                    onKeyUp={(e) => {
-                        console.log("ssssssssss");
-                        this.logKey(e)
-                    }}
+                    onKeyDown={this.logKey}
                     tabIndex="0"
                     cy={(cy) => {
                         this.cy = cy;
