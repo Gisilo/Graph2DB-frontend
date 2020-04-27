@@ -7,13 +7,16 @@ import gql from 'graphql-tag'
 import { withApollo, useMutation } from 'react-apollo';
 
 const GRABIT_MUTATION = gql`
-	mutation CreateGrabit($nameGrabit: String!){
+	mutation CreateGrabit($nameGrabit: String!, $descr: String){
 		createGrabit(input: {
 			nameProject: $nameGrabit
+			description: $descr
 		})
 		{
 			grabit {
+				id
 				nameProject
+				description
 			}
 		}
 	}`;
