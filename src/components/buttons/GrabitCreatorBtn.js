@@ -4,13 +4,25 @@ import { Formik, ErrorMessage, Form } from 'formik';
 import { InputTitleLeft, TextAreaTitleLeft, SelectTitleLeft } from '../inputs';
 
 import gql from 'graphql-tag'
-import { withApollo } from 'react-apollo';
+import { withApollo, useMutation } from 'react-apollo';
 
-
+const GRABIT_MUTATION = gql`
+	mutation CreateGrabit($nameGrabit: String!){
+		createGrabit(input: {
+			nameProject: $nameGrabit
+		})
+		{
+			grabit {
+				nameProject
+			}
+		}
+	}`;
 
 function MyVerticallyCenteredModal(props) {
 
 	const dbOptions = ['MySQL', 'SQLite', 'Neo4j'];
+
+	const [addGrabit] = useMutation(GRABIT_MUTATION);
 
 	return (
 		<Modal
@@ -37,19 +49,27 @@ function MyVerticallyCenteredModal(props) {
 					onSubmit={(data, { setSubmitting }) => {
 						setSubmitting(true);
 						console.log("submit: ", data);
-						// TODO make graphql request with apollo
-
+						// GRAPHQL REQUEST
+						let ao = addGrabit({
+							variables: {
+								nameGrabit: data.grabitName,
+								dbName: data.dbName,
+								dbType: data.dbType,
+								descr: data.description
+							}
+						});
+						ao.then((res) => console.log('sucess', res), (err) => console.log('error', err));
 						setSubmitting(false);
 					}}>
 					{({ values, isSubmitting }) => (
 						<Form>
-								<ErrorMessage name="grabitName" component="div" />
-								<InputTitleLeft id="ig1" title="Grabit Name" placeholder="Grabit Name" name="grabitName" />
-								<InputTitleLeft id="ig2" title="Database Name" placeholder="Database Name" name="dbName" />
-								<SelectTitleLeft id="ig3" title="Database Type" options={dbOptions} name="dbType"/>
-								<TextAreaTitleLeft id="ig4" title="Description" placeholder="Description (Optional)" name="description" />
+							<ErrorMessage name="grabitName" component="div" />
+							<InputTitleLeft id="ig1" title="Grabit Name" placeholder="Grabit Name" name="grabitName" />
+							<InputTitleLeft id="ig2" title="Database Name" placeholder="Database Name" name="dbName" />
+							<SelectTitleLeft id="ig3" title="Database Type" options={dbOptions} name="dbType" />
+							<TextAreaTitleLeft id="ig4" title="Description" placeholder="Description (Optional)" name="description" />
 
-								<Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
+							<Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
 							<div>
 								{JSON.stringify(values, null, 2)}
 							</div>
