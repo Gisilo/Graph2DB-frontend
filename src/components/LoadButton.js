@@ -29,7 +29,14 @@ class LoadButton extends React.Component {
 				}`,
             variables: {
                 projectName: "prova8"
-            }
+            },
+            options: {
+                context: {
+                    headers: {
+                        'X-CSRFTOKEN': document.cookie.match(new RegExp('csrftoken=([^;]*)(;|$)'))[0],
+                    }
+                }
+        }
         }).then(
             (success) => {
                 console.log("suc", success);
