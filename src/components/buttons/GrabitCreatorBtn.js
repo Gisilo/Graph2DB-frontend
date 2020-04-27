@@ -38,7 +38,7 @@ function MyVerticallyCenteredModal(props) {
 			</Modal.Header>
 			<Modal.Body>
 				<Formik
-					initialValues={{ grabitName: "", dbName: "", dbType: dbOptions[0], description: "" }}
+					initialValues={{ grabitName: "", description: "" }}
 					validate={values => {
 						const errors = {};
 						if (!values.grabitName) {
@@ -53,8 +53,6 @@ function MyVerticallyCenteredModal(props) {
 						let ao = addGrabit({
 							variables: {
 								nameGrabit: data.grabitName,
-								dbName: data.dbName,
-								dbType: data.dbType,
 								descr: data.description
 							}
 						});
@@ -65,14 +63,9 @@ function MyVerticallyCenteredModal(props) {
 						<Form>
 							<ErrorMessage name="grabitName" component="div" />
 							<InputTitleLeft id="ig1" title="Grabit Name" placeholder="Grabit Name" name="grabitName" />
-							<InputTitleLeft id="ig2" title="Database Name" placeholder="Database Name" name="dbName" />
-							<SelectTitleLeft id="ig3" title="Database Type" options={dbOptions} name="dbType" />
 							<TextAreaTitleLeft id="ig4" title="Description" placeholder="Description (Optional)" name="description" />
 
 							<Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
-							<div>
-								{JSON.stringify(values, null, 2)}
-							</div>
 						</Form>
 					)}
 				</Formik>
