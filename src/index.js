@@ -4,19 +4,53 @@ import './styles/index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
+import Cookies from 'js-cookie'
+
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
+import { ApolloLink, concat } from 'apollo-link';
+
 import { InMemoryCache } from 'apollo-cache-inmemory'
 
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8000/graphql'
+    uri: 'http://localhost:8000/graphql',
+    credentials: 'same-origin'
 });
 
+
+const csrfMiddleware = new ApolloLink((operation, forward) => {
+    let csrftoken = Cookies.get('csrftoken');
+    console.log("cookie", csrftoken);
+    operation.setContext(({ headers = {} }) => ({
+        headers: {
+            ...headers,
+
+            authorization: csrftoken,
+        }
+    }));
+
+    return forward(operation);
+});
+
+// Disable cache when load the same Grabit project
+const DefaultOptions = {
+    watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+    },
+    query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+    },
+};
+
 const client = new ApolloClient({
-    link: httpLink,
-    cache: new InMemoryCache()
+    link: concat(csrfMiddleware, httpLink),
+    //link: httpLink,
+    cache: new InMemoryCache(),
+    defaultOptions: DefaultOptions,
 });
 
 ReactDOM.render(

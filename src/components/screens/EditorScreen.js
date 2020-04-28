@@ -3,6 +3,8 @@ import { GraphEditor } from '../GraphEditor/GraphEditor';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import SaveButton from '../SaveButton';
 import GrabitCreatorBtn from '../buttons/GrabitCreatorBtn';
+import DeleteButton from "../DeleteButton";
+import LoadButton from "../LoadButton";
 
 export class EditorScreen extends React.Component{
 
@@ -12,7 +14,11 @@ export class EditorScreen extends React.Component{
 	}
 
 	triggerGetJSON = () => {
-		return this.editor.current.get_JSON()
+		return this.editor.current.getJSON()
+	};
+
+	triggerLoadGraph = (newGraph) => {
+		return this.editor.current.loadGraph(newGraph)
 	};
 
 	render() {
@@ -21,14 +27,16 @@ export class EditorScreen extends React.Component{
 				<Row className="vh-100">
 					<Col sm={2} className="px-0 border border-secondary">
 						<Row className="mt-4 justify-content-center">
-							<Button onClick={() => console.log("ao")} className="px-5" variant="outline-secondary">Carica</Button>{' '}
+							<LoadButton variant="outline-secondary" loadGraph={this.triggerLoadGraph} text="Carica"/>
 						</Row>
 						<Row className="mt-2 justify-content-center">
 							<GrabitCreatorBtn/>
 						</Row>
 						<Row className="mt-2 justify-content-center">
-							<SaveButton trigger={this.triggerGetJSON} 
-							variant="outline-success" text="Salva"/>
+							<SaveButton trigger={this.triggerGetJSON} variant="outline-success" text="Salva"/>
+						</Row>
+						<Row className="mt-2 justify-content-center">
+							<DeleteButton variant="outline-success" text="Elimina"/>
 						</Row>
 					</Col>
 					<Col sm={10}>

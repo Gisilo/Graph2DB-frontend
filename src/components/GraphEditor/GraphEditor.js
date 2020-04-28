@@ -15,8 +15,8 @@ export class GraphEditor extends Component {
         w: 0,
         h: 0,
         elements: [
-            { data: { id: 1, label: 'Node 1wwww' }, position: { x: 200, y: 200 } },
-            { data: { id: 2, label: 'Node 2' }, position: { x: 100, y: 100 } },
+            { data: { id: 1, label: 'Node 1wwww' }, position: { x: 200, y: 200 }, typeNode: "GraphNode", },
+            { data: { id: 2, label: 'Node 2' }, position: { x: 100, y: 100 }, typeNode: "GraphNode", },
             { data: { source: 1, target: 2, label: 'Edge from Node1 to Node2' } }
         ],
 
@@ -24,26 +24,26 @@ export class GraphEditor extends Component {
 
     componentDidMount = () => {
         this.cy.dblclick(); // For double click
-        //let nid = 3;
         this.setState({
             w: window.width,
             h: window.innerHeight,
+            elements: [],
             //layout: {name: 'cose'},
         });
         let eh = this.cy.edgehandles();
-        eh.disableDrawMode();
+        eh.enableDrawMode();
+        //eh.disableDrawMode();
         //let la = this.cy.layout( this.options );
         //la.run();
 
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
-            let new_id = this.get_max_node_id() + 1;
-            this.new_node(new_id, renderedPosition.position.x, renderedPosition.position.y);
+            let new_id = this.getMaxNodeID() + 1;
+            this.newNode(new_id, renderedPosition.position.x, renderedPosition.position.y);
         });
 
         // click on node
         this.cy.bind('click', 'node', (event) => {
-            console.log(this.get_JSON());
             console.log("click on node");
             //this.cy.layout(this.state.layout).run();
             //this.cy.fit();
@@ -59,22 +59,36 @@ export class GraphEditor extends Component {
         });
     };
 
+    loadGraph = (newGraph) => {
+        console.log("newGraph in editor", newGraph);
+        this.cy.json({ elements: newGraph });
+        this.setState({
+            elements: newGraph,
+        });
+    };
+
     logKey = (e) => {
         console.log(e);
     };
 
     // Create new node
-    new_node = (id, pos_x, pos_y) => {
+    newNode = (id, pos_x, pos_y) => {
         this.cy.add({
             data: { id: id, label: 'Node ' + id },
-            position: { x: pos_x, y: pos_y }
+            position: { x: pos_x, y: pos_y },
+            typeNode: "GraphNode",
         }
         ).css({ 'background-color': 'blue' });
+        this.setState({
+            elements: this.cy.elements(),
+        });
+
     };
 
     // Get max value of id for create new node
-    get_max_node_id = () => {
+    getMaxNodeID = () => {
         let id_list = [];
+        if (this.cy.nodes().length===0) return -1;
         this.cy.nodes().forEach((node) => {
             id_list.push(parseInt(node.data('id')));
         });
@@ -82,7 +96,7 @@ export class GraphEditor extends Component {
     };
 
     // Get JSON of graph
-    get_JSON = () =>{
+    getJSON = () =>{
         // get all: graph + style + more => this.cy.json()
         // get only nodes and edges
         return this.cy.elements().jsons()
@@ -98,10 +112,7 @@ export class GraphEditor extends Component {
                     elements={this.state.elements}
                     stylesheet={graphStyle.style}
                     style={{ width: this.state.w, height: this.state.h }}
-                    onKeyUp={(e) => {
-                        console.log("ssssssssss");
-                        this.logKey(e)
-                    }}
+                    onKeyDown={this.logKey}
                     tabIndex="0"
                     cy={(cy) => {
                         this.cy = cy;
