@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { create } from "react-test-renderer";
-import { EditorScreen } from "../screens/EditorScreen";
+import { EditorScreen } from "../components/screens/EditorScreen";
 
 // test("Matches the snapshot", () => {
 //     const button = create(<EditorScreen />);

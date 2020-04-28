@@ -1,9 +1,9 @@
 import React from 'react';
 
-import './App.scss';
+import '../styles/App.scss';
 import { EditorScreen } from "./screens/EditorScreen";
-import { AppBar } from './components/AppBar/AppBar';
-import { Footer } from "./components/Footer/Footer";
+import { AppBar } from "./AppBar/AppBar";
+import { Footer } from "./Footer/Footer";
 import { Container, Row, Col } from 'react-bootstrap';
 
 function App() {
