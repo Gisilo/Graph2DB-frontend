@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { Formik, ErrorMessage, Form } from 'formik';
-import { InputTitleLeft, TextAreaTitleLeft, SelectTitleLeft } from '../inputs';
+import { InputTitleLeft, TextAreaTitleLeft, } from '../inputs';
 
 import gql from 'graphql-tag'
-import { withApollo, useMutation } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 
 const GRABIT_MUTATION = gql`
 	mutation CreateGrabit($nameGrabit: String!, $descr: String){
@@ -22,8 +22,6 @@ const GRABIT_MUTATION = gql`
 	}`;
 
 function MyVerticallyCenteredModal(props) {
-
-	const dbOptions = ['MySQL', 'SQLite', 'Neo4j'];
 
 	const [addGrabit] = useMutation(GRABIT_MUTATION);
 

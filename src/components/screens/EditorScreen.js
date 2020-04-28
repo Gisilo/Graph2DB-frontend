@@ -1,6 +1,6 @@
 import React from 'react';
 import { GraphEditor } from '../GraphEditor/GraphEditor';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import SaveButton from '../SaveButton';
 import GrabitCreatorBtn from '../buttons/GrabitCreatorBtn';
 import DeleteButton from "../DeleteButton";
