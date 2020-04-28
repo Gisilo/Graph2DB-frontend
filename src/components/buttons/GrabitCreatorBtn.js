@@ -96,6 +96,6 @@ function GrabitCreatorBtn() {
 }
 
 
-export default withApollo(GrabitCreatorBtn);
+export default GrabitCreatorBtn;
 
 
