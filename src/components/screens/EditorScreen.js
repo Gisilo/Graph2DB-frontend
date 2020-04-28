@@ -1,10 +1,10 @@
 import React from 'react';
 import { GraphEditor } from '../GraphEditor/GraphEditor';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import SaveButton from '../SaveButton';
+import GrabitCreatorBtn from '../buttons/GrabitCreatorBtn';
 import DeleteButton from "../DeleteButton";
 import LoadButton from "../LoadButton";
-
 
 export class EditorScreen extends React.Component{
 
@@ -30,7 +30,7 @@ export class EditorScreen extends React.Component{
 							<LoadButton variant="outline-secondary" loadGraph={this.triggerLoadGraph} text="Carica"/>
 						</Row>
 						<Row className="mt-2 justify-content-center">
-							<Button variant="success" text="Nuovo">Nuovo</Button>{' '}
+							<GrabitCreatorBtn/>
 						</Row>
 						<Row className="mt-2 justify-content-center">
 							<SaveButton trigger={this.triggerGetJSON} variant="outline-success" text="Salva"/>
@@ -40,8 +40,8 @@ export class EditorScreen extends React.Component{
 						</Row>
 					</Col>
 					<Col sm={10}>
-						<Container fluid>
-							<GraphEditor ref={this.editor}/>
+						<Container className="border shadow-lg" fluid>
+							<GraphEditor className="border" ref={this.editor}/>
 						</Container>
 					</Col>
 				</Row>
