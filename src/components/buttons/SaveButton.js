@@ -1,47 +1,42 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
-
 import gql from 'graphql-tag'
-import { withApollo } from 'react-apollo';
+import { Button } from 'react-bootstrap';
+import { useMutation } from 'react-apollo';
 
+const SAVE_QUERY = gql`
+	mutation CreateGrabitByName($nameGrabit: String!, $nGraph: String!) {
+	  createGrabit(input: {nameProject: $nameGrabit, graph: $nGraph}) {
+		msg
+		grabit {
+		  nameProject
+		}
+	  }
+	}`;
 
-class SaveButton extends React.Component {
+function SaveButton(props){
 
-	saveProject = () => {
+	const [saveGrabitQuery] = useMutation(SAVE_QUERY);
+
+	const saveGrabit = () => {
+
 		let newGraph = JSON.stringify(this.props.trigger());
-		this.props.client.mutate({
-			mutation: gql
-				`mutation CreateGrabitByName($nGraph: String!){
-						createGrabit(
-								input: {
-										nameProject: "prova8",
-										graph: $nGraph
-								}
-						){
-								msg
-								grabit {
-										nameProject
-								}
-						}
-				}`,
+
+		saveGrabitQuery({
 			variables: {
+				nameProject: "prova8",
 				nGraph: newGraph
 			}
 		}).then(
-			(success) => console.log("suc", success.data.createGrabit.msg),
+			(success) => console.log("suc", success),
 			(error) => console.log("err", error))
-
 	};
 
-	render() {
-		return (
-			<Button onClick={this.saveProject} className="px-5" variant={this.props.variant}>
-				{this.props.text}
-			</Button>
+	return (
+		<Button onClick={saveGrabit} className="px-5" variant={props.variant}>
+			{props.text}
+		</Button>
 
-		);
-	}
-
+	);
 }
 
-export default withApollo(SaveButton);
+export default SaveButton;

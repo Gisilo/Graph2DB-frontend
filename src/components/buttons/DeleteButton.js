@@ -1,38 +1,35 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
-
 import gql from 'graphql-tag'
-import { withApollo } from 'react-apollo';
+import { Button } from 'react-bootstrap';
+import { useMutation } from 'react-apollo';
+
+const DELETE_QUERY = gql`
+    mutation DeleteGrabitByName($nameGrabit: String!) {
+        deleteGrabit(input: {nameProject: $nameGrabit}) {
+            msg
+        }
+    }`;
 
 
-class DeleteButton extends React.Component {
+function DeleteButton(props){
 
-    deleteProject = () => {
-        this.props.client.mutate({
-            mutation: gql
-                `mutation DeleteGrabitByName{
-                    deleteGrabit(
-                        input: {
-                            nameProject: "prova6"
-                    }){
-                        msg
-                    }
-                }`
-        }).then(
-            (success) => console.log("suc", success.data.deleteGrabit.msg),
-            (error) => console.log("err", error))
+    const [deleteGrabitMutation] = useMutation(DELETE_QUERY);
 
+    const deleteGrabit = () => {
+
+        deleteGrabitMutation({
+            variables: {
+                nameGrabit: "simone",
+            }
+        }).then((success) => console.log('success', success), (error) => console.log('error', error));
     };
 
-    render() {
-        return (
-            <Button onClick={this.deleteProject} className="px-5" variant={this.props.variant}>
-                {this.props.text}
-            </Button>
+    return (
+        <Button onClick={deleteGrabit} className="px-5" variant={props.variant}>
+            {props.text}
+        </Button>
 
-        );
-    }
-
+    );
 }
 
-export default withApollo(DeleteButton);
+export default DeleteButton;
