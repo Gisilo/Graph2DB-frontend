@@ -1,4 +1,4 @@
-import React from 'react';
+	import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { Formik, ErrorMessage, Form } from 'formik';
 import { InputTitleLeft, TextAreaTitleLeft, } from '../inputs';
@@ -76,7 +76,7 @@ function MyVerticallyCenteredModal(props) {
 }
 
 
-function GrabitCreatorBtn() {
+function CreateButton() {
 	const [modalShow, setModalShow] = React.useState(false);
 
 	return (
@@ -94,6 +94,6 @@ function GrabitCreatorBtn() {
 }
 
 
-export default GrabitCreatorBtn;
+export default CreateButton;
 
 
