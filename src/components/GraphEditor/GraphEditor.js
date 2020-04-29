@@ -11,25 +11,9 @@ cytoscape.use(edgehandles);
 
 export class GraphEditor extends Component {
 
-    state = {
-        w: 0,
-        h: 0,
-        elements: [
-            { data: { id: 1, label: 'Node 1wwww' }, position: { x: 200, y: 200 }, typeNode: "GraphNode", },
-            { data: { id: 2, label: 'Node 2' }, position: { x: 100, y: 100 }, typeNode: "GraphNode", },
-            { data: { source: 1, target: 2, label: 'Edge from Node1 to Node2' } }
-        ],
-
-    };
 
     componentDidMount = () => {
         this.cy.dblclick(); // For double click
-        this.setState({
-            w: window.width,
-            h: window.innerHeight,
-            elements: [],
-            //layout: {name: 'cose'},
-        });
         let eh = this.cy.edgehandles();
         eh.enableDrawMode();
         //eh.disableDrawMode();
@@ -38,7 +22,7 @@ export class GraphEditor extends Component {
 
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
-            let new_id = this.getMaxNodeID() + 1;
+            let new_id = this.getNewID();
             this.newNode(new_id, renderedPosition.position.x, renderedPosition.position.y);
         });
 
@@ -62,9 +46,7 @@ export class GraphEditor extends Component {
     loadGraph = (newGraph) => {
         console.log("newGraph in editor", newGraph);
         this.cy.json({ elements: newGraph });
-        this.setState({
-            elements: newGraph,
-        });
+
     };
 
     logKey = (e) => {
@@ -75,13 +57,9 @@ export class GraphEditor extends Component {
     newNode = (id, pos_x, pos_y) => {
         this.cy.add({
             data: { id: id, label: 'Node ' + id },
-            position: { x: pos_x, y: pos_y },
-            typeNode: "GraphNode",
+            position: { x: pos_x, y: pos_y }
         }
         ).css({ 'background-color': 'blue' });
-        this.setState({
-            elements: this.cy.elements(),
-        });
 
     };
 
@@ -92,8 +70,11 @@ export class GraphEditor extends Component {
         this.cy.nodes().forEach((node) => {
             id_list.push(parseInt(node.data('id')));
         });
-        return Math.max.apply(Math, id_list)
+        return Math.max.apply(Math, id_list);
     };
+
+    // Get new node ID
+    getNewID = () => this.getMaxNodeID() + 1;
 
     // Get JSON of graph
     getJSON = () =>{
@@ -103,15 +84,13 @@ export class GraphEditor extends Component {
     };
 
 
-
-
     render() {
         return (
             <div>
                 <CytoscapeComponent
-                    elements={this.state.elements}
+                    elements={[]}
                     stylesheet={graphStyle.style}
-                    style={{ width: this.state.w, height: this.state.h }}
+                    style={{ width: window.width, height: window.innerHeight}}
                     onKeyDown={this.logKey}
                     tabIndex="0"
                     cy={(cy) => {

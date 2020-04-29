@@ -19,11 +19,11 @@ function SaveButton(props){
 
 	const saveGrabit = () => {
 
-		let newGraph = JSON.stringify(this.props.trigger());
+		let newGraph = JSON.stringify(props.trigger());
 
 		saveGrabitQuery({
 			variables: {
-				nameProject: "prova8",
+				nameGrabit: "prova8",
 				nGraph: newGraph
 			}
 		}).then(
