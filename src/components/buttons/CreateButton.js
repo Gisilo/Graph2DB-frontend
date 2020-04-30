@@ -1,41 +1,36 @@
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import { Formik, ErrorMessage, Form } from 'formik';
-import { InputTitleLeft, TextAreaTitleLeft, } from '../inputs';
-
 import gql from 'graphql-tag'
+import { Button, Modal } from 'react-bootstrap';
+import { InputTitleLeft, TextAreaTitleLeft, } from '../inputs';
+import { Formik, ErrorMessage, Form } from 'formik';
 import { useMutation } from 'react-apollo';
 
-const GRABIT_MUTATION = gql`
-	mutation CreateGrabit($nameGrabit: String!, $descr: String){
-		createGrabit(input: {
-			nameProject: $nameGrabit
-			description: $descr
-		})
-		{
+const CREATE_QUERY = gql`
+	mutation CreateGrabit($nameGrabit: String!, $descr: String) {
+		createGrabit(input: {nameProject: $nameGrabit, description: $descr}) {
 			grabit {
-				id
-				nameProject
-				description
-			}
+		  		id
+		  		nameProject
+		  		description
+		  	}
 		}
 	}`;
 
 function MyVerticallyCenteredModal(props) {
 
-	const [addGrabit] = useMutation(GRABIT_MUTATION);
+	const [addGrabit] = useMutation(CREATE_QUERY);
 
 	return (
 		<Modal
 			{...props}
 			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
-			centered
-		>
+			centered>
+
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
 					Create new Grabit
-		  </Modal.Title>
+		  		</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Formik
@@ -51,13 +46,12 @@ function MyVerticallyCenteredModal(props) {
 						setSubmitting(true);
 						console.log("submit: ", data);
 						// GRAPHQL REQUEST
-						let ao = addGrabit({
+						addGrabit({
 							variables: {
 								nameGrabit: data.grabitName,
 								descr: data.description
 							}
-						});
-						ao.then((res) => console.log('sucess', res), (err) => console.log('error', err));
+						}).then((success) => console.log('success', success), (error) => console.log('error', error));
 						setSubmitting(false);
 					}}>
 					{({ values, isSubmitting }) => (
@@ -76,24 +70,21 @@ function MyVerticallyCenteredModal(props) {
 }
 
 
-function GrabitCreatorBtn() {
+function CreateButton() {
 	const [modalShow, setModalShow] = React.useState(false);
 
 	return (
 		<>
 			<Button variant="primary" onClick={() => setModalShow(true)}>
 				New Project
-      </Button>
+			</Button>
 
-			<MyVerticallyCenteredModal
-				show={modalShow}
-				onHide={() => setModalShow(false)}
-			/>
+			<MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)}/>
 		</>
 	);
 }
 
 
-export default GrabitCreatorBtn;
+export default CreateButton;
 
 
