@@ -4,6 +4,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { InputTitleLeft, TextAreaTitleLeft, } from '../inputs';
 import { Formik, ErrorMessage, Form } from 'formik';
 import { useMutation } from 'react-apollo';
+import { useState } from 'react';
 
 const CREATE_QUERY = gql`
 	mutation CreateGrabit($nameGrabit: String!, $descr: String) {
@@ -23,6 +24,7 @@ function MyVerticallyCenteredModal(props) {
 	return (
 		<Modal
 			{...props}
+			show={props.show} onHide={props.onHide}
 			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
 			centered>
@@ -51,7 +53,10 @@ function MyVerticallyCenteredModal(props) {
 								nameGrabit: data.grabitName,
 								descr: data.description
 							}
-						}).then((success) => console.log('success', success), (error) => console.log('error', error));
+						}).then((success) => {
+							console.log('success', success);
+							props.onHide();
+						}, (error) => console.log('error', error));
 						setSubmitting(false);
 					}}>
 					{({ values, isSubmitting }) => (
