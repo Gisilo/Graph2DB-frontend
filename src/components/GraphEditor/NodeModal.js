@@ -16,12 +16,13 @@ export function NodeModal(props) {
 
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Node information
+                    {props.nodeInfo && props.nodeInfo.data().label}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Formik
-                    initialValues={{ nName: "" }}
+                    initialValues={{ nName: props.nodeInfo && props.nodeInfo.data().label,
+                        nDesc: props.nodeInfo && props.nodeInfo.data().description}}
                     validate={values => {
                         const errors = {};
                         if (!values.nName) {
@@ -31,7 +32,7 @@ export function NodeModal(props) {
                     }}
                     onSubmit={(data, { setSubmitting }) => {
                         setSubmitting(true);
-                        console.log("submit: ", props.nodeInfo);
+                        console.log("submit: ", props.nodeInfo.data());
 
                         setSubmitting(false);
                         props.onHide();
@@ -39,6 +40,8 @@ export function NodeModal(props) {
                     >
                     {({ values, isSubmitting }) => (
                         <Form>
+                            <TextAreaTitleLeft id="ig1" title="Node Description" placeholder="Node Description" name="nDesc" />
+                            <br/>
                             <ErrorMessage name="nName" component="div" />
                             <InputTitleLeft id="ig1" title="Node Name" placeholder="Node Name" name="nName" />
                             <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
