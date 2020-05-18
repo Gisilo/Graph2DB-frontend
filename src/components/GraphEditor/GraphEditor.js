@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
-import {NodeModal} from './NodeModal'
+import { NodeModal } from './NodeModal'
+import { CreateNodeModal } from './CreateNodeModal'
 
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
@@ -14,7 +15,9 @@ export class GraphEditor extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {modalShow: false, nodeInfo: null};
+        this.state = {
+            modalNodeInfoShow: false, nodeInfo: null,
+            modalNodeCreateShow: false};
     }
 
 
@@ -28,14 +31,17 @@ export class GraphEditor extends Component {
 
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
-            let new_id = this.getNewID();
-            this.newNode(new_id, renderedPosition.position.x, renderedPosition.position.y);
+            let newId = this.getNewID();
+            this.setState({modalNodeCreateShow: true, nodeInfoCreate: null,
+                newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y});
         });
 
         // click on node
-        this.cy.bind('click', 'node', (event) => {
-            console.log("click on node");
-            this.setState({modalShow: true, nodeInfo:event});
+        this.cy.on('click', 'node', (event) => {
+            let clickedNode = this.cy.getElementById(event.target.id());
+            //clickedNode.data().property.push({ww: 234});
+            console.log(clickedNode.data().label);
+            this.setState({modalShow: true, nodeInfo:clickedNode});
 
             //this.cy.layout(this.state.layout).run();
             //this.cy.fit();
@@ -54,7 +60,6 @@ export class GraphEditor extends Component {
     loadGraph = (newGraph) => {
         console.log("newGraph in editor", newGraph);
         this.cy.json({ elements: newGraph });
-
     };
 
     logKey = (e) => {
@@ -62,27 +67,21 @@ export class GraphEditor extends Component {
     };
 
     // Create new node
-    newNode = (id, pos_x, pos_y) => {
+    newNode = (newNodeName, newNodeDesciption) => {
         this.cy.add({
-            data: { id: id, label: 'Node ' + id },
-            position: { x: pos_x, y: pos_y }
+            data: {
+                id: this.state.newNodeId,
+                label: newNodeName,
+                description: newNodeDesciption,
+                property:[] },
+            position: { x: this.state.posX, y: this.state.posY }
         }
         ).css({ 'background-color': 'blue' });
-
-    };
-
-    // Get max value of id for create new node
-    getMaxNodeID = () => {
-        let id_list = [];
-        if (this.cy.nodes().length===0) return -1;
-        this.cy.nodes().forEach((node) => {
-            id_list.push(parseInt(node.data('id')));
-        });
-        return Math.max.apply(Math, id_list);
+        console.log("nene", this.cy.nodes().data('label'));
     };
 
     // Get new node ID
-    getNewID = () => this.getMaxNodeID() + 1;
+    getNewID = () => this.cy.nodes().size() + 1;
 
     // Get JSON of graph
     getJSON = () =>{
@@ -107,7 +106,13 @@ export class GraphEditor extends Component {
 
                 />
 
-                <NodeModal nodeInfo={this.state.nodeInfo} show={this.state.modalShow} onHide={() => this.setState({modalShow: false})}/>
+                <NodeModal nodeInfo={this.state.nodeInfo}
+                           show={this.state.modalShow}
+                           onHide={() => this.setState({modalShow: false})}/>
+
+                <CreateNodeModal callBack={this.newNode}
+                           show={this.state.modalNodeCreateShow}
+                           onHide={() => this.setState({modalNodeCreateShow: false})}/>
             </div>
         )
     }
