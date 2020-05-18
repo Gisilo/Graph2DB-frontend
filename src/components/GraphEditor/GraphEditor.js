@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
+import {NodeModal} from './NodeModal'
 
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
@@ -10,6 +11,11 @@ cytoscape.use(edgehandles);
 
 
 export class GraphEditor extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {modalShow: false, nodeInfo: null};
+    }
 
 
     componentDidMount = () => {
@@ -29,6 +35,8 @@ export class GraphEditor extends Component {
         // click on node
         this.cy.bind('click', 'node', (event) => {
             console.log("click on node");
+            this.setState({modalShow: true, nodeInfo:event});
+
             //this.cy.layout(this.state.layout).run();
             //this.cy.fit();
         });
@@ -98,6 +106,8 @@ export class GraphEditor extends Component {
                     }}
 
                 />
+
+                <NodeModal nodeInfo={this.state.nodeInfo} show={this.state.modalShow} onHide={() => this.setState({modalShow: false})}/>
             </div>
         )
     }
