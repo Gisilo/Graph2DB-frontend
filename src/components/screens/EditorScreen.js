@@ -21,7 +21,7 @@ export class EditorScreen extends React.Component{
 	render() {
 		return (
 			< Container fluid>
-				<Row className="vh-100">
+				<Row>
 					<Col sm={2} className="px-0 border border-secondary">
 						<Row className="mt-4 justify-content-center">
 							<LoadButton variant="outline-secondary" loadGraph={this.triggerLoadGraph} text="Carica"/>
@@ -38,7 +38,7 @@ export class EditorScreen extends React.Component{
 					</Col>
 					<Col sm={10}>
 						<Container className="border shadow-lg" fluid>
-							<GraphEditor className="border" ref={this.editor}/>
+							<GraphEditor height={500} ref={this.editor}/>
 						</Container>
 					</Col>
 				</Row>
