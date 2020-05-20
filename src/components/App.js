@@ -6,7 +6,7 @@ import 'mdbreact/dist/css/mdb.css';
 import { EditorScreen } from "./screens/EditorScreen";
 import { LandingPage } from "./screens/LandingPage";
 import NavBar from "./navbar/NavBar";
-import { Footer } from "./Footer/Footer";
+import Footer from "./footer/Footer";
 import {
     BrowserRouter as Router,
     Switch,
