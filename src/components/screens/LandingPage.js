@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
 import { GraphEditor } from '../GraphEditor/GraphEditor';
 
 
@@ -24,22 +23,22 @@ export const LandingPage = () => {
 	console.log("ao", w);
 	return (
 
-		<Col>
-			<Row>
+		<div className="col">
+			<div className="row">
 				Sezione con header
-			</Row>
-			<Row>
+			</div>
+			<div className="row">
 				Sezione con mini editor e info sul sito
-			</Row>
-			<Row>
+			</div>
+			<div className="row">
 				Sezione con altre info su cosa si può fare e form di registrazione
-			</Row>
-			<Row>
+			</div>
+			<div className="row">
 				Sezione meet the team?	
-			</Row>
-			<Row>
+			</div>
+			<div className="row">
 				Sezione pricing
-			</Row>
-		</Col>
+			</div>
+		</div>
 	)
 }

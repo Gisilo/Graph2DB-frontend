@@ -1,7 +1,6 @@
 import React from 'react';
 import { GraphEditor } from '../GraphEditor/GraphEditor';
-import { Container, Row, Col } from 'react-bootstrap';
-import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../buttons';
+// import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../buttons';
 
 export class EditorScreen extends React.Component{
 
@@ -20,9 +19,9 @@ export class EditorScreen extends React.Component{
 
 	render() {
 		return (
-			< Container fluid>
-				<Row>
-					<Col sm={2} className="px-0 border border-secondary">
+			< div className="container fluid">
+				<div className="row">
+					{/* <Col sm={2} className="px-0 border border-secondary">
 						<Row className="mt-4 justify-content-center">
 							<LoadButton variant="outline-secondary" loadGraph={this.triggerLoadGraph} text="Carica"/>
 						</Row>
@@ -35,14 +34,14 @@ export class EditorScreen extends React.Component{
 						<Row className="mt-2 justify-content-center">
 							<DeleteButton variant="outline-success" text="Elimina"/>
 						</Row>
-					</Col>
-					<Col sm={10}>
-						<Container className="border shadow-lg" fluid>
+					</Col> */}
+					<div className="col">
+						<div className="container border shadow-lg">
 							<GraphEditor height={500} ref={this.editor}/>
-						</Container>
-					</Col>
-				</Row>
-			</Container>
+						</div>
+					</div>
+				</div>
+			</div>
 
 		)
 	}
