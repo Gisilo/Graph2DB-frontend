@@ -1,8 +1,5 @@
 import React from 'react';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'bootstrap-css-only/css/bootstrap.min.css';
-import 'mdbreact/dist/css/mdb.css';
-import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
+
 import { EditorScreen } from "./screens/EditorScreen";
 import { LandingPage } from "./screens/LandingPage";
 import NavBar from "./navbar/NavBar";
@@ -13,16 +10,17 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import { Grid } from '@material-ui/core';
 
 
 function App() {
     return (
         <Router>
-            <MDBRow>
-                <MDBCol><NavBar /></MDBCol>
-            </MDBRow>
-            <MDBRow>
-                <MDBCol>
+            <Grid container>
+                <Grid item xs={12}>
+                    <NavBar />
+                </Grid>
+                <Grid item xs={12}>
                     <Switch>
                         <Route path="/editor">
                             <LandingPage />
@@ -31,13 +29,14 @@ function App() {
                             <EditorScreen />
                         </Route>
                     </Switch>
-                </MDBCol>
-            </MDBRow>
-            <MDBRow>
-                <MDBCol><Footer /></MDBCol>
-            </MDBRow>
-        </Router>
+                </Grid>
+                <Grid item xs={12}>
+                    <div><Footer /></div>
+                </Grid>
 
+            </Grid>
+
+        </Router>
     );
 }
 
