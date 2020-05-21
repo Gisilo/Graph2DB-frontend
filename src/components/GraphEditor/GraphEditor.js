@@ -6,6 +6,7 @@ import { CreateNodeModal } from './CreateNodeModal'
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import dblclick from 'cytoscape-dblclick';
+import {map} from "react-bootstrap/cjs/ElementChildren";
 
 cytoscape.use(dblclick);
 cytoscape.use(edgehandles);
@@ -17,13 +18,15 @@ export class GraphEditor extends Component {
         super(props);
         this.state = {
             modalNodeInfoShow: false, nodeInfo: null,
-            modalNodeCreateShow: false};
+            modalNodeCreateShow: false, nodesNameList:null};
     }
 
 
     componentDidMount = () => {
         this.cy.dblclick(); // For double click
-        let eh = this.cy.edgehandles();
+        let defaults = {};
+        let eh = this.cy.edgehandles(defaults);
+        eh.hide();
         eh.enableDrawMode();
         //eh.disableDrawMode();
         //let la = this.cy.layout( this.options );
@@ -31,25 +34,19 @@ export class GraphEditor extends Component {
 
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
-            let newId = this.getNewID();
-            this.setState({modalNodeCreateShow: true, nodeInfoCreate: null,
-                newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y});
-        });
-
-        // click on node
-        this.cy.on('click', 'node', (event) => {
-            let clickedNode = this.cy.getElementById(event.target.id());
-            //clickedNode.data().property.push({ww: 234});
-            console.log(clickedNode.data().label);
-            this.setState({modalShow: true, nodeInfo:clickedNode});
-
-            //this.cy.layout(this.state.layout).run();
-            //this.cy.fit();
-        });
-
-        // click on edge
-        this.cy.bind('click', 'edge', (event) => {
-            console.log("click on edge");
+            let nodesNameList = this.cy.elements().map(x => x.data().label);
+            if (event.target === this.cy){
+                let newId = this.getNewID();
+                this.setState({modalNodeCreateShow: true, nodeInfoCreate: null, nodesNameList:nodesNameList,
+                    newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y});
+            }
+            else if (event.target.isNode()){
+                let clickedNode = event.target;
+                this.setState({modalShow: true, nodeInfo:clickedNode, nodesNameList:nodesNameList});
+            }
+            else if (event.target.isEdge()){
+                console.log("click on edge");
+            }
         });
 
         this.cy.on('keydown', (e) => {
@@ -60,6 +57,7 @@ export class GraphEditor extends Component {
     loadGraph = (newGraph) => {
         console.log("newGraph in editor", newGraph);
         this.cy.json({ elements: newGraph });
+        this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
     };
 
     logKey = (e) => {
@@ -67,17 +65,29 @@ export class GraphEditor extends Component {
     };
 
     // Create new node
-    newNode = (newNodeName, newNodeDesciption) => {
+    newNode = (newNodeName, newNodeDesciption, newNodeProperty) => {
+        console.log("pwpw", newNodeProperty);
         this.cy.add({
             data: {
                 id: this.state.newNodeId,
                 label: newNodeName,
                 description: newNodeDesciption,
-                property:[] },
+                property:newNodeProperty },
             position: { x: this.state.posX, y: this.state.posY }
         }
         ).css({ 'background-color': 'blue' });
-        console.log("nene", this.cy.nodes().data('label'));
+        console.log("nene", this.cy.nodes().jsons());
+    };
+
+    editNode = (editNode) =>{
+        //console.log("call edit", editNode);
+        this.setState({nodeInfo: this.state.nodeInfo.data({
+                label: editNode.nName,
+                description: editNode.nDesc,
+                property: editNode.nProps
+            })});
+        console.log("dopo set state", this.cy.nodes().jsons())
+
     };
 
     // Get new node ID
@@ -95,6 +105,10 @@ export class GraphEditor extends Component {
         return (
             <div>
                 <CytoscapeComponent
+                    wheelSensitivity={0.5}
+                    boxSelectionEnabled={true}
+                    minZoom={0.5}
+                    maxZoom={2}
                     elements={[]}
                     stylesheet={graphStyle.style}
                     style={{ width: window.width, height: window.innerHeight}}
@@ -106,11 +120,12 @@ export class GraphEditor extends Component {
 
                 />
 
-                <NodeModal nodeInfo={this.state.nodeInfo}
+                <NodeModal nodesNameList={this.state.nodesNameList} callBack={this.editNode}
+                           nodeInfo={this.state.nodeInfo}
                            show={this.state.modalShow}
                            onHide={() => this.setState({modalShow: false})}/>
 
-                <CreateNodeModal callBack={this.newNode}
+                <CreateNodeModal nodesNameList={this.state.nodesNameList} callBack={this.newNode}
                            show={this.state.modalNodeCreateShow}
                            onHide={() => this.setState({modalNodeCreateShow: false})}/>
             </div>
