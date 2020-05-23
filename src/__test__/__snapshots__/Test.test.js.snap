@@ -1,186 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppBar Tests AppBar matches the snapshot 1`] = `
-<nav
-  className="shadow navbar navbar-expand-lg navbar-light bg-primary"
->
+exports[`Button Tests CreateButton matches the snapshot 1`] = `
+Array [
   <button
-    aria-controls="basic-navbar-nav"
-    aria-label="Toggle navigation"
-    className="navbar-toggler collapsed"
     onClick={[Function]}
-    type="button"
   >
-    <span
-      className="navbar-toggler-icon"
-    />
-  </button>
+    New Project
+  </button>,
   <div
-    aria-expanded={null}
-    className="navbar-collapse collapse"
-    id="basic-navbar-nav"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered={true}
+    onHide={[Function]}
+    show={false}
+    size="lg"
   >
     <div
-      className="navbar-nav"
-      onKeyDown={[Function]}
+      closeButton={true}
     >
-      <a
-        className="nav-link"
-        data-rb-event-key="#home"
-        href="#home"
-        onClick={[Function]}
-        onKeyDown={[Function]}
+      <div
+        id="contained-modal-title-vcenter"
       >
-        Home
-      </a>
-      <a
-        className="nav-link"
-        data-rb-event-key="#project"
-        href="#project"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-      >
-        New Project
-      </a>
-      <a
-        className="nav-link"
-        data-rb-event-key="#docs"
-        href="#docs"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-      >
-        Docs
-      </a>
+        Create new Grabit
+      </div>
     </div>
-    <a
-      className="mx-auto navbar-brand"
-      href="#home"
-      style={
-        Object {
-          "fontFamily": "Pacifico-Regular",
-        }
-      }
-    >
-      Grask
-    </a>
-    <button
-      className="ml-2   btn btn-outline-secondary"
-      disabled={false}
-      style={
-        Object {
-          "borderRadius": "35px",
-        }
-      }
-      type="button"
-    >
-      Log In
-    </button>
-     
-    <button
-      className="ml-2 btn btn-info"
-      disabled={false}
-      style={
-        Object {
-          "borderRadius": "35px",
-        }
-      }
-      type="button"
-    >
-      Sign Up
-    </button>
-     
-  </div>
-</nav>
-`;
-
-exports[`Button Tests CreateButton matches the snapshot 1`] = `
-<button
-  className="btn btn-primary"
-  disabled={false}
-  onClick={[Function]}
-  type="button"
->
-  New Project
-</button>
+    <div>
+      <form
+        action="#"
+        onReset={[Function]}
+        onSubmit={[Function]}
+      >
+        <button
+          disabled={false}
+          type="submit"
+          variant="primary"
+        >
+          Create
+        </button>
+      </form>
+    </div>
+  </div>,
+]
 `;
 
 exports[`Button Tests DeleteButton matches the snapshot 1`] = `
 <button
-  className="px-5 btn btn-primary"
-  disabled={false}
+  className="px-5"
   onClick={[Function]}
-  type="button"
 />
 `;
 
 exports[`Button Tests LoadButton matches the snapshot 1`] = `
 <button
-  className="px-5 btn btn-primary"
-  disabled={false}
+  className="px-5"
   onClick={[Function]}
-  type="button"
 />
 `;
 
 exports[`Button Tests SaveButton matches the snapshot 1`] = `
 <button
-  className="px-5 btn btn-primary"
-  disabled={false}
   onClick={[Function]}
-  type="button"
 />
-`;
-
-exports[`Footer Tests Footer matches the snapshot 1`] = `
-<footer
-  className="bg-primary container-fluid text-center text-md-left font-small info pt-2 shadow-lg"
->
-  <div
-    className="row justify-content-md-around mt-2"
-  >
-    <div
-      className="col-md-6"
-    >
-      <h5
-        className="text-uppercase"
-      >
-        Gisilo
-      </h5>
-      <p>
-        Slogan to be found? Or something else
-      </p>
-    </div>
-    <div
-      className="col-md-3 mb-md-0 mb-1"
-    >
-      <h5
-        className="text-uppercase"
-      >
-        Connect
-      </h5>
-      <ul
-        className="list-unstyled"
-      >
-        <li
-          href="#!"
-        >
-          Meet the team
-        </li>
-        <li
-          href="#!"
-        >
-          Contacts Us
-        </li>
-        <li>
-          TODO: riga con icone github e altri social
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div
-    className="footer-copyright text-center pb-2"
-  >
-    © 2020 Copyright: Gisilo
-  </div>
-</footer>
 `;

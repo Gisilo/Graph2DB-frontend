@@ -1,17 +1,7 @@
 import React from 'react';
-import gql from 'graphql-tag'
-import { Button } from 'react-bootstrap';
 import { useMutation } from 'react-apollo';
+import { SAVE_QUERY } from '../../costants/queries'
 
-const SAVE_QUERY = gql`
-	mutation CreateGrabitByName($nameGrabit: String!, $nGraph: String!) {
-	  createGrabit(input: {nameProject: $nameGrabit, graph: $nGraph}) {
-		msg
-		grabit {
-		  nameProject
-		}
-	  }
-	}`;
 
 function SaveButton(props){
 
@@ -32,9 +22,9 @@ function SaveButton(props){
 	};
 
 	return (
-		<Button onClick={saveGrabit} className="px-5" variant={props.variant}>
+		<button onClick={saveGrabit}>
 			{props.text}
-		</Button>
+		</button>
 
 	);
 }
