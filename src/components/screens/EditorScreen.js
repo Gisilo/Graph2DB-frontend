@@ -21,7 +21,7 @@ export class EditorScreen extends React.Component {
 
 	render() {
 		return (
-			<GraphEditor ref={this.editor} />
+			<GraphEditor ref={this.editor} heightOffset={120}/>  //TODO: magic number 
 		)
 	}
 

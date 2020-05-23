@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import {EditorScreen} from '../screens/EditorScreen';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -19,9 +20,7 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography> {/** Corpo */}
-                </Box>
+                <EditorScreen/>
             )}
         </div>
     );

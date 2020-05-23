@@ -1,29 +1,11 @@
 import React from 'react';
-import { Grid, CssBaseline } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { EditorScreen } from '../screens/EditorScreen';
 import NavBar from './NavBar';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import TabsContainer from './TabsContainer';
 
-const useStyles = makeStyles((theme) => ({
-	toolbar: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-		padding: theme.spacing(0, 1),
-		// necessary for content to be below app bar
-		...theme.mixins.toolbar,
-	},
-	content: {
-		flexGrow: 1,
-		padding: theme.spacing(3),
-	},
-}));
 
-
-function Root(props) {
-
-	const classes = useStyles();
+function MainPage(props) {
 	return (
 		<div>
 			<Grid container>
@@ -31,10 +13,6 @@ function Root(props) {
 					<NavBar />
 				</Grid>
 				<Grid item container xs={12}>
-					{/* <main className={classes.content}>
-						<div className={classes.toolbar} />
-						<EditorScreen />
-					</main> */}
 					<TabsContainer/>
 				</Grid>
 			</Grid>
@@ -42,4 +20,4 @@ function Root(props) {
 	);
 }
 
-export default Root;
+export default MainPage;
