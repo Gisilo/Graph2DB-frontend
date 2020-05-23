@@ -1,7 +1,14 @@
 import React from 'react';
+import gql from 'graphql-tag'
+import { Button } from 'react-bootstrap';
 import { useMutation } from 'react-apollo';
 
-import { DELETE_QUERY } from '../../costants/queries'
+const DELETE_QUERY = gql`
+    mutation DeleteGrabitByName($nameGrabit: String!) {
+        deleteGrabit(input: {nameProject: $nameGrabit}) {
+            msg
+        }
+    }`;
 
 
 function DeleteButton(props){
@@ -18,9 +25,9 @@ function DeleteButton(props){
     };
 
     return (
-        <button onClick={deleteGrabit} className="px-5" variant={props.variant}>
+        <Button onClick={deleteGrabit} className="px-5" variant={props.variant}>
             {props.text}
-        </button>
+        </Button>
 
     );
 }

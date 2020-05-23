@@ -1,28 +1,38 @@
 import React from 'react';
+import gql from 'graphql-tag'
+import { Button, Modal } from 'react-bootstrap';
+import { InputTitleLeft, TextAreaTitleLeft, } from '../inputs';
 import { Formik, ErrorMessage, Form } from 'formik';
 import { useMutation } from 'react-apollo';
 
-import { CREATE_QUERY } from '../../costants/queries'
-
+const CREATE_QUERY = gql`
+	mutation CreateGrabit($nameGrabit: String!, $descr: String) {
+		createGrabit(input: {nameProject: $nameGrabit, description: $descr}) {
+			grabit {
+		  		id
+		  		nameProject
+		  		description
+		  	}
+		}
+	}`;
 
 function MyVerticallyCenteredModal(props) {
 
 	const [addGrabit] = useMutation(CREATE_QUERY);
 
 	return (
-		//sostituire con material ui
-		<div 
+		<Modal
 			{...props}
 			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
 			centered>
 
-			<div closeButton>
-				<div id="contained-modal-title-vcenter">
+			<Modal.Header closeButton>
+				<Modal.Title id="contained-modal-title-vcenter">
 					Create new Grabit
-		  		</div>
-			</div>
-			<div>
+		  		</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
 				<Formik
 					initialValues={{ grabitName: "", description: "" }}
 					validate={values => {
@@ -47,15 +57,15 @@ function MyVerticallyCenteredModal(props) {
 					{({ values, isSubmitting }) => (
 						<Form>
 							<ErrorMessage name="grabitName" component="div" />
-							{/* <InputTitleLeft id="ig1" title="Grabit Name" placeholder="Grabit Name" name="grabitName" />
-							<TextAreaTitleLeft id="ig4" title="Description" placeholder="Description (Optional)" name="description" /> */}
+							<InputTitleLeft id="ig1" title="Grabit Name" placeholder="Grabit Name" name="grabitName" />
+							<TextAreaTitleLeft id="ig4" title="Description" placeholder="Description (Optional)" name="description" />
 
-							<button disabled={isSubmitting} type="submit" variant="primary">Create</button>
+							<Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
 						</Form>
 					)}
 				</Formik>
-			</div>
-		</div>
+			</Modal.Body>
+		</Modal>
 	);
 }
 
@@ -65,9 +75,9 @@ function CreateButton() {
 
 	return (
 		<>
-			<button onClick={() => setModalShow(true)}>
+			<Button variant="primary" onClick={() => setModalShow(true)}>
 				New Project
-			</button>
+			</Button>
 
 			<MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)}/>
 		</>

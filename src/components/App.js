@@ -1,23 +1,26 @@
 import React from 'react';
 
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-} from "react-router-dom";
-import MainPage from './layout/MainPage';
-
+import '../styles/App.scss';
+import { EditorScreen } from "./screens/EditorScreen";
+import { AppBar } from "./AppBar/AppBar";
+import { Footer } from "./Footer/Footer";
+import { Container, Row, Col } from 'react-bootstrap';
 
 function App() {
     return (
-        <Router>
-            <Switch>
-                <Route path="/">
-                    <MainPage />
-                </Route>
-            </Switch>
-        </Router>
+        <Container fluid>
+            <Row>
+                <Col className="px-0"><AppBar /></Col>
+            </Row >
+            <Row >
+                <Col className="px-0">
+                    <EditorScreen /> {/* All the pages here? */}
+                </Col>
+            </Row>
+            <Row>
+                <Col className="px-0"><Footer /></Col>
+            </Row>
+        </Container>
     );
 }
-
 export default App;
