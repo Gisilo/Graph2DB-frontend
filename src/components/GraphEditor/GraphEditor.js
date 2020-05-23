@@ -6,7 +6,6 @@ import { CreateNodeModal } from './CreateNodeModal'
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import dblclick from 'cytoscape-dblclick';
-import {map} from "react-bootstrap/cjs/ElementChildren";
 
 cytoscape.use(dblclick);
 cytoscape.use(edgehandles);
