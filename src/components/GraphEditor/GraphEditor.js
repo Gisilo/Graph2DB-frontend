@@ -90,11 +90,13 @@ export class GraphEditor extends Component {
                 <CytoscapeComponent
                     elements={[]}
                     stylesheet={graphStyle.style}
-                    style={{ width: this.props.width, height: this.props.height}}
+                    style={ { width: window.innerWidth, height: window.innerHeight } }
                     onKeyDown={this.logKey}
                     tabIndex="0"
                     cy={(cy) => {
                         this.cy = cy;
+                        console.log(cy.width());
+                        console.log(cy.height());
                     }}
 
                 />

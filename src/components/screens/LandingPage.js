@@ -1,5 +1,9 @@
 import React, { useRef, useEffect } from 'react';
-import { GraphEditor } from '../GraphEditor/GraphEditor';
+import { Grid, Paper } from '@material-ui/core';
+import NavBar from '../../components/layout/navbar/NavBar';
+import VerticalTabs from '../layout/VerticalTabs';
+
+// import { GraphEditor } from '../GraphEditor/GraphEditor';
 
 
 // Usare lo state per aggiornare la width dell'editor
@@ -22,23 +26,25 @@ export const LandingPage = () => {
 
 	console.log("ao", w);
 	return (
-
-		<div className="col">
-			<div className="row">
+		<Grid container direction="row">
+			<Grid item>
+				<VerticalTabs/>
+			</Grid>
+			<Grid item>
 				Sezione con header
-			</div>
-			<div className="row">
+			</Grid>
+			<Grid item>
 				Sezione con mini editor e info sul sito
-			</div>
-			<div className="row">
+			</Grid>
+			<Grid item>
 				Sezione con altre info su cosa si può fare e form di registrazione
-			</div>
-			<div className="row">
-				Sezione meet the team?	
-			</div>
-			<div className="row">
+			</Grid>
+			<Grid item>
+				Sezione meet the team?
+			</Grid>
+			<Grid item>
 				Sezione pricing
-			</div>
-		</div>
+			</Grid>
+		</Grid>
 	)
 }
