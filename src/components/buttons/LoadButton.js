@@ -30,14 +30,22 @@ class LoadButton extends React.Component {
         this.props.client.query({
             query: LOAD_QUERY,
             variables: {
-                projectName: "prova8"
+                projectName: "qwerrr"
             }
         }).then(
             (success) => {
                 console.log("suc", success);
+                if (success.data.allGrabits.edges.length === 0){
+                    // TODO: feedback utente - Grabit non esistente
+                    console.log("feedback utente - Grabit non esistente");
+                    return;
+                }
                 let currentGrabit = success.data.allGrabits.edges[0].node;
-                let graphLoaded = JSON.parse(currentGrabit.graph);
-                this.props.loadGraph(graphLoaded);
+                if (currentGrabit.graph != null) {
+                    let graphLoaded = JSON.parse(currentGrabit.graph);
+                    this.props.loadGraph(graphLoaded);
+                }
+                else console.log("Graph non esistente");
             },
             (error) => console.log("err", error))
     };
