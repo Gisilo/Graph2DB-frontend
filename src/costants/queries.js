@@ -1,5 +1,16 @@
 import gql from 'graphql-tag'
 
+export const CREATE_QUERY = gql`
+	mutation CreateGrabit($nameGrabit: String!, $descr: String) {
+		createGrabit(input: {nameProject: $nameGrabit, description: $descr}) {
+			grabit {
+		  		id
+		  		nameProject
+		  		description
+		  	}
+		}
+	}`;
+
 export const SAVE_QUERY = gql`
 	mutation CreateGrabitByName($nameGrabit: String!, $nGraph: String!) {
 	  createGrabit(input: {nameProject: $nameGrabit, graph: $nGraph}) {

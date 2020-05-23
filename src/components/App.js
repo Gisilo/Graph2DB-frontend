@@ -10,24 +10,20 @@ import {
     Route,
 } from "react-router-dom";
 import { Grid, TabPanel } from '@material-ui/core';
-import Root from './layout/Root';
+import MainPage from './layout/MainPage';
 
 
 function App() {
     return (
         <Router>
-            <Grid container>
-                <Grid item xs={12}>
-                    <Switch>
-                        <Route path="/">
-                            <Root/>
-                        </Route>
-                        <Route path="/editor">
-                            <EditorScreen />
-                        </Route>
-                    </Switch>
-                </Grid>
-            </Grid>
+            <Switch>
+                <Route path="/">
+                    <MainPage />
+                </Route>
+                <Route path="/editor">
+                    <EditorScreen />
+                </Route>
+            </Switch>
         </Router>
     );
 }
