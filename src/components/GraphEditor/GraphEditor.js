@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
-import { NodeModal } from './NodeModal'
-import { CreateNodeModal } from './CreateNodeModal'
 
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import dblclick from 'cytoscape-dblclick';
-import {map} from "react-bootstrap/cjs/ElementChildren";
 
 cytoscape.use(dblclick);
 cytoscape.use(edgehandles);
@@ -14,40 +11,31 @@ cytoscape.use(edgehandles);
 
 export class GraphEditor extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            modalNodeInfoShow: false, nodeInfo: null,
-            modalNodeCreateShow: false, nodesNameList:null,
-            eh: null};
-    }
-
 
     componentDidMount = () => {
         this.cy.dblclick(); // For double click
-        let defaults = {};
-        let eh = this.cy.edgehandles(defaults);
-        this.setState({eh:eh});
-        //eh.enableDrawMode();
-        eh.disableDrawMode();
+        let eh = this.cy.edgehandles();
+        eh.enableDrawMode();
+        //eh.disableDrawMode();
         //let la = this.cy.layout( this.options );
         //la.run();
 
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
-            let nodesNameList = this.cy.elements().map(x => x.data().label);
-            if (event.target === this.cy){
-                let newId = this.getNewID();
-                this.setState({modalNodeCreateShow: true, nodeInfoCreate: null, nodesNameList:nodesNameList,
-                    newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y});
-            }
-            else if (event.target.isNode()){
-                let clickedNode = event.target;
-                this.setState({modalShow: true, nodeInfo:clickedNode, nodesNameList:nodesNameList});
-            }
-            else if (event.target.isEdge()){
-                console.log("click on edge");
-            }
+            let new_id = this.getNewID();
+            this.newNode(new_id, renderedPosition.position.x, renderedPosition.position.y);
+        });
+
+        // click on node
+        this.cy.bind('click', 'node', (event) => {
+            console.log("click on node");
+            //this.cy.layout(this.state.layout).run();
+            //this.cy.fit();
+        });
+
+        // click on edge
+        this.cy.bind('click', 'edge', (event) => {
+            console.log("click on edge");
         });
 
         this.cy.on('keydown', (e) => {
@@ -58,50 +46,40 @@ export class GraphEditor extends Component {
     loadGraph = (newGraph) => {
         console.log("newGraph in editor", newGraph);
         this.cy.json({ elements: newGraph });
-        this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
-    };
 
+    };
 
     logKey = (e) => {
         console.log(e);
     };
 
     // Create new node
-    newNode = (newNodeName, newNodeDesciption, newNodeProperty) => {
-        console.log("pwpw", newNodeProperty);
+    newNode = (id, pos_x, pos_y) => {
         this.cy.add({
-            data: {
-                id: this.state.newNodeId,
-                label: newNodeName,
-                description: newNodeDesciption,
-                property:newNodeProperty },
-            position: { x: this.state.posX, y: this.state.posY }
+            data: { id: id, label: 'Node ' + id },
+            position: { x: pos_x, y: pos_y }
         }
         ).css({ 'background-color': 'blue' });
-        console.log("nene", this.cy.nodes().jsons());
+
     };
 
-    editNode = (editNode) =>{
-        //console.log("call edit", editNode);
-        this.setState({nodeInfo: this.state.nodeInfo.data({
-                label: editNode.nName,
-                description: editNode.nDesc,
-                property: editNode.nProps
-            })});
-        console.log("dopo set state", this.cy.nodes().jsons())
-
+    // Get max value of id for create new node
+    getMaxNodeID = () => {
+        let id_list = [];
+        if (this.cy.nodes().length===0) return -1;
+        this.cy.nodes().forEach((node) => {
+            id_list.push(parseInt(node.data('id')));
+        });
+        return Math.max.apply(Math, id_list);
     };
 
     // Get new node ID
-    getNewID = () => this.cy.nodes().size() + 1;
+    getNewID = () => this.getMaxNodeID() + 1;
 
     // Get JSON of graph
     getJSON = () =>{
         // get all: graph + style + more => this.cy.json()
         // get only nodes and edges
-        console.log("prime", this.cy.elements().jsons());
-        this.state.eh.removeHandle();
-        console.log("dopo", this.cy.elements().jsons());
         return this.cy.elements().jsons()
     };
 
@@ -110,28 +88,16 @@ export class GraphEditor extends Component {
         return (
             <div>
                 <CytoscapeComponent
-                    wheelSensitivity={0.5}
-                    boxSelectionEnabled={true}
-                    minZoom={0.5}
-                    maxZoom={2}
                     elements={[]}
                     stylesheet={graphStyle.style}
                     style={{ width: window.width, height: window.innerHeight}}
+                    onKeyDown={this.logKey}
                     tabIndex="0"
                     cy={(cy) => {
                         this.cy = cy;
                     }}
 
                 />
-
-                <NodeModal nodesNameList={this.state.nodesNameList} callBack={this.editNode}
-                           nodeInfo={this.state.nodeInfo}
-                           show={this.state.modalShow}
-                           onHide={() => this.setState({modalShow: false})}/>
-
-                <CreateNodeModal nodesNameList={this.state.nodesNameList} callBack={this.newNode}
-                           show={this.state.modalNodeCreateShow}
-                           onHide={() => this.setState({modalNodeCreateShow: false})}/>
             </div>
         )
     }
@@ -153,10 +119,10 @@ const graphStyle = {
             selector: '.eh-handle',
             style: {
                 'background-color': 'red',
-                'width': 10,
-                'height': 10,
+                'width': 12,
+                'height': 12,
                 'shape': 'ellipse',
-                'label': 'gb',
+                'label': '+',
                 'overlay-opacity': 0,
                 'border-width': 12, // makes the handle easier to hit
                 'border-opacity': 0
