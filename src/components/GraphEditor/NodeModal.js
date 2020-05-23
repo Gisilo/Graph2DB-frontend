@@ -6,9 +6,6 @@ import React, {useState} from "react";
 export function NodeModal(props) {
 
     const [showPropsTab, setShowPropsTab] = useState(false);
-    const [typeDom, setTypeDom] = useState("");
-
-    const handleInputChange = () => {console.log("slfjee")};
 
     return (
         <Modal
@@ -100,8 +97,7 @@ export function NodeModal(props) {
                                                                    type="input" as={Form.Control} />
                                                         </td>
                                                         <td>
-                                                            <Field name={`nProps.${index}.domain`} as="select"
-                                                                   onChange={handleInputChange}>
+                                                            <Field name={`nProps.${index}.domain`} as="select">
                                                                 <option value="" label="Select domain" />
                                                                 <option value="int">Integer</option>
                                                                 <option value="float">Float</option>
@@ -110,9 +106,11 @@ export function NodeModal(props) {
                                                             </Field>
                                                         </td>
                                                         <td>
-                                                            {typeDom!=="" && <Field placeholder={"defuolt val"}
-                                                                               name={`nProps.${index}.default`}
-                                                                               type="input" as={Form.Control}/>}
+                                                            {values.nProps[index].domain!=="" &&
+                                                                <Field placeholder={"default val"}
+                                                                name={`nProps.${index}.default`}
+                                                                type="input" as={Form.Control}/>
+                                                            }
 
                                                         </td>
                                                         <td>

@@ -18,7 +18,8 @@ export class GraphEditor extends Component {
         super(props);
         this.state = {
             modalNodeInfoShow: false, nodeInfo: null,
-            modalNodeCreateShow: false, nodesNameList:null};
+            modalNodeCreateShow: false, nodesNameList:null,
+            eh: null};
     }
 
 
@@ -26,9 +27,9 @@ export class GraphEditor extends Component {
         this.cy.dblclick(); // For double click
         let defaults = {};
         let eh = this.cy.edgehandles(defaults);
-        eh.hide();
-        eh.enableDrawMode();
-        //eh.disableDrawMode();
+        this.setState({eh:eh});
+        //eh.enableDrawMode();
+        eh.disableDrawMode();
         //let la = this.cy.layout( this.options );
         //la.run();
 
@@ -59,6 +60,7 @@ export class GraphEditor extends Component {
         this.cy.json({ elements: newGraph });
         this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
     };
+
 
     logKey = (e) => {
         console.log(e);
@@ -97,6 +99,9 @@ export class GraphEditor extends Component {
     getJSON = () =>{
         // get all: graph + style + more => this.cy.json()
         // get only nodes and edges
+        console.log("prime", this.cy.elements().jsons());
+        this.state.eh.removeHandle();
+        console.log("dopo", this.cy.elements().jsons());
         return this.cy.elements().jsons()
     };
 
@@ -112,7 +117,6 @@ export class GraphEditor extends Component {
                     elements={[]}
                     stylesheet={graphStyle.style}
                     style={{ width: window.width, height: window.innerHeight}}
-                    onKeyDown={this.logKey}
                     tabIndex="0"
                     cy={(cy) => {
                         this.cy = cy;
@@ -149,10 +153,10 @@ const graphStyle = {
             selector: '.eh-handle',
             style: {
                 'background-color': 'red',
-                'width': 12,
-                'height': 12,
+                'width': 10,
+                'height': 10,
                 'shape': 'ellipse',
-                'label': '+',
+                'label': 'gb',
                 'overlay-opacity': 0,
                 'border-width': 12, // makes the handle easier to hit
                 'border-opacity': 0
