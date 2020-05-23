@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, CssBaseline } from '@material-ui/core';
 import SidePanel from "./SidePanel";
 import { EditorScreen } from '../screens/EditorScreen';
-import NavBar from './navbar/NavBar';
+import NavBar from './NavBar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 function Root(props) {
 
 	const classes = useStyles();
-	const theme = useTheme();
 	const [drawerOpen, setDrawerOpen] = React.useState(false);
 
 	const handleDrawerOpen = () => setDrawerOpen(true);

@@ -2,8 +2,8 @@ import React from 'react';
 
 import { EditorScreen } from "./screens/EditorScreen";
 import { LandingPage } from "./screens/LandingPage";
-import NavBar from "./layout/navbar/NavBar";
-import Footer from "./layout/footer/Footer";
+import NavBar from "./layout/NavBar";
+import Footer from "./layout/Footer";
 import {
     BrowserRouter as Router,
     Switch,

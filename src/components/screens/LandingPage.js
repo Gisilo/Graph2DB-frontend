@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Grid, Paper } from '@material-ui/core';
-import NavBar from '../../components/layout/navbar/NavBar';
+import NavBar from '../layout/NavBar';
 import VerticalTabs from '../layout/VerticalTabs';
 
 // import { GraphEditor } from '../GraphEditor/GraphEditor';

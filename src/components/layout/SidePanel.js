@@ -15,6 +15,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
+import {LoadButton, SaveButton} from '../buttons';
+
 export const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
@@ -84,14 +86,12 @@ export default function SidePanel(props) {
         </div>
         <Divider />
         <List className={classes.listButton}>
-          <ListItem button key="New">
+          <ListItem button key="New" onClick={() => console.log('clicked aoooo')}>
             <ListItemIcon ><AddBoxIcon /></ListItemIcon>
             <ListItemText primary="New Grabit" />
           </ListItem>
-          <ListItem button key="Load">
-            <ListItemIcon><BackupIcon /></ListItemIcon>
-            <ListItemText primary="Load Grabit" />
-          </ListItem>
+          <LoadButton/>
+          <SaveButton/>
           <ListItem button key="Save">
             <ListItemIcon><SaveIcon /></ListItemIcon>
             <ListItemText primary="Save Grabit" />

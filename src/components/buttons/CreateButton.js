@@ -5,16 +5,8 @@ import { InputTitleLeft, TextAreaTitleLeft, } from '../inputs';
 import { Formik, ErrorMessage, Form } from 'formik';
 import { useMutation } from 'react-apollo';
 
-const CREATE_QUERY = gql`
-	mutation CreateGrabit($nameGrabit: String!, $descr: String) {
-		createGrabit(input: {nameProject: $nameGrabit, description: $descr}) {
-			grabit {
-		  		id
-		  		nameProject
-		  		description
-		  	}
-		}
-	}`;
+import { CREATE_QUERY } from '../../costants/queries'
+
 
 function MyVerticallyCenteredModal(props) {
 
