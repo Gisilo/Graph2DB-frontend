@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, CssBaseline } from '@material-ui/core';
 import SidePanel from "./SidePanel";
-import { EditorScreen } from '../screens/editor/EditorScreen';
+import { EditorScreen } from '../screens/EditorScreen';
 import NavBar from './navbar/NavBar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 

@@ -1,7 +1,6 @@
 import React from 'react';
-import { GraphEditor } from '../../GraphEditor/GraphEditor';
+import { GraphEditor } from '../GraphEditor/GraphEditor';
 import { Grid, Paper, Box } from '@material-ui/core';
-import SidePanel from '../../layout/SidePanel';
 
 // import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../buttons';
 
@@ -22,7 +21,7 @@ export class EditorScreen extends React.Component {
 
 	render() {
 		return (
-				<GraphEditor ref={this.editor} />
+			<GraphEditor ref={this.editor} />
 		)
 	}
 

@@ -2,44 +2,27 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import BackupIcon from '@material-ui/icons/Backup';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
-const drawerWidth = 240;
+export const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
+  listButton: {
+    [theme.breakpoints.up('sm')]: {
+      margin: 6,
+    },
+
   },
   drawer: {
     width: drawerWidth,
@@ -71,11 +54,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
+  }
 }));
 
 
@@ -104,15 +83,26 @@ export default function SidePanel(props) {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+        <List className={classes.listButton}>
+          <ListItem button key="New">
+            <ListItemIcon ><AddBoxIcon /></ListItemIcon>
+            <ListItemText primary="New Grabit" />
+          </ListItem>
+          <ListItem button key="Load">
+            <ListItemIcon><BackupIcon /></ListItemIcon>
+            <ListItemText primary="Load Grabit" />
+          </ListItem>
+          <ListItem button key="Save">
+            <ListItemIcon><SaveIcon /></ListItemIcon>
+            <ListItemText primary="Save Grabit" />
+          </ListItem>
+          <ListItem button key="Delete">
+            <ListItemIcon><DeleteIcon /></ListItemIcon>
+            <ListItemText primary="Delete Grabit" />
+          </ListItem>
+
         </List>
-        <Divider />
+        {/* <Divider />
         <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem button key={text}>
@@ -120,9 +110,9 @@ export default function SidePanel(props) {
               <ListItemText primary={text} />
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Drawer>
-      
+
     </div>
   );
 }
