@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 
 import { LOAD_QUERY } from '../../costants/queries'
 
@@ -25,9 +24,9 @@ class LoadButton extends React.Component {
 
     render() {
         return (
-            <Button onClick={this.loadProject} className="px-5" variant={this.props.variant}>
+            <button onClick={this.loadProject} className="px-5" variant={this.props.variant}>
                 {this.props.text}
-            </Button>
+            </button>
 
         );
     }
