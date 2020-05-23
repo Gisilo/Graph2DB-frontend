@@ -1,28 +1,8 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 
-import gql from 'graphql-tag'
+import { LOAD_QUERY } from '../../costants/queries'
+
 import { withApollo } from 'react-apollo';
-
-const LOAD_QUERY = gql`
-    query GetGrabitByName($projectName: String!) {
-      allGrabits(nameProject: $projectName) {
-        edges {
-          node {
-            id
-            nameProject
-            nameDb
-            dbms
-            description
-            port
-            createdDate
-            updateDate
-            graph
-          }
-        }
-      }
-    }`;
-
 
 class LoadButton extends React.Component {
 
@@ -52,9 +32,9 @@ class LoadButton extends React.Component {
 
     render() {
         return (
-            <Button onClick={this.loadProject} className="px-5" variant={this.props.variant}>
+            <button onClick={this.loadProject} className="px-5" variant={this.props.variant}>
                 {this.props.text}
-            </Button>
+            </button>
 
         );
     }
