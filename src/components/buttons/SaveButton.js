@@ -23,7 +23,7 @@ function SaveButton(props){
 
 		saveGrabitQuery({
 			variables: {
-				nameGrabit: "qwerrr",
+				nameGrabit: "prova8",
 				nGraph: newGraph
 			}
 		}).then(
