@@ -3,6 +3,7 @@ import { Grid, CssBaseline } from '@material-ui/core';
 import { EditorScreen } from '../screens/EditorScreen';
 import NavBar from './NavBar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import TabsContainer from './TabsContainer';
 
 const useStyles = makeStyles((theme) => ({
 	toolbar: {
@@ -25,16 +26,16 @@ function Root(props) {
 	const classes = useStyles();
 	return (
 		<div>
-			<CssBaseline />
 			<Grid container>
 				<Grid item xs={12}>
 					<NavBar />
 				</Grid>
 				<Grid item container xs={12}>
-					<main className={classes.content}>
+					{/* <main className={classes.content}>
 						<div className={classes.toolbar} />
 						<EditorScreen />
-					</main>
+					</main> */}
+					<TabsContainer/>
 				</Grid>
 			</Grid>
 		</div>
