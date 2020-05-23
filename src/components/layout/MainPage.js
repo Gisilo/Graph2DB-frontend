@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { EditorScreen } from '../screens/EditorScreen';
 import NavBar from './NavBar';
 import TabsContainer from './TabsContainer';
 

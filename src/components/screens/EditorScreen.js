@@ -1,6 +1,5 @@
 import React from 'react';
 import { GraphEditor } from '../GraphEditor/GraphEditor';
-import { Grid, Paper, Box } from '@material-ui/core';
 
 // import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../buttons';
 
