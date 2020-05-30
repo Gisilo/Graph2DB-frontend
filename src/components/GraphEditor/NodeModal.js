@@ -75,10 +75,10 @@ export function NodeModal(props) {
                                 <Grid item xs={12}>
                                     <ErrorMessage name="nName" component="div" />
                                     <ErrorMessage name="nProps" component="div" />
-                                    <TextField id="outlined-basic" label="Node name" variant="outlined" name="nName" />
+                                    <TextField id="outlined-basic" label="Node name" variant="outlined" name="nName" fullWidth/>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField multiline rows={2} variant="outlined" rowsMax={4} id="ig1" label="Node Description" name="nDesc" />
+                                    <TextField multiline rows={2} variant="outlined" rowsMax={4} id="ig1" fullWidth label="Node Description" name="nDesc" />
                                 </Grid>
 
                                 <Grid item xs={12}>
