@@ -1,18 +1,20 @@
 
-import {ErrorMessage, Field, FieldArray, Form, Formik} from "formik";
+import {ErrorMessage, Field, FieldArray, Form, Formik, useField} from "formik";
 import React, {useState} from "react";
-import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
 import { blue } from '@material-ui/core/colors';
-import TextField from '@material-ui/core/TextField';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Slide from '@material-ui/core/Slide';
-import Grid from "@material-ui/core/Grid";
+import MyTextField from '../inputs/MyTextField'
+import {TextField, Button, Select, MenuItem, Checkbox, Grid, Slide,
+    DialogContentText, DialogContent, DialogActions, InputLabel,
+    makeStyles, DialogTitle, Dialog, FormControl} from '@material-ui/core'
+import {
+    TimePicker,
+    DatePicker,
+    DateTimePicker,
+} from 'formik-material-ui-pickers';
+import {MuiPickersUtilsProvider} from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns';
+
 
 const useStyles = makeStyles({
     avatar: {
@@ -25,6 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+
 export function NodeModal(props) {
     const classes = useStyles();
     const { onClose, open } = props;
@@ -36,14 +39,15 @@ export function NodeModal(props) {
 
     return (
         <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
-            <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
+            {props.typeModal === "create" && <DialogTitle id="simple-dialog-title">Create Node</DialogTitle>}
+            {props.typeModal === "edit" && <DialogTitle id="simple-dialog-title">Information node</DialogTitle>}
             <DialogContent>
             <Formik
                 initialValues={{ nName: props.nodeInfo ? props.nodeInfo.data().label : "",
                     nDesc: props.nodeInfo ? props.nodeInfo.data().description : "",
                     nProps: props.nodeInfo ? props.nodeInfo.data().property : []}}
                 validate={values => {
-                    console.log(values.nProps.map(x => x.domain));
+                    console.log(values.nProps);
                     const errors = {};
                     if (!values.nName) {
                         errors.nName = 'Required';
@@ -59,6 +63,12 @@ export function NodeModal(props) {
                     if (values.nProps.map(x => x.domain).includes(""))
                         errors.nProps = 'Choose a domain of the property';
 
+                    if (values.nProps.map(x => x.pk).filter(Boolean).length > 1)
+                        errors.nProps = 'There are two or more primary key';
+
+                    if (!values.nProps.filter(x => x.domain === 'int').reduce((sum, next) => sum && Number.isInteger(next.default), true))
+                        errors.nProps = 'The default value mast be integer';
+
                     return errors;
                 }}
                 onSubmit={(data, { setSubmitting }) => {
@@ -66,19 +76,19 @@ export function NodeModal(props) {
                     console.log("submit: ", data);
                     props.callBack(data);
                     setSubmitting(false);
-                    props.onHide();
+                    handleClose();
                 }}
                 >
                     {({ values, isSubmitting }) => (
                         <Form>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <ErrorMessage name="nName" component="div" />
                                     <ErrorMessage name="nProps" component="div" />
-                                    <TextField id="outlined-basic" label="Node name" variant="outlined" name="nName" fullWidth/>
+                                    <MyTextField id="outlined-basic" label="Node Name" name="nName" type="input"/>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField multiline rows={2} variant="outlined" rowsMax={4} id="ig1" fullWidth label="Node Description" name="nDesc" />
+                                    <MyTextField multiline={true} rows={2} rowsMax={4} id="ig1"
+                                                 label="Node Description" name="nDesc" type="input"/>
                                 </Grid>
 
                                 <Grid item xs={12}>
@@ -87,7 +97,8 @@ export function NodeModal(props) {
                                             <div>
                                                 <Button
                                                     onClick={() =>{
-                                                        if(values.nProps.length === 0 || values.nProps[values.nProps.length-1].name!==""){
+                                                        if(values.nProps.length === 0 ||
+                                                            values.nProps[values.nProps.length-1].name!==""){
                                                             setShowPropsTab(true);
                                                             arrayHelpers.push({
                                                                 name: "",
@@ -102,62 +113,98 @@ export function NodeModal(props) {
                                                     Add props
                                                 </Button>
                                                 <br/>
-                                                <table>
-                                                    {showPropsTab && <tr>
-                                                        <th>Props name</th>
-                                                        <th>Domain</th>
-                                                        <th>Primary key</th>
-                                                        <th>Required</th>
-                                                    </tr>}
+                                                <Grid item xs={12} container>
                                                     {values.nProps.map((pro, index) => {
                                                         return (
-                                                            <tr key={pro.id}>
-                                                                <td>
-                                                                    <Field placeholder="property name" name={`nProps.${index}.name`}
-                                                                           type="input" as={Form.Control} />
-                                                                </td>
-                                                                <td>
-                                                                    <Field name={`nProps.${index}.domain`} as="select">
-                                                                        <option value="" label="Select domain" />
-                                                                        <option value="int">Integer</option>
-                                                                        <option value="float">Float</option>
-                                                                        <option value="string">String</option>
-                                                                        <option value="bool">Bool</option>
+                                                            <Grid item xs={12} key={pro.id} container>
+                                                                <Grid item>
+                                                                    <MyTextField id="outlined-basic" label="Property name"
+                                                                               name={`nProps.${index}.name`} type="input"/>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    <FormControl>
+                                                                    <InputLabel id="demo-simple-select-label">Select domain</InputLabel>
+                                                                    <Field labelId="demo-simple-select-label" name={`nProps.${index}.domain`} type="select"
+                                                                           as={Select}>
+                                                                        <MenuItem value="int">Integer</MenuItem>
+                                                                        <MenuItem value="float">Float</MenuItem>
+                                                                        <MenuItem value="string">String</MenuItem>
+                                                                        <MenuItem value="bool">Bool</MenuItem>
+                                                                        <MenuItem value="date">Date</MenuItem>
+                                                                        <MenuItem value="time">Time</MenuItem>
+                                                                        <MenuItem value="dateTime">DateTime</MenuItem>
                                                                     </Field>
-                                                                </td>
-                                                                <td>
-                                                                    {values.nProps[index].domain!=="" &&
-                                                                    <Field placeholder={"default val"}
-                                                                           name={`nProps.${index}.default`}
-                                                                           type="input" as={Form.Control}/>
-                                                                    }
+                                                                    </FormControl>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    {values.nProps[index].domain==="int" &&
 
-                                                                </td>
-                                                                <td>
-                                                                    <Field type="checkbox" name={`nProps.${index}.pk`}/>
-                                                                </td>
-                                                                <td>
-                                                                    <Field type="checkbox" name={`nProps.${index}.required`}/>
-                                                                </td>
-                                                                <td>
+                                                                    <MyTextField id="outlined-basic" label="Default value"
+                                                                                 name={`nProps.${index}.default`} type="number"/>
+                                                                    }
+                                                                    {values.nProps[index].domain==="float" &&
+
+                                                                    <MyTextField id="outlined-basic" label="Default value"
+                                                                                 name={`nProps.${index}.default`} type="number"/>
+                                                                    }
+                                                                    {values.nProps[index].domain==="string" &&
+
+                                                                    <MyTextField id="outlined-basic" label="Default value"
+                                                                                 name={`nProps.${index}.default`} type="text"/>
+                                                                    }
+                                                                    {values.nProps[index].domain==="bool" &&
+
+                                                                    <Checkbox id="outlined-basic" label="Default value"
+                                                                              name={`nProps.${index}.default`} type="checkbox"/>
+                                                                    }
+                                                                    {values.nProps[index].domain === "time" &&
+                                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                                        <Field component={TimePicker}
+                                                                               name={`nProps.${index}.default`}
+                                                                               label="Time"/>
+                                                                    </MuiPickersUtilsProvider>
+                                                                    }
+                                                                    {values.nProps[index].domain === "date" &&
+                                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                                        <Field component={DatePicker}
+                                                                           name={`nProps.${index}.default`}
+                                                                           label="Date"/>
+                                                                    </MuiPickersUtilsProvider>
+                                                                    }
+                                                                    {values.nProps[index].domain === "dateTime" &&
+                                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                                        <Field component={DateTimePicker}
+                                                                               name={`nProps.${index}.default`}
+                                                                               label="Date Time"/>
+                                                                    </MuiPickersUtilsProvider>
+                                                                    }
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    <Checkbox type="checkbox" name={`nProps.${index}.pk`}/>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    <Checkbox type="checkbox" name={`nProps.${index}.required`}/>
+                                                                </Grid>
+                                                                <Grid item>
                                                                     <Button onClick={() => {
                                                                         arrayHelpers.remove(index);
                                                                         values.nProps.splice(index, 1);
                                                                         if (values.nProps.length === 0) setShowPropsTab(false)}}>
                                                                         x
                                                                     </Button>
-                                                                </td>
-                                                            </tr>
+                                                                </Grid>
+                                                            </Grid>
                                                         );
                                                     })}
-                                                </table>
+                                                </Grid>
                                             </div>
                                         )}
                                     </FieldArray>
                                 </Grid>
 
                                 <Grid item xs={12} container justify="right">
-                                    <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
+                                    {props.typeModal === 'create'&& <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>}
+                                    {props.typeModal === 'edit'&& <Button disabled={isSubmitting} type="submit" variant="primary">Edit</Button>}
                                 </Grid>
 
                             </Grid>
