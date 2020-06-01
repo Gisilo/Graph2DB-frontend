@@ -60,7 +60,6 @@ export const GET_ALL_GRABITS = gql`
           port
           createdDate
           updateDate
-          graph
         }
       }
     }

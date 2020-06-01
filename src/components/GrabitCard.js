@@ -1,40 +1,47 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import {
+  Card,
+  CardHeader, CardContent, CardActions, Button, Typography,
+  IconButton
+} from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
+  card: {
+    maxWidth: 345,
+    top: '50%',
+    left: '50%',
+    borderRadius: 10,
+    backgroundSize: '200%',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    transition: '0.6s',
+    backgroundImage: 'linear-gradient(45deg, #FFC312, #EE5A24, #00a8ff)',
+    '&:hover': {
+      backgroundPosition: 'right'
+    }
+  }
+}
+);
 
 export default function GrabitCard(props) {
   const classes = useStyles();
-  const { grabitName, description} = props;
+  const { grabitName, description, updateDate } = props;
 
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card variant="outlined" className={classes.card}>
       <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Grabit
-        </Typography>
+        <CardHeader
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={grabitName}
+          subheader={`Last updated: ${updateDate}`}
+        />
         <Typography variant="h5" component="h2">
-          {grabitName}
+
         </Typography>
         <Typography variant="body2" component="p">
           {description}
