@@ -52,7 +52,7 @@ export function NodeModal(props) {
                     if (!values.nName) {
                         errors.nName = 'Required';
                     }
-                    else if (props.nodesNameList &&
+                    else if (props.nodesNameList && props.nodeInfo &&
                         props.nodesNameList.filter(e => e !== props.nodeInfo.data().label).includes(values.nName)){
                         errors.nName = 'Name is already used';
                     }

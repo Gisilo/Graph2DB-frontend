@@ -39,7 +39,7 @@ export class GraphEditor extends Component {
             if (event.target === this.cy){
                 let newId = this.getNewID();
                 this.setState({modalShow: true, typeModal:"create", modalNodeCreateShow: true, nodesNameList:nodesNameList,
-                    newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y});
+                    newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
             }
             else if (event.target.isNode()){
                 let clickedNode = event.target;
