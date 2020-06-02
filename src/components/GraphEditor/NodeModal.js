@@ -40,7 +40,7 @@ export function NodeModal(props) {
     return (
         <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
             {props.typeModal === "create" && <DialogTitle id="simple-dialog-title">Create Node</DialogTitle>}
-            {props.typeModal === "edit" && <DialogTitle id="simple-dialog-title">Information node</DialogTitle>}
+            {props.typeModal === "edit" && <DialogTitle id="simple-dialog-title">Information node {props.nodeInfo.data().label}</DialogTitle>}
             <DialogContent>
             <Formik
                 initialValues={{ nName: props.nodeInfo ? props.nodeInfo.data().label : "",
@@ -204,7 +204,7 @@ export function NodeModal(props) {
 
                                 <Grid item xs={12} container justify="right">
                                     {props.typeModal === 'create'&& <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>}
-                                    {props.typeModal === 'edit'&& <Button disabled={isSubmitting} type="submit" variant="primary">Edit</Button>}
+                                    {props.typeModal === 'edit'&& <Button disabled={isSubmitting} type="submit" variant="primary">Save</Button>}
                                 </Grid>
 
                             </Grid>
