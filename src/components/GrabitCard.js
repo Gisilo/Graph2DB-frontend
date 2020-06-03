@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
-  CardHeader, CardContent, CardActions, Button, Typography,
-  IconButton
+  CardHeader, CardContent, CardActions,
+  Button, Typography, IconButton
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
@@ -19,7 +19,8 @@ const useStyles = makeStyles({
     backgroundImage: 'linear-gradient(45deg, #FFC312, #EE5A24, #00a8ff)',
     '&:hover': {
       backgroundPosition: 'right'
-    }
+    },
+    height: "100%",
   }
 }
 );
@@ -44,7 +45,7 @@ export default function GrabitCard(props) {
 
         </Typography>
         <Typography variant="body2" component="p">
-          {description}
+          {description ? description : "No description"}
         </Typography>
       </CardContent>
       <CardActions>
