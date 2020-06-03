@@ -31,8 +31,7 @@ export default function GrabitCard(props) {
 
   return (
     <Card variant="outlined" className={classes.card}>
-      <CardContent>
-        <CardHeader
+      <CardHeader
           action={
             <IconButton aria-label="settings">
               <MoreVertIcon />
@@ -40,10 +39,8 @@ export default function GrabitCard(props) {
           }
           title={grabitName}
           subheader={`Last updated: ${updateDate}`}
-        />
-        <Typography variant="h5" component="h2">
-
-        </Typography>
+      />
+      <CardContent>
         <Typography variant="body2" component="p">
           {description ? description : "No description"}
         </Typography>

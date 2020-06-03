@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { GET_ALL_GRABITS } from '../../costants/queries'
+import NewGrabitCard from "../NewGrabitCard";
 
 const useStyles = makeStyles({
     root: {
@@ -24,11 +25,13 @@ export function GrabitsPanel(props) {
 
     return (
         <Grid container spacing={2} className={classes.root} justify="center">
+            <Grid item xs={12} sm={6} md={3}>
+                <NewGrabitCard/>
+            </Grid>
             {
                 data.allGrabits.edges.map(
                     (item, i) => {
                         const node = item.node;
-                        console.log(node);
                         return (
                             <Grid key={node.id} item xs={12} sm={6} md={3}>
                                 <GrabitCard
@@ -40,7 +43,5 @@ export function GrabitsPanel(props) {
                     })
             }
         </Grid>
-
     );
-
 }
