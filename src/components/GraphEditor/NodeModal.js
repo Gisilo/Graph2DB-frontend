@@ -14,6 +14,39 @@ import {
 } from 'formik-material-ui-pickers';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns';
+import * as yup from 'yup'
+import {findRenderedDOMComponentWithTag} from "react-dom/test-utils";
+
+yup.addMethod(yup.string, 'gg', function(ref, msg) {
+    return yup.mixed().test({
+        name: 'equalTo',
+        exclusive: false,
+        message: msg,
+        params: {
+            reference: ref.path,
+        },
+        test: function(value) {
+            console.log("in equalTo ", value);
+            return true;
+        },
+    });
+});
+
+const schema = yup.object({
+    nName: yup.string().required(),
+    nDesc: yup.string(),
+    nProps: yup.array().of(
+        yup.object({
+            name: yup.string(),
+            domain: yup.mixed().oneOf(['int', 'float', 'string', 'bool', 'date', 'time', 'dateTime']),
+            pk: yup.bool(),
+            required: yup.bool(),
+            default: yup.gg(yup.ref('domain'), 'Passwords must match')
+
+        })
+    )
+
+});
 
 
 const useStyles = makeStyles({
@@ -26,6 +59,8 @@ const useStyles = makeStyles({
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
+
+
 
 
 export function NodeModal(props) {
@@ -46,31 +81,7 @@ export function NodeModal(props) {
                 initialValues={{ nName: props.nodeInfo ? props.nodeInfo.data().label : "",
                     nDesc: props.nodeInfo ? props.nodeInfo.data().description : "",
                     nProps: props.nodeInfo ? props.nodeInfo.data().property : []}}
-                validate={values => {
-                    console.log(values.nProps);
-                    const errors = {};
-                    if (!values.nName) {
-                        errors.nName = 'Required';
-                    }
-                    else if (props.nodesNameList && props.nodeInfo &&
-                        props.nodesNameList.filter(e => e !== props.nodeInfo.data().label).includes(values.nName)){
-                        errors.nName = 'Name is already used';
-                    }
-
-                    if (new Set(values.nProps.map(x => x.name)).size !== values.nProps.length)
-                        errors.nProps = 'Property name is already used';
-
-                    if (values.nProps.map(x => x.domain).includes(""))
-                        errors.nProps = 'Choose a domain of the property';
-
-                    if (values.nProps.map(x => x.pk).filter(Boolean).length > 1)
-                        errors.nProps = 'There are two or more primary key';
-
-                    if (!values.nProps.filter(x => x.domain === 'int').reduce((sum, next) => sum && Number.isInteger(next.default), true))
-                        errors.nProps = 'The default value mast be integer';
-
-                    return errors;
-                }}
+                validationSchema={schema}
                 onSubmit={(data, { setSubmitting }) => {
                     setSubmitting(true);
                     console.log("submit: ", data);
@@ -140,7 +151,7 @@ export function NodeModal(props) {
                                                                     {values.nProps[index].domain==="int" &&
 
                                                                     <MyTextField id="outlined-basic" label="Default value"
-                                                                                 name={`nProps.${index}.default`} type="number"/>
+                                                                                 name={`nProps.${index}.default`} type="text"/>
                                                                     }
                                                                     {values.nProps[index].domain==="float" &&
 
