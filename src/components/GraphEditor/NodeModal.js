@@ -17,16 +17,13 @@ import DateFnsUtils from '@date-io/date-fns';
 import * as yup from 'yup'
 import {findRenderedDOMComponentWithTag} from "react-dom/test-utils";
 
-yup.addMethod(yup.string, 'gg', function(ref, msg) {
+yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
     return yup.mixed().test({
-        name: 'equalTo',
-        exclusive: false,
+        name: 'checkWithField',
         message: msg,
-        params: {
-            reference: ref.path,
-        },
         test: function(value) {
-            console.log("in equalTo ", value);
+            console.log("ref", this.options.parent[field]);
+            console.log("in equalTo ", value); 
             return true;
         },
     });
@@ -41,7 +38,7 @@ const schema = yup.object({
             domain: yup.mixed().oneOf(['int', 'float', 'string', 'bool', 'date', 'time', 'dateTime']),
             pk: yup.bool(),
             required: yup.bool(),
-            default: yup.gg(yup.ref('domain'), 'Passwords must match')
+            default: yup.mixed().checkWithField('domain', 'Passwords must match')
 
         })
     )
