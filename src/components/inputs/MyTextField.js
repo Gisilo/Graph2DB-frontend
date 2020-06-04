@@ -7,7 +7,7 @@ const MyTextField = ({ ...props }) => {
     const errorText = meta.error && meta.touched ? meta.error : "";
     return <TextField {...field} type={props.type} label={props.label} variant="outlined"
                       multiline={props.multiline} rows={props.rows} rowsMax={props.rowsMax}
-                      helperText={errorText}
+                      helperText={errorText} disabled={props.disabled}
                       error={!!errorText} fullWidth/>;
 };
 
