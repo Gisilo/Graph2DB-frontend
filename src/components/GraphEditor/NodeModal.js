@@ -50,7 +50,7 @@ const schema = yup.object({
             required: yup.boolean(),
             default: yup.mixed()
                 .checkWithField('domain', 'Default value must be integer')
-                .when('required', {is: true, then:yup.mixed().required("If property is required you must insert a defaul value")})
+                .when('required', {is: true, then:yup.mixed().required("If property is required you must insert a default value")})
 
 
         })
