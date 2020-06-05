@@ -1,12 +1,10 @@
 
-import {ErrorMessage, Field, FieldArray, Form, Formik, useField} from "formik";
-import React, {useState} from "react";
+import {ErrorMessage, Field, FieldArray, Form, Formik} from "formik";
+import React from "react";
 import PropTypes from 'prop-types';
-import { blue } from '@material-ui/core/colors';
 import MyTextField from '../inputs/MyTextField'
-import {TextField, Button, Select, MenuItem, Checkbox, Grid, Slide,
-    DialogContentText, DialogContent, DialogActions, InputLabel,
-    makeStyles, DialogTitle, Dialog, FormControl} from '@material-ui/core'
+import { Button, Select, MenuItem, Checkbox, Grid, Slide, DialogContent, InputLabel,
+    DialogTitle, Dialog, FormControl} from '@material-ui/core'
 import {
     TimePicker,
     DatePicker,
@@ -59,12 +57,13 @@ const schema = yup.object({
 });
 
 
+/*
 const useStyles = makeStyles({
     avatar: {
         backgroundColor: blue[100],
         color: blue[600],
     },
-});
+});*/
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -73,9 +72,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 export function NodeModal(props) {
-    const classes = useStyles();
+    //const classes = useStyles();
     const { onClose, open } = props;
-    const [showPropsTab, setShowPropsTab] = useState(false);
 
     const handleClose = () => {
         onClose();
@@ -116,7 +114,6 @@ export function NodeModal(props) {
                                             <div>
                                                 <Button
                                                     onClick={() =>{
-                                                        setShowPropsTab(true);
                                                         arrayHelpers.push({
                                                             name: "",
                                                             domain: "",
@@ -213,8 +210,7 @@ export function NodeModal(props) {
                                                                         console.log("arrayHelpers", arrayHelpers);
                                                                         console.log("nProps", values.nProps);
                                                                         arrayHelpers.remove(index);
-                                                                        values.nProps.splice(index, 1);
-                                                                        if (values.nProps.length === 0) setShowPropsTab(false)}}>
+                                                                        values.nProps.splice(index, 1);}}>
                                                                         x
                                                                     </Button>
                                                                 </Grid>
