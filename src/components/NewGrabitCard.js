@@ -4,10 +4,10 @@ import {
     Card,
     CardHeader, CardContent, Button
 } from '@material-ui/core';
-import {Form, Formik, useField} from "formik";
-import TextField from "@material-ui/core/TextField";
+import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
 import {CREATE_QUERY} from "../costants/queries";
+import MyTextField from "./inputs/MyTextField";
 
 const useStyles = makeStyles({
         card: {
@@ -26,16 +26,6 @@ const useStyles = makeStyles({
         },
     }
 );
-
-const MyTextField = ({ ...props }) => {
-    const [field, meta] = useField(props);
-    const errorText = meta.error && meta.touched ? meta.error : "";
-    return <TextField {...field} type={props.type} label={props.label}
-                      multiline={props.multiline} rows={props.rows} rowsMax={props.rowsMax}
-                      helperText={errorText} disabled={props.disabled}
-                      error={!!errorText} fullWidth/>;
-};
-
 
 export default function NewGrabitCard() {
     const classes = useStyles();

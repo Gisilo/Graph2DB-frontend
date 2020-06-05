@@ -46,7 +46,7 @@ export default function GrabitCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Open Grabit</Button>
+        <Button onClick={() => props.createTab(grabitName)} size="small">Open Grabit</Button>
       </CardActions>
     </Card>
   );

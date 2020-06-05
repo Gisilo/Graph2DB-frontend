@@ -37,7 +37,9 @@ export function GrabitsPanel(props) {
                                 <GrabitCard
                                     grabitName={node.nameProject}
                                     description={node.description}
-                                    updateDate={node.updateDate} />
+                                    updateDate={node.updateDate}
+                                    createTab={props.createTab}
+                                />
                             </Grid>
                         );
                     })
