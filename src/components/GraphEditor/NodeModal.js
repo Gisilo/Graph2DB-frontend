@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import MyTextField from '../inputs/MyTextField'
 import { Button, Select, MenuItem, Checkbox, Grid, Slide, DialogContent, InputLabel,
-    DialogTitle, Dialog, FormControl} from '@material-ui/core'
+    DialogTitle, Dialog, FormControl, ListItem, List} from '@material-ui/core'
 import {
     TimePicker,
     DatePicker,
@@ -13,6 +13,8 @@ import {
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns';
 import * as yup from 'yup'
+import ListSubheader from "@material-ui/core/ListSubheader";
+import PropertyAdder from "./PropertyAdder";
 
 
 yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
@@ -109,6 +111,13 @@ export function NodeModal(props) {
                                 </Grid>
 
                                 <Grid item xs={12}>
+                                    <List component="nav"
+                                          aria-labelledby="nested-list-subheader"
+                                          subheader={
+                                              <ListSubheader component="div" id="nested-list-subheader">
+                                                  Nested List Items
+                                              </ListSubheader>
+                                          }>
                                     <FieldArray name="nProps">
                                         {(arrayHelpers) => (
                                             <div>
@@ -125,92 +134,19 @@ export function NodeModal(props) {
                                                 >
                                                     Add props
                                                 </Button>
-                                                <br/>
+
                                                 <Grid item xs={12} container>
                                                     {values.nProps.map((pro, index) => {
                                                         return (
-                                                            <Grid item xs={12} key={pro.id} container>
-                                                                <Grid item>
-                                                                    <MyTextField id="outlined-basic" label="Property name"
-                                                                               name={`nProps.${index}.name`} type="input"/>
-                                                                </Grid>
-                                                                <Grid item xs={12}>
-                                                                    <FormControl>
-                                                                    <InputLabel id="demo-simple-select-label">Select domain</InputLabel>
-                                                                    <Field labelId="demo-simple-select-label" name={`nProps.${index}.domain`} type="select"
-                                                                           as={Select}>
-                                                                        <MenuItem value="int">Integer</MenuItem>
-                                                                        <MenuItem value="float">Float</MenuItem>
-                                                                        <MenuItem value="string">String</MenuItem>
-                                                                        <MenuItem value="bool">Bool</MenuItem>
-                                                                        <MenuItem value="date">Date</MenuItem>
-                                                                        <MenuItem value="time">Time</MenuItem>
-                                                                        <MenuItem value="dateTime">DateTime</MenuItem>
-                                                                    </Field>
-                                                                    </FormControl>
-                                                                    <ErrorMessage component="p" name={`nProps.${index}.domain`}
-                                                                        className="MuiFormHelperText-root MuiFormHelperText-contained Mui-error" />
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    {values.nProps[index].domain==="" &&
-
-                                                                    <MyTextField label="Default value"
-                                                                                 name={`nProps.${index}.default`} type="text" disabled="true"/>
-                                                                    }
-                                                                    {values.nProps[index].domain==="int" &&
-
-                                                                    <MyTextField label="Default value"
-                                                                                 name={`nProps.${index}.default`} type="text"/>
-                                                                    }
-                                                                    {values.nProps[index].domain==="float" &&
-
-                                                                    <MyTextField label="Default value"
-                                                                                 name={`nProps.${index}.default`} type="number"/>
-                                                                    }
-                                                                    {values.nProps[index].domain==="string" &&
-
-                                                                    <MyTextField label="Default value"
-                                                                                 name={`nProps.${index}.default`} type="text"/>
-                                                                    }
-                                                                    {values.nProps[index].domain==="bool" &&
-
-                                                                    <Field label="Default value" as={Checkbox}
-                                                                              name={`nProps.${index}.default`} type="checkbox"/>
-                                                                    }
-                                                                    {values.nProps[index].domain === "time" &&
-                                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                                                        <Field component={TimePicker}
-                                                                               name={`nProps.${index}.default`}
-                                                                               label="Time"/>
-                                                                    </MuiPickersUtilsProvider>
-                                                                    }
-                                                                    {values.nProps[index].domain === "date" &&
-                                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                                                        <Field component={DatePicker}
-                                                                               name={`nProps.${index}.default`}
-                                                                               label="Date"/>
-                                                                    </MuiPickersUtilsProvider>
-                                                                    }
-                                                                    {values.nProps[index].domain === "dateTime" &&
-                                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                                                        <Field component={DateTimePicker}
-                                                                               name={`nProps.${index}.default`}
-                                                                               label="Date Time"/>
-                                                                    </MuiPickersUtilsProvider>
-                                                                    }
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Field type="checkbox" name={`nProps.${index}.pk`} as={Checkbox}/>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Field type="checkbox" name={`nProps.${index}.required`} as={Checkbox}/>
+                                                            <Grid container key={pro.id}>
+                                                                <Grid item >
+                                                                    <PropertyAdder property={pro} index={index}/>
                                                                 </Grid>
                                                                 <Grid item>
                                                                     <Button onClick={() => {
-                                                                        console.log("arrayHelpers", arrayHelpers);
-                                                                        console.log("nProps", values.nProps);
                                                                         arrayHelpers.remove(index);
-                                                                        values.nProps.splice(index, 1);}}>
+                                                                        values.nProps.splice(index, 1);
+                                                                    }}>
                                                                         x
                                                                     </Button>
                                                                 </Grid>
@@ -221,6 +157,7 @@ export function NodeModal(props) {
                                             </div>
                                         )}
                                     </FieldArray>
+                                    </List>
                                 </Grid>
 
                                 <Grid item xs={12} container justify="right">
