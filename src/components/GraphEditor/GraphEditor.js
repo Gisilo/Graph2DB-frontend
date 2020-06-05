@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 import { NodeModal } from './NodeModal'
-import { CreateNodeModal } from './CreateNodeModal'
+//import { CreateNodeModal } from './CreateNodeModal'
 
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
@@ -16,6 +16,7 @@ export class GraphEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            modalShow: false, typeModal: "",
             modalNodeInfoShow: false, nodeInfo: null,
             modalNodeCreateShow: false, nodesNameList:null,
             eh: null};
@@ -37,12 +38,12 @@ export class GraphEditor extends Component {
             let nodesNameList = this.cy.elements().map(x => x.data().label);
             if (event.target === this.cy){
                 let newId = this.getNewID();
-                this.setState({modalNodeCreateShow: true, nodeInfoCreate: null, nodesNameList:nodesNameList,
-                    newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y});
+                this.setState({modalShow: true, typeModal:"create", modalNodeCreateShow: true, nodesNameList:nodesNameList,
+                    newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
             }
             else if (event.target.isNode()){
                 let clickedNode = event.target;
-                this.setState({modalShow: true, nodeInfo:clickedNode, nodesNameList:nodesNameList});
+                this.setState({modalShow: true, typeModal:"edit", nodeInfo:clickedNode, nodesNameList:nodesNameList});
             }
             else if (event.target.isEdge()){
                 console.log("click on edge");
@@ -65,28 +66,25 @@ export class GraphEditor extends Component {
         console.log(e);
     };
 
-    // Create new node
-    newNode = (newNodeName, newNodeDesciption, newNodeProperty) => {
-        console.log("pwpw", newNodeProperty);
-        this.cy.add({
-            data: {
-                id: this.state.newNodeId,
-                label: newNodeName,
-                description: newNodeDesciption,
-                property:newNodeProperty },
-            position: { x: this.state.posX, y: this.state.posY }
+    editNode = (data) =>{
+        if(this.state.nodeInfo){
+            this.setState({nodeInfo: this.state.nodeInfo.data({
+                    label: data.nName,
+                    description: data.nDesc,
+                    property: data.nProps
+                })});
         }
-        ).css({ 'background-color': 'blue' });
-        console.log("nene", this.cy.nodes().jsons());
-    };
-
-    editNode = (editNode) =>{
-        //console.log("call edit", editNode);
-        this.setState({nodeInfo: this.state.nodeInfo.data({
-                label: editNode.nName,
-                description: editNode.nDesc,
-                property: editNode.nProps
-            })});
+        else{
+            this.cy.add({
+                data: {
+                    id: this.state.newNodeId,
+                    label: data.nName,
+                    description: data.nDesc,
+                    property: data.nProps },
+                    position: { x: this.state.posX, y: this.state.posY }
+                }
+            ).css({ 'background-color': 'blue' });
+        }
         console.log("dopo set state", this.cy.nodes().jsons())
 
     };
@@ -123,20 +121,14 @@ export class GraphEditor extends Component {
                     tabIndex="0"
                     cy={(cy) => {
                         this.cy = cy;
-                        console.log(cy.width());
-                        console.log(cy.height());
                     }}
 
                 />
 
                 <NodeModal nodesNameList={this.state.nodesNameList} callBack={this.editNode}
-                           nodeInfo={this.state.nodeInfo}
-                           show={this.state.modalShow}
-                           onHide={() => this.setState({modalShow: false})}/>
-
-                <CreateNodeModal nodesNameList={this.state.nodesNameList} callBack={this.newNode}
-                           show={this.state.modalNodeCreateShow}
-                           onHide={() => this.setState({modalNodeCreateShow: false})}/>
+                           nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
+                           open={this.state.modalShow}
+                           onClose={() => this.setState({modalShow: false})}/>
             </div>
         )
     }
