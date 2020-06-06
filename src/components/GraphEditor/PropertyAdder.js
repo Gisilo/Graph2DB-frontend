@@ -1,51 +1,75 @@
-import {Checkbox, FormControl, Grid, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import MyTextField from "../inputs/MyTextField";
-import {ErrorMessage, Field} from "formik";
+import {ErrorMessage, Field, useField} from "formik";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import {DatePicker, DateTimePicker, TimePicker} from "formik-material-ui-pickers";
 import React from "react";
+import DeleteIcon from "@material-ui/icons/Delete";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import {makeStyles} from "@material-ui/core/styles";
 
 
+const useStyles = makeStyles({
+    label: {
+        marginLeft: 6,
+        marginBottom:2
+    },
+});
 
 
 export default function PropertyAdder(props) {
 
-    const {property, index} = props;
+    const {property, index, deleteProp} = props;
+
+
+    const MySelect = ({ ...props }) => {
+
+        const classes = useStyles();
+
+        const [field, meta] = useField(props);
+        const errorText = meta.error && meta.touched ? meta.error : "";
+        return(<FormControl fullWidth>
+            <InputLabel className={classes.label}>Select domain</InputLabel>
+            <Select {...field} type="select" variant="outlined" helperText={errorText} error={!!errorText}>
+                <MenuItem value="int">Integer</MenuItem>
+                <MenuItem value="float">Float</MenuItem>
+                <MenuItem value="string">String</MenuItem>
+                <MenuItem value="bool">Bool</MenuItem>
+                <MenuItem value="date">Date</MenuItem>
+                <MenuItem value="time">Time</MenuItem>
+                <MenuItem value="dateTime">DateTime</MenuItem>
+            </Select>
+            <ErrorMessage component="p" name={`nProps.${index}.domain`}
+                          className="MuiFormHelperText-root MuiFormHelperText-contained Mui-error"/>
+        </FormControl>)
+    };
 
     return(
-        <Grid item xs={12} container>
-        <Grid item>
+        <Grid item xs={12} container spacing={1}>
+        <Grid item xs={3}>
             <MyTextField id="outlined-basic" label="Property name"
                          name={`nProps.${index}.name`} type="input"/>
         </Grid>
-        <Grid item xs={12}>
-            <FormControl>
-                <InputLabel id="demo-simple-select-label">Select domain</InputLabel>
-                <Field labelId="demo-simple-select-label" name={`nProps.${index}.domain`} type="select"
-                       as={Select}>
-                    <MenuItem value="int">Integer</MenuItem>
-                    <MenuItem value="float">Float</MenuItem>
-                    <MenuItem value="string">String</MenuItem>
-                    <MenuItem value="bool">Bool</MenuItem>
-                    <MenuItem value="date">Date</MenuItem>
-                    <MenuItem value="time">Time</MenuItem>
-                    <MenuItem value="dateTime">DateTime</MenuItem>
-                </Field>
-            </FormControl>
-            <ErrorMessage component="p" name={`nProps.${index}.domain`}
-                          className="MuiFormHelperText-root MuiFormHelperText-contained Mui-error"/>
+        <Grid item xs={3}>
+            <MySelect labelId="demo-simple-select-label" name={`nProps.${index}.domain`}/>
         </Grid>
-        <Grid item>
+        <Grid item xs={3}>
              {
                  switchDefault(property.domain, `nProps.${index}.default`)
              }
         </Grid>
-        <Grid item>
+        <Grid item xs={1}>
             <Field type="checkbox" name={`nProps.${index}.pk`} as={Checkbox}/>
         </Grid>
-        <Grid item>
+        <Grid item xs={1}>
             <Field type="checkbox" name={`nProps.${index}.required`} as={Checkbox}/>
+        </Grid>
+        <Grid item xs={1}>
+            <IconButton edge="end" aria-label="delete"
+                        onClick={deleteProp}>
+                <DeleteIcon />
+            </IconButton>
         </Grid>
     </Grid>
     )
@@ -55,7 +79,7 @@ const switchDefault = (dom, def) => {
 
     switch (dom) {
         case "int":
-            return <MyTextField label="Default value" name={def} type="text"/>;
+            return <MyTextField label="Default value" name={def} type="number"/>;
         case "float":
             return <MyTextField label="Default value" name={def} type="number"/>;
         case "string":
