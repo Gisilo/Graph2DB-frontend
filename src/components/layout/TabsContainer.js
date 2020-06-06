@@ -52,7 +52,14 @@ export default function TabsContainer() {
 
     function createTab(l){
         console.log("Tab created");
-        setTabs(tabs => tabs.concat( l ) );
+        if (tabs.includes(l)){
+            console.log(l, "Already in tabs");
+            setValue(tabs.indexOf(l)+1)
+        }
+        else {
+            setTabs(tabs => tabs.concat( l ) );
+            setValue(tabs.length+1)
+        }
     }
 
     const handleChange = (event, newValue) => {

@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     }
 );
 
-export default function NewGrabitCard() {
+export default function NewGrabitCard(props) {
     const classes = useStyles();
     const [addGrabit] = useMutation(CREATE_QUERY);
 
@@ -57,7 +57,8 @@ export default function NewGrabitCard() {
                             }
                         }).then((success) => {
                             console.log('success', success);
-                        }, (error) => console.log('error', error));
+                            props.createTab(data.grabitName);
+                        }, (error) => console.error('error', error));
                         setSubmitting(false);
                     }}>
                     {({isSubmitting}) => (

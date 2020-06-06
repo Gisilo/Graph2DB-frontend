@@ -26,7 +26,9 @@ export function GrabitsPanel(props) {
     return (
         <Grid container spacing={2} className={classes.root} justify="center">
             <Grid item xs={12} sm={6} md={3}>
-                <NewGrabitCard/>
+                <NewGrabitCard
+                    createTab={props.createTab}
+                />
             </Grid>
             {
                 data.allGrabits.edges.map(
