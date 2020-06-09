@@ -30,8 +30,10 @@ export default function PropertyAdder(props) {
         const [field, meta] = useField(props);
         const errorText = meta.error && meta.touched ? meta.error : "";
         return(<FormControl fullWidth>
-            <InputLabel className={classes.label}>Select domain</InputLabel>
-            <Select {...field} type="select" variant="outlined" helperText={errorText} error={!!errorText}>
+            <InputLabel>Select domain</InputLabel>
+            <Select {...field} type="select" helperText={errorText} error={!!errorText} onChange={(e)=>{
+                props.setFieldValue(props.resetDefault, null);
+                field.onChange(e)}}>
                 <MenuItem value="int">Integer</MenuItem>
                 <MenuItem value="float">Float</MenuItem>
                 <MenuItem value="string">String</MenuItem>
@@ -52,7 +54,7 @@ export default function PropertyAdder(props) {
                          name={`nProps.${index}.name`} type="input"/>
         </Grid>
         <Grid item xs={3}>
-            <MySelect labelId="demo-simple-select-label" name={`nProps.${index}.domain`}/>
+            <MySelect setFieldValue={props.setFieldValue} resetDefault={`nProps.${index}.default`} labelId="demo-simple-select-label" name={`nProps.${index}.domain`}/>
         </Grid>
         <Grid item xs={3}>
              {
@@ -79,7 +81,7 @@ const switchDefault = (dom, def) => {
 
     switch (dom) {
         case "int":
-            return <MyTextField label="Default value" name={def} type="number"/>;
+            return <MyTextField label="Default value" name={def} type="number" defaultValue="Default Value"/>;
         case "float":
             return <MyTextField label="Default value" name={def} type="number"/>;
         case "string":

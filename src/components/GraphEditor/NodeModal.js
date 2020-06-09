@@ -35,7 +35,7 @@ yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
 
 
 const schema = yup.object({
-    nName: yup.string().required("Node name is required"),
+    nName: yup.string().required("Node name required"),
     nDesc: yup.string(),
     nProps: yup.array().of(
         yup.object({
@@ -46,7 +46,7 @@ const schema = yup.object({
             required: yup.boolean(),
             default: yup.mixed()
                 .checkWithField('domain', 'Default value must be integer')
-                .when('required', {is: true, then:yup.mixed().required("If property is required you must insert a default value")})
+                .when('required', {is: true, then:yup.mixed().required("Default value required")})
         })
     )
 
@@ -75,8 +75,6 @@ export function NodeModal(props) {
         onClose();
     };
 
-    const MySelect = () => <Select variant="outlined" fullWidth/>;
-
     return (
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
             {props.typeModal === "create" && <DialogTitle id="simple-dialog-title">Create Node</DialogTitle>}
@@ -95,15 +93,15 @@ export function NodeModal(props) {
                     handleClose();
                 }}
                 >
-                    {({ values, isSubmitting }) => (
+                    {({ values, isSubmitting, setFieldValue }) => (
                         <Form>
                             <Grid container>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12}>
-                                        <MyTextField id="outlined-basic" label="Node Name" name="nName" type="input"/>
+                                        <MyTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant={"outlined"}/>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <MyTextField multiline={true} rows={2} rowsMax={4} id="ig1"
+                                        <MyTextField multiline={true} rows={2} rowsMax={4} id="ig1" variant={"outlined"}
                                                      label="Node Description" name="nDesc" type="input"/>
                                     </Grid>
 
@@ -117,21 +115,21 @@ export function NodeModal(props) {
                                                             const newProp = {
                                                                 name: "",
                                                                 domain: "",
+                                                                default: null,
                                                                 required: false,
                                                                 pk: false
                                                             };
-                                                            if(values.nProps.length === 0 || values.nProps[values.nProps.length-1].name!==""){
-                                                                arrayHelpers.push(newProp);
-                                                            }
+                                                            arrayHelpers.push(newProp);
                                                         }}
                                                     >
                                                         Add props
                                                     </Button>
-                                                    <Grid container>
+                                                    <Grid container spacing={1}>
                                                         {values.nProps.map((pro, index) => {
                                                             return(
                                                                 <Grid container item key={pro.id}>
-                                                                    <PropertyAdder property={pro} index={index} deleteProp={()=> {
+                                                                    <PropertyAdder setFieldValue={setFieldValue} property={pro}
+                                                                                   index={index} deleteProp={()=> {
                                                                         arrayHelpers.remove(index);
                                                                     }}/>
                                                                 </Grid>
