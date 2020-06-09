@@ -115,7 +115,7 @@ export function NodeModal(props) {
                                                             const newProp = {
                                                                 name: "",
                                                                 domain: "",
-                                                                default: null,
+                                                                default: "",
                                                                 required: false,
                                                                 pk: false
                                                             };
