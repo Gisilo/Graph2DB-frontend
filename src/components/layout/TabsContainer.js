@@ -50,15 +50,14 @@ export default function TabsContainer() {
     const [value, setValue] = React.useState(0);
     const [tabs, setTabs] = React.useState([]);
 
-    function createTab(l){
-        console.log("Tab created");
-        if (tabs.includes(l)){
-            console.log(l, "Already in tabs");
-            setValue(tabs.indexOf(l)+1)
+    function createTab(data){
+        const ids = tabs.map(t => t.id);
+        if (ids.length !== 0){
+            setValue(ids.indexOf(data.id)+1);
         }
         else {
-            setTabs(tabs => tabs.concat( l ) );
-            setValue(tabs.length+1)
+            setTabs(tabs => tabs.concat( data ) );
+            setValue(tabs.length+1);
         }
     }
 
@@ -78,14 +77,14 @@ export default function TabsContainer() {
                     aria-label="scrollable auto tabs example"
                 >
                     <Tab label="Grabits" {...a11yProps(0)} />
-                    { tabs.map((l, i) =>
-                        <Tab key={i} label={l} {...a11yProps(i+1)} />
+                    { tabs.map((e, i) =>
+                        <Tab key={i} label={e.name} {...a11yProps(i+1)} />
                         // +1 cause index 0 is for GrabitPanel
                         )
                     }
                 </Tabs>
             <TabPanel cb={createTab} value={value} index={0}/>
-            { tabs.map((l,i) => <TabPanel key={i} value={value} index={i+1}/>) }
+            { tabs.map((e,i) => <TabPanel grabitID={e.id} key={i} value={value} index={i+1}/>) }
 
         </div>
     );

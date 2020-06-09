@@ -54,11 +54,7 @@ export const GET_ALL_GRABITS = gql`
         node {
           id
           nameProject
-          nameDb
-          dbms
           description
-          port
-          createdDate
           updateDate
         }
       }

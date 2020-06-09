@@ -57,7 +57,7 @@ export default function NewGrabitCard(props) {
                             }
                         }).then((success) => {
                             console.log('success', success);
-                            props.createTab(data.grabitName);
+                            props.createTab({name: data.grabitName, id:  success.data.createGrabit.grabit.id});
                         }, (error) => console.error('error', error));
                         setSubmitting(false);
                     }}>

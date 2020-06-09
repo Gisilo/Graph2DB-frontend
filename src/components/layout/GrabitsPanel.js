@@ -37,6 +37,7 @@ export function GrabitsPanel(props) {
                         return (
                             <Grid key={node.id} item xs={12} sm={6} md={3}>
                                 <GrabitCard
+                                    grabitID={node.id}
                                     grabitName={node.nameProject}
                                     description={node.description}
                                     updateDate={node.updateDate}
