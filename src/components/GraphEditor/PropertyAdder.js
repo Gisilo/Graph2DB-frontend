@@ -1,5 +1,5 @@
-import {Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
-import MyTextField from "../inputs/MyTextField";
+import {Box, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select} from "@material-ui/core";
+import ModalTextField from "../inputs/ModalTextField";
 import {ErrorMessage, Field, useField} from "formik";
 import {
     KeyboardDatePicker,
@@ -8,11 +8,11 @@ import {
     MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import {DatePicker, DateTimePicker, TimePicker} from "formik-material-ui-pickers";
 import React, {useState} from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import {makeStyles} from "@material-ui/core/styles";
+import Slider from "@material-ui/core/Slider";
+import FormikBooleanSlider from "../inputs/FormikBooleanSlider";
 
 
 const useStyles = makeStyles({
@@ -22,6 +22,11 @@ const useStyles = makeStyles({
     },
     datePicker: {
         marginTop: 16
+    },
+    slider: {
+        marginLeft: 32,
+        marginRight: 32
+
     }
 });
 
@@ -29,7 +34,9 @@ const useStyles = makeStyles({
 export default function PropertyAdder(props) {
 
 
-    const [selectedDate, setSelectedDate] = React.useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    const [selectedSlider, setSelectedSlider] = useState(0);
 
     const {property, index, deleteProp} = props;
 
@@ -40,7 +47,14 @@ export default function PropertyAdder(props) {
         property.default = d;
     };
 
-    const MySelect = ({ ...props }) => {
+    const handleSliderChange = (v) => {
+        console.log(v);
+        console.log(property);
+        setSelectedSlider(v);
+        property.default = v;
+    };
+
+    const ModalSelect = ({ ...props }) => {
 
         const [field, meta] = useField(props);
         const errorText = meta.error && meta.touched ? meta.error : "";
@@ -68,15 +82,17 @@ export default function PropertyAdder(props) {
     return(
         <Grid item xs={12} container spacing={1}>
         <Grid item xs={3}>
-            <MyTextField id="outlined-basic" label="Property name"
-                         name={`nProps.${index}.name`} type="input"/>
+            <ModalTextField id="outlined-basic" label="Property name"
+                            name={`nProps.${index}.name`} type="input"/>
         </Grid>
         <Grid item xs={3}>
-            <MySelect setFieldValue={props.setFieldValue} resetDefault={`nProps.${index}.default`} labelId="demo-simple-select-label" name={`nProps.${index}.domain`}/>
+            <ModalSelect setFieldValue={props.setFieldValue} resetDefault={`nProps.${index}.default`} labelId="demo-simple-select-label" name={`nProps.${index}.domain`}/>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item container xs={3} justify={"center"}>
              {
-                 switchDefault(property.domain, `nProps.${index}.default`, selectedDate, handleDateChange, classes.datePicker)
+                 switchDefault({dom: property.domain, def:`nProps.${index}.default`, defVal: property.default,
+                     selectedDate: selectedDate, handleDateChange:handleDateChange, selectedSlider:selectedSlider,
+                     handleSliderChange: handleSliderChange})
              }
         </Grid>
         <Grid item xs={1}>
@@ -97,18 +113,28 @@ export default function PropertyAdder(props) {
 
 
 
-const switchDefault = (dom, def, selectedDate, handleDateChange, style) => {
+const switchDefault = ({dom, def, defVal, selectedDate, handleDateChange, selectedSlider, handleSliderChange}) => {
 
     switch (dom) {
         case "int":
-            return <MyTextField label="Default value" name={def} type="number" defaultValue="Default Value"/>;
+            return <ModalTextField label="Default value" name={def} type="number" defaultValue="Default Value"/>;
         case "float":
-            return <MyTextField label="Default value" name={def} type="number"/>;
+            return <ModalTextField label="Default value" name={def} type="number"/>;
         case "string":
-            return <MyTextField label="Default value" name={def} type="text"/>;
+            return <ModalTextField label="Default value" name={def} type="text"/>;
         case "bool":
-            return <Field label="Default value" as={Checkbox} name={def} type="checkbox"/>;
+            const defaultValue = defVal !== "" ? defVal : 0;
+
+            return(<Box width="70%">
+                <Slider track={false} defaultValue={defaultValue} onChange={(e,v)=>{handleSliderChange(v)}} marks={[
+                {value: -1, label: 'False',},
+                {value: 0, label: 'No value',},
+                {value: 1, label: 'True',}
+            ]} aria-labelledby="discrete-slider-small-steps" step={1} min={-1} max={1}/>
+            </Box>);
         case "time":
+            if (defVal !== "")
+                selectedDate=defVal;
             return (<MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardTimePicker
                     label="Default value"
@@ -119,6 +145,8 @@ const switchDefault = (dom, def, selectedDate, handleDateChange, style) => {
                 />
             </MuiPickersUtilsProvider>);
         case "date":
+            if (defVal !== "")
+                selectedDate=defVal;
             return (
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
@@ -129,6 +157,8 @@ const switchDefault = (dom, def, selectedDate, handleDateChange, style) => {
                         format="MM/dd/yyyy"/>
                 </MuiPickersUtilsProvider>);
         case "dateTime":
+            if (defVal !== "")
+                selectedDate=defVal;
             return (
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDateTimePicker
@@ -141,7 +171,7 @@ const switchDefault = (dom, def, selectedDate, handleDateChange, style) => {
                     />
             </MuiPickersUtilsProvider>);
         default:
-            return <MyTextField label="Default value" name={def} type="text" disabled="true"/>;
+            return <ModalTextField label="Default value" name={def} type="text" disabled="true"/>;
     }
 
 };

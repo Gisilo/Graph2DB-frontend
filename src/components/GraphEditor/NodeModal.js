@@ -2,7 +2,7 @@
 import {FieldArray, Form, Formik, useField} from "formik";
 import React, {useState} from "react";
 import PropTypes from 'prop-types';
-import MyTextField from '../inputs/MyTextField'
+import ModalTextField from '../inputs/ModalTextField'
 import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog, ListItem, List, IconButton,
     ListItemSecondaryAction, ListItemText, ListSubheader} from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -98,11 +98,11 @@ export function NodeModal(props) {
                             <Grid container>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12}>
-                                        <MyTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant={"outlined"}/>
+                                        <ModalTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant={"outlined"}/>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <MyTextField multiline={true} rows={2} rowsMax={4} id="ig1" variant={"outlined"}
-                                                     label="Node Description" name="nDesc" type="input"/>
+                                        <ModalTextField multiline={true} rows={2} rowsMax={4} id="ig1" variant={"outlined"}
+                                                        label="Node Description" name="nDesc" type="input"/>
                                     </Grid>
 
                                     <Grid item xs={12}>
