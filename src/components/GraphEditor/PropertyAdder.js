@@ -12,7 +12,6 @@ import React, {useState} from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {makeStyles} from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
-import FormikBooleanSlider from "../inputs/FormikBooleanSlider";
 
 
 const useStyles = makeStyles({
@@ -91,7 +90,7 @@ export default function PropertyAdder(props) {
         <Grid item container xs={3} justify={"center"}>
              {
                  switchDefault({dom: property.domain, def:`nProps.${index}.default`, defVal: property.default,
-                     selectedDate: selectedDate, handleDateChange:handleDateChange, selectedSlider:selectedSlider,
+                     selectedDate: selectedDate, handleDateChange:handleDateChange,
                      handleSliderChange: handleSliderChange})
              }
         </Grid>
@@ -113,7 +112,7 @@ export default function PropertyAdder(props) {
 
 
 
-const switchDefault = ({dom, def, defVal, selectedDate, handleDateChange, selectedSlider, handleSliderChange}) => {
+const switchDefault = ({dom, def, defVal, selectedDate, handleDateChange, handleSliderChange}) => {
 
     switch (dom) {
         case "int":
