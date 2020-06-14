@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LOAD_QUERY } from '../../costants/queries'
+import { LOAD_QUERY } from '../../../shared/costants/queries'
 
 import { withApollo } from 'react-apollo';
 

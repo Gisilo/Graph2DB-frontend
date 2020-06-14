@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.css';
-import App from './components/App';
+import './logged_in/styles/index.css';
+import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import Cookies from 'js-cookie'
@@ -15,13 +15,14 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost/graphql',
+    uri: '/graphql',
     credentials: 'same-origin'
 });
 
 
 const csrfMiddleware = new ApolloLink((operation, forward) => {
     let csrftoken = Cookies.get('csrftoken');
+    console.log(csrftoken);
     operation.setContext(({ headers = {} }) => ({
         headers: {
             ...headers,

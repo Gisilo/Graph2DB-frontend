@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation } from 'react-apollo';
-import { SAVE_QUERY } from '../../costants/queries'
+import { SAVE_QUERY } from '../../../shared/costants/queries'
 
 
 function SaveButton(props){

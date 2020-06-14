@@ -5,8 +5,7 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import MainPage from './layout/MainPage';
-
+import MainPage from './logged_in/components/layout/MainPage';
 
 function App() {
     return (
