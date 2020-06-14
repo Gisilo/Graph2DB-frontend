@@ -7,7 +7,7 @@ import {
 import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
 import {CREATE_QUERY} from "../costants/queries";
-import MyTextField from "./inputs/MyTextField";
+import ModalTextField from "./inputs/ModalTextField";
 
 const useStyles = makeStyles({
         card: {
@@ -63,8 +63,8 @@ export default function NewGrabitCard(props) {
                     }}>
                     {({isSubmitting}) => (
                         <Form>
-                            <MyTextField type="text" label="Grabit Name" name="grabitName"/>
-                            <MyTextField type="text" label="Description (Optional)" name="description"
+                            <ModalTextField type="text" label="Grabit Name" name="grabitName"/>
+                            <ModalTextField type="text" label="Description (Optional)" name="description"
                                          multiline={true} rows={2} rowsMax={4}/>
 
                             <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
