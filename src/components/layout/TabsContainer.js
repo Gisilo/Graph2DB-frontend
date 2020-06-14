@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {EditorScreen} from '../screens/EditorScreen';
+import {GrabitsPanel} from './GrabitsPanel';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -17,7 +18,7 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                <EditorScreen/>
+                value===0 ? <GrabitsPanel createTab={props.cb}/> : <EditorScreen/>
             )}
         </div>
     );
@@ -47,6 +48,18 @@ const useStyles = makeStyles((theme) => ({
 export default function TabsContainer() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [tabs, setTabs] = React.useState([]);
+
+    function createTab(data){
+        const ids = tabs.map(t => t.id);
+        if (ids.length !== 0){
+            setValue(ids.indexOf(data.id)+1);
+        }
+        else {
+            setTabs(tabs => tabs.concat( data ) );
+            setValue(tabs.length+1);
+        }
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -63,35 +76,16 @@ export default function TabsContainer() {
                     scrollButtons="on"
                     aria-label="scrollable auto tabs example"
                 >
-                    <Tab label="Item One" {...a11yProps(0)} />
-                    <Tab label="Item Two" {...a11yProps(1)} />
-                    <Tab label="Item Three" {...a11yProps(2)} />
-                    <Tab label="Item Four" {...a11yProps(3)} />
-                    <Tab label="Item Five" {...a11yProps(4)} />
-                    <Tab label="Item Six" {...a11yProps(5)} />
-                    <Tab label="Item Seven" {...a11yProps(6)} />
+                    <Tab label="Grabits" {...a11yProps(0)} />
+                    { tabs.map((e, i) =>
+                        <Tab key={i} label={e.name} {...a11yProps(i+1)} />
+                        // +1 cause index 0 is for GrabitPanel
+                        )
+                    }
                 </Tabs>
-            <TabPanel value={value} index={0}>
-                Item One
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                Item Two
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                Item Three
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                Item Four
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                Item Five
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                Item Six
-            </TabPanel>
-            <TabPanel value={value} index={6}>
-                Item Seven
-            </TabPanel>
+            <TabPanel cb={createTab} value={value} index={0}/>
+            { tabs.map((e,i) => <TabPanel grabitID={e.id} key={i} value={value} index={i+1}/>) }
+
         </div>
     );
 }

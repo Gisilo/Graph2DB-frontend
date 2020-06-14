@@ -46,3 +46,17 @@ export const DELETE_QUERY = gql`
             msg
         }
     }`;
+
+export const GET_ALL_GRABITS = gql`
+  query GetAllGrabits {
+    allGrabits {
+      edges {
+        node {
+          id
+          nameProject
+          description
+          updateDate
+        }
+      }
+    }
+  }`;
