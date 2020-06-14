@@ -12,6 +12,7 @@ import React, {useState} from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {makeStyles} from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 
 const useStyles = makeStyles({
@@ -26,6 +27,11 @@ const useStyles = makeStyles({
         marginLeft: 32,
         marginRight: 32
 
+    },
+    labelCheckbox:{
+        labelPlacementTop:{
+            marginBottom: 2
+        }
     }
 });
 
@@ -76,6 +82,11 @@ export default function PropertyAdder(props) {
         </FormControl>)
     };
 
+    const LabelCheckbox = ({ label, ...props }) => {
+        const [field] = useField(props);
+        return (<FormControlLabel {...field} labelPlacement="top" control={<Checkbox />} label={label} />);
+    };
+
     const classes = useStyles();
 
     return(
@@ -95,10 +106,10 @@ export default function PropertyAdder(props) {
              }
         </Grid>
         <Grid item xs={1}>
-            <Field type="checkbox" name={`nProps.${index}.pk`} as={Checkbox}/>
+            <LabelCheckbox type="checkbox" name={`nProps.${index}.required`} as={Checkbox} label="Required"/>
         </Grid>
         <Grid item xs={1}>
-            <Field type="checkbox" name={`nProps.${index}.required`} as={Checkbox}/>
+            <LabelCheckbox type="checkbox" name={`nProps.${index}.pk`} as={Checkbox} label="Key"/>
         </Grid>
         <Grid item xs={1}>
             <IconButton edge="end" aria-label="delete"

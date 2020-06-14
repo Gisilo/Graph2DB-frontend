@@ -33,13 +33,18 @@ yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
     });
 });
 
+yup.addMethod(yup.object, 'uniqueProperty', function (propertyName, message) {
+    console.log("in uniqueProperty", propertyName, message);
+    return false;
+});
+
 
 const schema = yup.object({
     nName: yup.string().required("Node name required"),
     nDesc: yup.string(),
     nProps: yup.array().of(
         yup.object({
-            name: yup.string().required("Name required"),
+            name: yup.string().required("Name required").uniqueProperty('nProps', 'bdbbdbd'),
             domain: yup.mixed().oneOf(['int', 'float', 'string', 'bool', 'date', 'time', 'dateTime'])
                 .required("Domain required"),
             pk: yup.boolean(),
