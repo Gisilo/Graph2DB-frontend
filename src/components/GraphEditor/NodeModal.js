@@ -1,16 +1,13 @@
 
-import {FieldArray, Form, Formik, useField} from "formik";
-import React, {useState} from "react";
+import {FieldArray, Form, Formik} from "formik";
+import React from "react";
 import PropTypes from 'prop-types';
 import ModalTextField from '../inputs/ModalTextField'
-import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog, ListItem, List, IconButton,
-    ListItemSecondaryAction, ListItemText, ListSubheader} from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog} from '@material-ui/core'
 
 import * as yup from 'yup'
 import PropertyAdder from "./PropertyAdder";
 import {makeStyles} from "@material-ui/core/styles";
-import Select from "@material-ui/core/Select";
 
 
 yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
@@ -44,7 +41,7 @@ const schema = yup.object({
     nDesc: yup.string(),
     nProps: yup.array().of(
         yup.object({
-            name: yup.string().required("Name required").uniqueProperty('nProps', 'bdbbdbd'),
+            name: yup.string().required("Name required"),
             domain: yup.mixed().oneOf(['int', 'float', 'string', 'bool', 'date', 'time', 'dateTime'])
                 .required("Domain required"),
             pk: yup.boolean(),

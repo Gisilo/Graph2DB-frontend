@@ -1,6 +1,6 @@
 import {Box, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select} from "@material-ui/core";
 import ModalTextField from "../inputs/ModalTextField";
-import {ErrorMessage, Field, useField} from "formik";
+import {ErrorMessage, useField} from "formik";
 import {
     KeyboardDatePicker,
     KeyboardDateTimePicker,
@@ -38,11 +38,7 @@ const useStyles = makeStyles({
 
 export default function PropertyAdder(props) {
 
-
     const [selectedDate, setSelectedDate] = useState(null);
-
-    const [selectedSlider, setSelectedSlider] = useState(0);
-
     const {property, index, deleteProp} = props;
 
     const handleDateChange = (d) => {
@@ -55,7 +51,6 @@ export default function PropertyAdder(props) {
     const handleSliderChange = (v) => {
         console.log(v);
         console.log(property);
-        setSelectedSlider(v);
         property.default = v;
     };
 
