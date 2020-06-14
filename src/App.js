@@ -5,7 +5,10 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import MainPage from './layout/MainPage';
+import MainPage from './logged_in/components/layout/MainPage';
+import SignIn from "./logged_out/SignIn";
+import SignUp from "./logged_out/SignUp";
+import Pricing from "./logged_out/Pricing";
 
 
 function App() {
@@ -13,7 +16,7 @@ function App() {
         <Router>
             <Switch>
                 <Route path="/">
-                    <MainPage />
+                    <SignIn />
                 </Route>
             </Switch>
         </Router>

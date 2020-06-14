@@ -1,9 +1,9 @@
 import React from 'react';
 import { create } from "react-test-renderer";
 import { MockedProvider } from '@apollo/react-testing';
-import NavBar from "../components/layout/NavBar";
-import Footer from "../components/layout/Footer";
-import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../components/buttons';
+import NavBar from "../logged_in/components/layout/NavBar";
+import Footer from "../logged_in/components/layout/Footer";
+import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../logged_in/components/buttons';
 
 
 

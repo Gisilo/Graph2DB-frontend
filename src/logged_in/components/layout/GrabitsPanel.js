@@ -4,7 +4,7 @@ import GrabitCard from '../GrabitCard';
 import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { GET_ALL_GRABITS } from '../../costants/queries'
+import { GET_ALL_GRABITS } from '../../../shared/costants/queries'
 import NewGrabitCard from "../NewGrabitCard";
 
 const useStyles = makeStyles({

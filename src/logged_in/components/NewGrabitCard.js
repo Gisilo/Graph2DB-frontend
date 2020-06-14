@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
-import {CREATE_QUERY} from "../costants/queries";
+import {CREATE_QUERY} from "../../shared/costants/queries";
 import MyTextField from "./inputs/MyTextField";
 
 const useStyles = makeStyles({
