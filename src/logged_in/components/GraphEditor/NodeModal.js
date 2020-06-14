@@ -2,7 +2,7 @@
 import {FieldArray, Form, Formik} from "formik";
 import React from "react";
 import PropTypes from 'prop-types';
-import MyTextField from '../inputs/MyTextField'
+import FormikTextField from '../inputs/FormikTextField'
 import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog} from '@material-ui/core'
 
 import * as yup from 'yup'
@@ -85,11 +85,11 @@ export function NodeModal(props) {
                             <Grid container>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12}>
-                                        <MyTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant={"outlined"}/>
+                                        <FormikTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant="outlined" fullWidth/>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <MyTextField multiline={true} rows={2} rowsMax={4} id="ig1" variant={"outlined"}
-                                                        label="Node Description" name="nDesc" type="input"/>
+                                        <FormikTextField multiline rows={2} rowsMax={4} id="ig1" variant="outlined"
+                                                         label="Node Description" name="nDesc" type="input" fullWidth/>
                                     </Grid>
 
                                     <Grid item xs={12}>

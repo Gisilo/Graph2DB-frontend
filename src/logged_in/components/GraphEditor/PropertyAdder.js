@@ -1,5 +1,5 @@
 import {Box, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select} from "@material-ui/core";
-import MyTextField from "../inputs/MyTextField";
+import FormikTextField from "../inputs/FormikTextField";
 import {ErrorMessage, useField} from "formik";
 import {
     KeyboardDatePicker,
@@ -62,8 +62,8 @@ export default function PropertyAdder(props) {
     return(
         <Grid item xs={12} container spacing={1}>
         <Grid item xs={3}>
-            <MyTextField id="outlined-basic" label="Property name"
-                            name={`nProps.${index}.name`} type="input"/>
+            <FormikTextField id="outlined-basic" label="Property name"
+                             name={`nProps.${index}.name`} type="input" fullWidth/>
         </Grid>
         <Grid item xs={3}>
             <ModalSelect setFieldValue={props.setFieldValue} resetDefault={`nProps.${index}.default`} labelId="demo-simple-select-label" name={`nProps.${index}.domain`}/>
@@ -97,11 +97,11 @@ const switchDefault = ({dom, def, defVal, selectedDate, handleDateChange, handle
 
     switch (dom) {
         case "int":
-            return <MyTextField label="Default value" name={def} type="number" defaultValue="Default Value"/>;
+            return <FormikTextField label="Default value" name={def} type="number" defaultValue="Default Value" fullWidth/>;
         case "float":
-            return <MyTextField label="Default value" name={def} type="number"/>;
+            return <FormikTextField label="Default value" name={def} type="number" fullWidth/>;
         case "string":
-            return <MyTextField label="Default value" name={def} type="text"/>;
+            return <FormikTextField label="Default value" name={def} type="text" fullWidth/>;
         case "bool":
             const defaultValue = defVal !== "" ? defVal : 0;
 
@@ -151,7 +151,7 @@ const switchDefault = ({dom, def, defVal, selectedDate, handleDateChange, handle
                     />
             </MuiPickersUtilsProvider>);
         default:
-            return <MyTextField label="Default value" name={def} type="text" disabled="true"/>;
+            return <FormikTextField label="Default value" name={def} type="text" disabled fullWidth/>;
     }
 
 };

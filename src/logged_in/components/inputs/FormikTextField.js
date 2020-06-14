@@ -2,7 +2,7 @@ import React from 'react';
 import {useField} from 'formik';
 import {TextField} from "@material-ui/core";
 
-const MyTextField = (props) => {
+const FormikTextField = (props) => {
     const [field, meta] = useField(props);
     const errorText = meta.error && meta.touched ? meta.error : "";
     return <TextField {...field} {...props}
@@ -10,4 +10,4 @@ const MyTextField = (props) => {
                       error={!!errorText}/>;
 };
 
-export default MyTextField;
+export default FormikTextField;
