@@ -7,8 +7,6 @@ import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog} from '@materia
 
 import * as yup from 'yup'
 import PropertyAdder from "./PropertyAdder";
-import {makeStyles} from "@material-ui/core/styles";
-
 
 yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
     return yup.mixed().test({
@@ -35,7 +33,6 @@ yup.addMethod(yup.object, 'uniqueProperty', function (propertyName, message) {
     return false;
 });
 
-
 const schema = yup.object({
     nName: yup.string().required("Node name required"),
     nDesc: yup.string(),
@@ -54,23 +51,11 @@ const schema = yup.object({
 
 });
 
-
-
-const useStyles = makeStyles({
-    root: {
-        width: '80%',
-        maxWidth: 'none'
-    },
-});
-
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
-
 export function NodeModal(props) {
-    const classes = useStyles();
     const { onClose, open } = props;
 
     const handleClose = () => {

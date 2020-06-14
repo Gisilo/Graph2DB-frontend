@@ -10,31 +10,8 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import React, {useState} from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {makeStyles} from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
-
-const useStyles = makeStyles({
-    label: {
-        marginLeft: 6,
-        marginBottom:2
-    },
-    datePicker: {
-        marginTop: 16
-    },
-    slider: {
-        marginLeft: 32,
-        marginRight: 32
-
-    },
-    labelCheckbox:{
-        labelPlacementTop:{
-            marginBottom: 2
-        }
-    }
-});
-
 
 export default function PropertyAdder(props) {
 
@@ -81,8 +58,6 @@ export default function PropertyAdder(props) {
         const [field] = useField(props);
         return (<FormControlLabel {...field} labelPlacement="top" control={<Checkbox />} label={label} />);
     };
-
-    const classes = useStyles();
 
     return(
         <Grid item xs={12} container spacing={1}>
