@@ -22,7 +22,7 @@ const httpLink = createHttpLink({
 
 const csrfMiddleware = new ApolloLink((operation, forward) => {
     let csrftoken = Cookies.get('csrftoken');
-    console.log(csrftoken);
+    console.log('cookie', csrftoken);
     operation.setContext(({ headers = {} }) => ({
         headers: {
             ...headers,

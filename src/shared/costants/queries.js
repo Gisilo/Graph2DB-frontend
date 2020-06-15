@@ -60,3 +60,11 @@ export const GET_ALL_GRABITS = gql`
       }
     }
   }`;
+
+export const TOKENAUTH = gql`
+    mutation SignIn($user: String!, $pass: String!){
+        tokenAuth (username:$user, password: $pass) {
+            token
+        }
+    }
+    `;

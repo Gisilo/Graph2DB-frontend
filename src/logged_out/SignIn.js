@@ -12,6 +12,9 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {Form, Formik} from "formik";
 import FormikTextField from "../shared/inputs/FormikTextField";
+import {useMutation} from "@apollo/react-hooks";
+import {TOKENAUTH} from "../shared/costants/queries";
+import {makeStyles} from "@material-ui/core/styles";
 
 function Copyright() {
     return (
@@ -26,39 +29,32 @@ function Copyright() {
     );
 }
 
-// const useStyles = makeStyles((theme) => ({
-//     paper: {
-//         marginTop: theme.spacing(8),
-//         display: 'flex',
-//         flexDirection: 'column',
-//         alignItems: 'center',
-//     },
-//     avatar: {
-//         margin: theme.spacing(1),
-//         backgroundColor: theme.palette.secondary.main,
-//     },
-//     form: {
-//         width: '100%', // Fix IE 11 issue.
-//         marginTop: theme.spacing(1),
-//     },
-//     submit: {
-//         margin: theme.spacing(3, 0, 2),
-//     },
-// }));
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+}));
 
-export default class SignIn extends React.Component{
+export default function SignIn(){
 
-    state = {
-        login: true, // switch between Login and SignUp
-        email: '',
-        password: '',
-        name: '',
-    }
+    const [tokenAuth] = useMutation(TOKENAUTH);
 
-    render() {
-        const classes = {}//useStyles();
-        // const { login, email, password, name } = this.state
-        return (
+    const classes = useStyles();
+    return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div className={classes.paper}>
@@ -69,10 +65,21 @@ export default class SignIn extends React.Component{
                         Sign in
                     </Typography>
                     <Formik
-                        initialValues={{ email: "", password: ""}}
+                        initialValues={{ username: "", password: ""}}
                         onSubmit={(data, { setSubmitting }) => {
                             setSubmitting(true);
                             console.log("submit: ", data);
+                            // GraphQL Query to get user token
+                            tokenAuth(
+                                {
+                                    variables: {
+                                        user: data.username,
+                                        pass: data.password
+                                    }
+                                }).then((success) => {
+                                console.log('token auth success', success);
+                            }, (error) => console.error('token auth error', error));
+                            //localStorage.setItem(AUTH_TOKEN, token)
                             setSubmitting(false);
                         }}>
                         {() => (
@@ -82,10 +89,9 @@ export default class SignIn extends React.Component{
                                     margin="normal"
                                     required
                                     fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
+                                    id="username"
+                                    label="Username"
+                                    name="username"
                                     autoFocus
                                 />
                                 <FormikTextField
@@ -133,5 +139,4 @@ export default class SignIn extends React.Component{
                 </Box>
             </Container>
         );
-    }
 }
