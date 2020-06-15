@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {Form, Formik} from "formik";
-import FormikTextField from "../logged_in/components/inputs/FormikTextField";
+import FormikTextField from "../shared/inputs/FormikTextField";
 
 function Copyright() {
     return (

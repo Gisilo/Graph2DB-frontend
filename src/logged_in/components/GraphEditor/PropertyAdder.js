@@ -1,5 +1,5 @@
 import {Box, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select} from "@material-ui/core";
-import FormikTextField from "../inputs/FormikTextField";
+import FormikTextField from "../../../shared/inputs/FormikTextField";
 import {ErrorMessage, useField} from "formik";
 import {
     KeyboardDatePicker,
