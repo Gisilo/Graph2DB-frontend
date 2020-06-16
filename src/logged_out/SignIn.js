@@ -13,21 +13,8 @@ import Container from '@material-ui/core/Container';
 import {Form, Formik} from "formik";
 import FormikTextField from "../shared/inputs/FormikTextField";
 import {useMutation} from "@apollo/react-hooks";
-import {TOKENAUTH} from "../shared/costants/queries";
 import {makeStyles} from "@material-ui/core/styles";
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://gisilo.com/">
-                Gisilo
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Copyright from "../shared/Copyright";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -51,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn(){
 
-    const [tokenAuth] = useMutation(TOKENAUTH);
+    const [tokenAuth] = useMutation("");
 
     const classes = useStyles();
     return (
@@ -83,7 +70,7 @@ export default function SignIn(){
                             setSubmitting(false);
                         }}>
                         {() => (
-                            <Form>
+                            <Form className={classes.form}>
                                 <FormikTextField
                                     variant="outlined"
                                     margin="normal"

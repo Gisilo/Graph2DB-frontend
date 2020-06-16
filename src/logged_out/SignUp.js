@@ -12,19 +12,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Copyright from "../shared/Copyright";
+import {Form, Formik} from "formik";
+import {useMutation} from "@apollo/react-hooks";
+import {REGISTER} from "../shared/costants/queries";
+import FormikTextField from "../shared/inputs/FormikTextField";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -48,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
     const classes = useStyles();
-
+    const register = useMutation(REGISTER);
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -59,78 +51,91 @@ export default function SignUp() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
+                <Formik
+                initialValues={ {username:"", email:"", pass1:"", pass2:""} }
+                onSubmit={(data, { setSubmitting }) => {
+                    setSubmitting(true);
+                    console.log("submit: ", data);
+                    // GraphQL Query to get user token
+
+                    setSubmitting(false);
+                }} >
+                    {() =>
+                        <Form className={classes.form}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <FormikTextField
+                                        autoComplete="fname"
+                                        name="username"
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        id="username"
+                                        label="Username"
+                                        autoFocus
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormikTextField
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        id="email"
+                                        label="Email Address"
+                                        name="email"
+                                        autoComplete="email"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormikTextField
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        name="pass1"
+                                        label="Password"
+                                        type="password"
+                                        id="pass1"
+                                        autoComplete="current-password"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormikTextField
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        name="pass2"
+                                        label="Repeat Password"
+                                        type="password"
+                                        id="pass2"
+                                        autoComplete="current-password"
+                                    />
+                                </Grid>
+                                {/*<Grid item xs={12}>
+                                    <FormControlLabel
+                                        control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                        label="I want to receive promotions and updates via email."
+                                    />
+                                </Grid>*/}
+                            </Grid>
+                            <Button
+                                type="submit"
                                 fullWidth
-                                id="firstName"
-                                label="First Name"
-                                autoFocus
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign Up
-                    </Button>
-                    <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                Already have an account? Sign in
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </form>
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Sign Up
+                            </Button>
+                            <Grid container justify="flex-end">
+                                <Grid item>
+                                    <Link href="#" variant="body2">
+                                        Already have an account? Sign in
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Form>
+                    }
+                </Formik>
             </div>
             <Box mt={5}>
                 <Copyright />
