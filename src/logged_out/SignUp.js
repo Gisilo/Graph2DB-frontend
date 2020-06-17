@@ -14,6 +14,8 @@ import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
 import {REGISTER} from "../shared/costants/queries";
 import FormikTextField from "../shared/inputs/FormikTextField";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -39,6 +41,26 @@ export default function SignUp() {
     const classes = useStyles();
     const [register] = useMutation(REGISTER);
 
+    const [open, setOpen] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState("Registration successful!");
+    const [alertSeverity, setAlertSeverity] = React.useState("success");
+
+    const [usernameError, setUsernameError] = React.useState(false);
+    const [emailError, setEmailError] = React.useState(false);
+    const [passwordError, setPasswordError] = React.useState(false);
+
+    const openAlert = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -63,9 +85,47 @@ export default function SignUp() {
                                 password1: data.pass1,
                                 password2: data.pass2
                             }
-                        }).then((success) => {
-                        console.log('token auth success', success);
-                    }, (error) => console.error('token auth error', error));
+                        }).then((response) => {
+                            if (response.data.register.success) {
+                                setUsernameError(false);
+                                setEmailError(false);
+                                setPasswordError(false);
+                                setAlertSeverity("success");
+                                setAlertMessage("Registration successful!");
+                            }
+                            else
+                            {
+                                const errors = response.data.register.errors;
+
+                                if (errors.length !== 0){
+                                    let error = [];
+                                    if (errors.username) {
+                                        setUsernameError(true);
+                                        setEmailError(false);
+                                        setPasswordError(false);
+                                        error = errors.username;
+                                    } else if(errors.email){
+                                        setEmailError(true);
+                                        setUsernameError(false);
+                                        setPasswordError(false);
+                                        error = errors.email;
+                                    } else if(errors.password1){
+                                        setPasswordError(true);
+                                        setUsernameError(false);
+                                        setEmailError(false);
+                                        error = errors.password1;
+                                    } else if (errors.password2){
+                                        setPasswordError(true);
+                                        setUsernameError(false);
+                                        setEmailError(false);
+                                        error = errors.password2;
+                                    }
+                                    setAlertSeverity("error");
+                                    setAlertMessage(error[0].message);
+                                }
+                            }
+                            openAlert();
+                    }, (error) => console.error('register error', error));
 
                     setSubmitting(false);
                 }} >
@@ -82,6 +142,7 @@ export default function SignUp() {
                                         id="username"
                                         label="Username"
                                         autoFocus
+                                        error={usernameError}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -93,6 +154,7 @@ export default function SignUp() {
                                         label="Email Address"
                                         name="email"
                                         autoComplete="email"
+                                        error={emailError}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -105,6 +167,7 @@ export default function SignUp() {
                                         type="password"
                                         id="pass1"
                                         autoComplete="current-password"
+                                        error={passwordError}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -117,6 +180,7 @@ export default function SignUp() {
                                         type="password"
                                         id="pass2"
                                         autoComplete="current-password"
+                                        error={passwordError}
                                     />
                                 </Grid>
                                 {/*<Grid item xs={12}>
@@ -146,6 +210,11 @@ export default function SignUp() {
                     }
                 </Formik>
             </div>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <MuiAlert onClose={handleClose} severity={alertSeverity} elevation={6} variant="filled" >
+                    {alertMessage}
+                </MuiAlert>
+            </Snackbar>
             <Box mt={5}>
                 <Copyright />
             </Box>
