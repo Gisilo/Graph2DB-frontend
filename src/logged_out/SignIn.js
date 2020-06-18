@@ -89,6 +89,7 @@ export default function SignIn(){
                                         }
                                         else {
                                             setAlertSeverity("error");
+                                            setCredentialsError(true);
                                             const errors = response.data.tokenAuth.errors.nonFieldErrors;
                                             if (errors) setAlertMessage(errors[0].message);
                                             else setAlertMessage("Something went wrong with the registration process :-(");
