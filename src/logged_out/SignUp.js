@@ -2,7 +2,6 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -17,6 +16,7 @@ import FormikTextField from "../shared/inputs/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
 import {SIGN_IN_LINK} from "../shared/costants/links";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -197,7 +197,7 @@ export default function SignUp() {
                             </Button>
                             <Grid container justify="flex-end">
                                 <Grid item>
-                                    <Link href={SIGN_IN_LINK} variant="body2">
+                                    <Link to={SIGN_IN_LINK} variant="body2">
                                         Already have an account? Sign in
                                     </Link>
                                 </Grid>
