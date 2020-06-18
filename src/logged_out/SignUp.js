@@ -109,16 +109,11 @@ export default function SignUp() {
                                         setUsernameError(false);
                                         setPasswordError(false);
                                         error = errors.email;
-                                    } else if(errors.password1){
+                                    } else if(errors.password1 || errors.password2){
                                         setPasswordError(true);
                                         setUsernameError(false);
                                         setEmailError(false);
-                                        error = errors.password1;
-                                    } else if (errors.password2){
-                                        setPasswordError(true);
-                                        setUsernameError(false);
-                                        setEmailError(false);
-                                        error = errors.password2;
+                                        error = errors.password1 || errors.password2;
                                     }
                                     setAlertSeverity("error");
                                     setAlertMessage(error[0].message);
