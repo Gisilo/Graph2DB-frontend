@@ -16,6 +16,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import Copyright from "../shared/Copyright";
 import {SIGN_UP_LINK} from "../shared/costants/links";
 import {Link} from "react-router-dom";
+import {SIGNIN_MUT} from "../shared/costants/queries";
+import MuiAlert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -39,9 +42,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn(){
 
-    //const [tokenAuth] = useMutation("");
-
     const classes = useStyles();
+    const [signIn] = useMutation(SIGNIN_MUT);
+
+    const [open, setOpen] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState("Registration successful!");
+    const [alertSeverity, setAlertSeverity] = React.useState("success");
+
+    const [credentialsError, setCredentialsError] = React.useState(false);
+
+    const openAlert = () => setOpen(true);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') return;
+        setOpen(false);
+    };
+
     return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
@@ -58,15 +74,29 @@ export default function SignIn(){
                             setSubmitting(true);
                             console.log("submit: ", data);
                             // GraphQL Query to get user token
-                            // tokenAuth(
-                            //     {
-                            //         variables: {
-                            //             user: data.username,
-                            //             pass: data.password
-                            //         }
-                            //     }).then((success) => {
-                            //     console.log('token auth success', success);
-                            // }, (error) => console.error('token auth error', error));
+                            signIn(
+                                {
+                                    variables: {
+                                        username: data.username,
+                                        password: data.password
+                                    }
+                                }).then(
+                                    (response) => {
+                                        if (response.data.tokenAuth.success) {
+                                            setCredentialsError(false);
+                                            setAlertSeverity("success");
+                                            setAlertMessage("Sign in successful!");
+                                        }
+                                        else {
+                                            setAlertSeverity("error");
+                                            const errors = response.data.tokenAuth.errors.nonFieldErrors;
+                                            if (errors) setAlertMessage(errors[0].message);
+                                            else setAlertMessage("Something went wrong with the registration process :-(");
+                                        }
+                                        openAlert();
+                                    },
+                                (error) => console.error('sign in error', error)
+                            );
                             //localStorage.setItem(AUTH_TOKEN, token)
                             setSubmitting(false);
                         }}>
@@ -81,6 +111,7 @@ export default function SignIn(){
                                     label="Username"
                                     name="username"
                                     autoFocus
+                                    error={credentialsError}
                                 />
                                 <FormikTextField
                                     variant="outlined"
@@ -92,6 +123,7 @@ export default function SignIn(){
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    error={credentialsError}
                                 />
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary"/>}
@@ -122,6 +154,11 @@ export default function SignIn(){
                         )}
                     </Formik>
                 </div>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <MuiAlert onClose={handleClose} severity={alertSeverity} elevation={6} variant="filled" >
+                        {alertMessage}
+                    </MuiAlert>
+                </Snackbar>
                 <Box mt={8}>
                     <Copyright/>
                 </Box>

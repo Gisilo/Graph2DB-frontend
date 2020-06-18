@@ -90,6 +90,7 @@ export const SIGNIN_MUT = gql`
             errors,
             token,
             refreshToken,
+            unarchiving,
             user {
                 id,
                 username

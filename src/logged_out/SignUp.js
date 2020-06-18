@@ -50,15 +50,10 @@ export default function SignUp() {
     const [emailError, setEmailError] = React.useState(false);
     const [passwordError, setPasswordError] = React.useState(false);
 
-    const openAlert = () => {
-        setOpen(true);
-    };
+    const openAlert = () => setOpen(true);
 
     const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
+        if (reason === 'clickaway') return;
         setOpen(false);
     };
 
@@ -76,7 +71,6 @@ export default function SignUp() {
                 initialValues={ {username:"", email:"", pass1:"", pass2:""} }
                 onSubmit={(data, { setSubmitting }) => {
                     setSubmitting(true);
-                    console.log("submit: ", data);
                     // GraphQL Query to register user (backend does validation)
                     register(
                         {
@@ -96,8 +90,8 @@ export default function SignUp() {
                             }
                             else
                             {
+                                setAlertSeverity("error");
                                 const errors = response.data.register.errors;
-
                                 if (errors.length !== 0){
                                     let error = [];
                                     if (errors.username) {
@@ -116,13 +110,12 @@ export default function SignUp() {
                                         setEmailError(false);
                                         error = errors.password1 || errors.password2;
                                     }
-                                    setAlertSeverity("error");
                                     setAlertMessage(error[0].message);
                                 }
+                                else setAlertMessage("Something went wrong with the registration process :-(");
                             }
                             openAlert();
                     }, (error) => console.error('register error', error));
-
                     setSubmitting(false);
                 }} >
                     {() =>
