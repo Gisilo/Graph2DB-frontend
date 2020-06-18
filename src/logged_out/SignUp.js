@@ -16,6 +16,7 @@ import {REGISTER} from "../shared/costants/queries";
 import FormikTextField from "../shared/inputs/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
+import {SIGN_IN_LINK} from "../shared/costants/links";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -196,7 +197,7 @@ export default function SignUp() {
                             </Button>
                             <Grid container justify="flex-end">
                                 <Grid item>
-                                    <Link href="signin" variant="body2">
+                                    <Link href={SIGN_IN_LINK} variant="body2">
                                         Already have an account? Sign in
                                     </Link>
                                 </Grid>

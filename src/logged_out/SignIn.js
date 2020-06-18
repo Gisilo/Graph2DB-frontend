@@ -15,6 +15,7 @@ import FormikTextField from "../shared/inputs/FormikTextField";
 import {useMutation} from "@apollo/react-hooks";
 import {makeStyles} from "@material-ui/core/styles";
 import Copyright from "../shared/Copyright";
+import {SIGN_UP_LINK} from "../shared/costants/links";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -107,7 +108,7 @@ export default function SignIn(){
                                 </Button>
                                 <Grid container>
                                     <Grid item xs>
-                                        <Link href="#" variant="body2">
+                                        <Link href={SIGN_UP_LINK} variant="body2">
                                             Forgot password?
                                         </Link>
                                     </Grid>
