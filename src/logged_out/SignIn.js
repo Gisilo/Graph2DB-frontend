@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn(){
 
-    const [tokenAuth] = useMutation("");
+    //const [tokenAuth] = useMutation("");
 
     const classes = useStyles();
     return (
@@ -57,15 +57,15 @@ export default function SignIn(){
                             setSubmitting(true);
                             console.log("submit: ", data);
                             // GraphQL Query to get user token
-                            tokenAuth(
-                                {
-                                    variables: {
-                                        user: data.username,
-                                        pass: data.password
-                                    }
-                                }).then((success) => {
-                                console.log('token auth success', success);
-                            }, (error) => console.error('token auth error', error));
+                            // tokenAuth(
+                            //     {
+                            //         variables: {
+                            //             user: data.username,
+                            //             pass: data.password
+                            //         }
+                            //     }).then((success) => {
+                            //     console.log('token auth success', success);
+                            // }, (error) => console.error('token auth error', error));
                             //localStorage.setItem(AUTH_TOKEN, token)
                             setSubmitting(false);
                         }}>
