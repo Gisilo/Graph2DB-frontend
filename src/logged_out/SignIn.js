@@ -109,7 +109,7 @@ export default function SignIn(){
                                 <Grid container>
                                     <Grid item xs>
                                         <Link to="#" variant="body2">
-                                            Forgot password? Reset it.
+                                            Forgot password?
                                         </Link>
                                     </Grid>
                                     <Grid item>

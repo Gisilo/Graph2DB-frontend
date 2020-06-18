@@ -47,7 +47,7 @@ export const DELETE_QUERY = gql`
         }
     }`;
 
-export const GET_ALL_GRABITS = gql`
+export const GET_ALL_GRABITS_QUERY = gql`
   query GetAllGrabits {
     allGrabits {
       edges {
@@ -61,7 +61,7 @@ export const GET_ALL_GRABITS = gql`
     }
   }`;
 
-export const REGISTER = gql`
+export const SIGNUP_MUT = gql`
     mutation SignUp($username: String!, $email: String!, $password1: String!, $password2: String!){
         register(
             input: {
@@ -76,5 +76,23 @@ export const REGISTER = gql`
             token,
             refreshToken
         }
-    }
-    `;
+    }`;
+
+export const SIGNIN_MUT = gql`
+    mutation SignIn($username: String!, $password: String!){
+        tokenAuth(
+            input: {
+                username: $username,
+                password: $password,
+            }
+        ) {
+            success,
+            errors,
+            token,
+            refreshToken,
+            user {
+                id,
+                username
+            }
+        }
+    }`;

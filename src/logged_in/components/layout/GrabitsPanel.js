@@ -4,7 +4,7 @@ import GrabitCard from '../GrabitCard';
 import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { GET_ALL_GRABITS } from '../../../shared/costants/queries'
+import { GET_ALL_GRABITS_QUERY } from '../../../shared/costants/queries'
 import NewGrabitCard from "../NewGrabitCard";
 
 const useStyles = makeStyles({
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 export function GrabitsPanel(props) {
     const classes = useStyles();
 
-    const { loading, error, data } = useQuery(GET_ALL_GRABITS);
+    const { loading, error, data } = useQuery(GET_ALL_GRABITS_QUERY);
 
     if (loading) return <LinearProgress color="secondary" />
     if (error) return `Error! ${error.message}`;

@@ -11,7 +11,7 @@ import Container from '@material-ui/core/Container';
 import Copyright from "../shared/Copyright";
 import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
-import {REGISTER} from "../shared/costants/queries";
+import {SIGNUP_MUT} from "../shared/costants/queries";
 import FormikTextField from "../shared/inputs/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
     const classes = useStyles();
-    const [register] = useMutation(REGISTER);
+    const [register] = useMutation(SIGNUP_MUT);
 
     const [open, setOpen] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState("Registration successful!");
