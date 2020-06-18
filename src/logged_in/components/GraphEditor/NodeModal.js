@@ -1,5 +1,5 @@
 
-import {FieldArray, Form, Formik} from "formik";
+import {ErrorMessage, FieldArray, Form, Formik} from "formik";
 import React from "react";
 import PropTypes from 'prop-types';
 import FormikTextField from '../../../shared/inputs/FormikTextField'
@@ -28,9 +28,19 @@ yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
     });
 });
 
-yup.addMethod(yup.object, 'uniqueProperty', function (propertyName, message) {
-    console.log("in uniqueProperty", propertyName, message);
-    return false;
+yup.addMethod(yup.array, "unique", function(message, mapper) {
+    return this.test("unique", message, function(list) {
+        //const mapper = x => get(x, path);
+        const set = [...new Set(list.map(mapper))];
+        const isUnique = list.length === set.length;
+        if (isUnique) {
+            return true;
+        }
+
+        const idx = list.findIndex((l, i) => mapper(l) !== set[i]);
+        console.log(idx, `[${idx}].name`);
+        return this.createError({ path: `nProps[${idx}].name`, message });
+    });
 });
 
 const schema = yup.object({
@@ -47,7 +57,7 @@ const schema = yup.object({
                 .checkWithField('domain', 'Default value must be integer')
                 .when('required', {is: true, then:yup.mixed().required("Default value required")})
         })
-    )
+    ).unique("Name property just used", x => x.name)
 
 });
 
@@ -80,7 +90,7 @@ export function NodeModal(props) {
                     handleClose();
                 }}
                 >
-                    {({ values, isSubmitting, setFieldValue }) => (
+                    {({ values, isSubmitting, setFieldValue, errors }) => (
                         <Form>
                             <Grid container>
                                 <Grid item container spacing={2}>
@@ -130,7 +140,14 @@ export function NodeModal(props) {
                                     </Grid>
 
                                     <Grid item xs={12} container justify="right">
-                                        {props.typeModal === 'create'&& <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>}
+                                        {props.typeModal === 'create'&&
+                                            <>
+                                        <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
+                                        {typeof errors.nProps === 'string' ? (
+                                            <div>{errors.nProps}</div>
+                                            ) : null}
+                                        </>}
+                                        <pre>{JSON.stringify(errors, null, 2)}</pre>
                                         {props.typeModal === 'edit'&& <Button disabled={isSubmitting} type="submit" variant="primary">Save</Button>}
                                     </Grid>
 
