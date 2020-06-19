@@ -15,7 +15,7 @@ import {SIGNUP_MUT} from "../shared/costants/queries";
 import FormikTextField from "../shared/inputs/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
-import {SIGN_IN_LINK} from "../shared/costants/links";
+import {LOG_IN_LINK} from "../shared/costants/links";
 import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -190,8 +190,8 @@ export default function SignUp() {
                             </Button>
                             <Grid container justify="flex-end">
                                 <Grid item>
-                                    <Link to={SIGN_IN_LINK} variant="body2">
-                                        Already have an account? Sign in
+                                    <Link to={LOG_IN_LINK} variant="body2">
+                                        Already have an account? Log in
                                     </Link>
                                 </Grid>
                             </Grid>

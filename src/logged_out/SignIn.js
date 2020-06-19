@@ -16,7 +16,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Copyright from "../shared/Copyright";
 import {SIGN_UP_LINK} from "../shared/costants/links";
 import {Link} from "react-router-dom";
-import {SIGNIN_MUT} from "../shared/costants/queries";
+import {LOG_IN_MUT} from "../shared/costants/queries";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn(){
 
     const classes = useStyles();
-    const [signIn] = useMutation(SIGNIN_MUT);
+    const [signIn] = useMutation(LOG_IN_MUT);
 
     const [open, setOpen] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState("Registration successful!");
@@ -59,110 +59,110 @@ export default function SignIn(){
     };
 
     return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon/>
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <Formik
-                        initialValues={{ username: "", password: ""}}
-                        onSubmit={(data, { setSubmitting }) => {
-                            setSubmitting(true);
-                            console.log("submit: ", data);
-                            // GraphQL Query to get user token
-                            signIn(
-                                {
-                                    variables: {
-                                        username: data.username,
-                                        password: data.password
+        <Container component="main" maxWidth="xs">
+            <CssBaseline/>
+            <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon/>
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign in
+                </Typography>
+                <Formik
+                    initialValues={{ username: "", password: ""}}
+                    onSubmit={(data, { setSubmitting }) => {
+                        setSubmitting(true);
+                        console.log("submit: ", data);
+                        // GraphQL Query to get user token
+                        signIn(
+                            {
+                                variables: {
+                                    username: data.username,
+                                    password: data.password
+                                }
+                            }).then(
+                                (response) => {
+                                    if (response.data.tokenAuth.success) {
+                                        setCredentialsError(false);
+                                        setAlertSeverity("success");
+                                        setAlertMessage("Sign in successful!");
                                     }
-                                }).then(
-                                    (response) => {
-                                        if (response.data.tokenAuth.success) {
-                                            setCredentialsError(false);
-                                            setAlertSeverity("success");
-                                            setAlertMessage("Sign in successful!");
-                                        }
-                                        else {
-                                            setAlertSeverity("error");
-                                            setCredentialsError(true);
-                                            const errors = response.data.tokenAuth.errors.nonFieldErrors;
-                                            if (errors) setAlertMessage(errors[0].message);
-                                            else setAlertMessage("Something went wrong with the registration process :-(");
-                                        }
-                                        openAlert();
-                                    },
-                                (error) => console.error('sign in error', error)
-                            );
-                            //localStorage.setItem(AUTH_TOKEN, token)
-                            setSubmitting(false);
-                        }}>
-                        {() => (
-                            <Form className={classes.form}>
-                                <FormikTextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="username"
-                                    label="Username"
-                                    name="username"
-                                    autoFocus
-                                    error={credentialsError}
-                                />
-                                <FormikTextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="current-password"
-                                    error={credentialsError}
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary"/>}
-                                    label="Remember me"
-                                />
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.submit}
-                                >
-                                    Sign In
-                                </Button>
-                                <Grid container>
-                                    <Grid item xs>
-                                        <Link to="#" variant="body2">
-                                            Forgot password?
-                                        </Link>
-                                    </Grid>
-                                    <Grid item>
-                                        <Link to={SIGN_UP_LINK} variant="body2">
-                                            {"Don't have an account? Sign Up"}
-                                        </Link>
-                                    </Grid>
+                                    else {
+                                        setAlertSeverity("error");
+                                        setCredentialsError(true);
+                                        const errors = response.data.tokenAuth.errors.nonFieldErrors;
+                                        if (errors) setAlertMessage(errors[0].message);
+                                        else setAlertMessage("Something went wrong with the registration process :-(");
+                                    }
+                                    openAlert();
+                                },
+                            (error) => console.error('sign in error', error)
+                        );
+                        //localStorage.setItem(AUTH_TOKEN, token)
+                        setSubmitting(false);
+                    }}>
+                    {() => (
+                        <Form className={classes.form}>
+                            <FormikTextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                autoFocus
+                                error={credentialsError}
+                            />
+                            <FormikTextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                error={credentialsError}
+                            />
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary"/>}
+                                label="Remember me"
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Sign In
+                            </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link to="#" variant="body2">
+                                        Forgot password?
+                                    </Link>
                                 </Grid>
-                            </Form>
-                        )}
-                    </Formik>
-                </div>
-                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                    <MuiAlert onClose={handleClose} severity={alertSeverity} elevation={6} variant="filled" >
-                        {alertMessage}
-                    </MuiAlert>
-                </Snackbar>
-                <Box mt={8}>
-                    <Copyright/>
-                </Box>
-            </Container>
-        );
+                                <Grid item>
+                                    <Link to={SIGN_UP_LINK} variant="body2">
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <MuiAlert onClose={handleClose} severity={alertSeverity} elevation={6} variant="filled" >
+                    {alertMessage}
+                </MuiAlert>
+            </Snackbar>
+            <Box mt={8}>
+                <Copyright/>
+            </Box>
+        </Container>
+    );
 }

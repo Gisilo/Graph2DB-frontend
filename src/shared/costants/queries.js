@@ -78,7 +78,7 @@ export const SIGNUP_MUT = gql`
         }
     }`;
 
-export const SIGNIN_MUT = gql`
+export const LOG_IN_MUT = gql`
     mutation SignIn($username: String!, $password: String!){
         tokenAuth(
             input: {
