@@ -1,5 +1,5 @@
 
-import {ErrorMessage, FieldArray, Form, Formik} from "formik";
+import {FieldArray, Form, Formik} from "formik";
 import React from "react";
 import PropTypes from 'prop-types';
 import FormikTextField from '../../../shared/inputs/FormikTextField'
@@ -19,7 +19,6 @@ yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
             if (!value)
                 return true;
             if (this.options.parent[field] === 'int') {
-                console.log(value);
                 return Number.isInteger(value);
             } else {
                 return true
@@ -30,15 +29,12 @@ yup.addMethod(yup.mixed, 'checkWithField', function(field, msg) {
 
 yup.addMethod(yup.array, "unique", function(message, mapper) {
     return this.test("unique", message, function(list) {
-        //const mapper = x => get(x, path);
         const set = [...new Set(list.map(mapper))];
         const isUnique = list.length === set.length;
         if (isUnique) {
             return true;
         }
-
         const idx = list.findIndex((l, i) => mapper(l) !== set[i]);
-        console.log(idx, `[${idx}].name`);
         return this.createError({ path: `nProps[${idx}].name`, message });
     });
 });
@@ -57,7 +53,7 @@ const schema = yup.object({
                 .checkWithField('domain', 'Default value must be integer')
                 .when('required', {is: true, then:yup.mixed().required("Default value required")})
         })
-    ).unique("Name property just used", x => x.name)
+    ).unique("Name property already used", x => x.name)
 
 });
 
@@ -82,6 +78,10 @@ export function NodeModal(props) {
                     nDesc: props.nodeInfo ? props.nodeInfo.data().description : "",
                     nProps: props.nodeInfo ? props.nodeInfo.data().property : []}}
                 validationSchema={schema}
+                validate={(values)=>{
+                    if (props.nameList.concat(values.nName).filter(x => x === values.nName).length!==1)
+                        return {nName: "Node name already used"}
+                }}
                 onSubmit={(data, { setSubmitting }) => {
                     setSubmitting(true);
                     console.log("submit: ", data);
@@ -90,12 +90,12 @@ export function NodeModal(props) {
                     handleClose();
                 }}
                 >
-                    {({ values, isSubmitting, setFieldValue, errors }) => (
+                    {({ values, isSubmitting, setFieldValue }) => (
                         <Form>
                             <Grid container>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12}>
-                                        <FormikTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant="outlined" fullWidth/>
+                                        <FormikTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant="outlined" required fullWidth/>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <FormikTextField multiline rows={2} rowsMax={4} id="ig1" variant="outlined"
@@ -140,14 +140,7 @@ export function NodeModal(props) {
                                     </Grid>
 
                                     <Grid item xs={12} container justify="right">
-                                        {props.typeModal === 'create'&&
-                                            <>
-                                        <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
-                                        {typeof errors.nProps === 'string' ? (
-                                            <div>{errors.nProps}</div>
-                                            ) : null}
-                                        </>}
-                                        <pre>{JSON.stringify(errors, null, 2)}</pre>
+                                        {props.typeModal === 'create'&& <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>}
                                         {props.typeModal === 'edit'&& <Button disabled={isSubmitting} type="submit" variant="primary">Save</Button>}
                                     </Grid>
 
