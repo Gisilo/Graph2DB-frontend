@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 import { NodeModal } from './NodeModal'
-//import { CreateNodeModal } from './CreateNodeModal'
+import { EdgeModal } from './EdgeModal'
 
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
@@ -16,10 +16,13 @@ export class GraphEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalShow: false, typeModal: "",
-            modalNodeInfoShow: false, nodeInfo: null,
-            modalNodeCreateShow: false, nodesNameList:null,
-            eh: null};
+            nodeModalShow: false,           // Show node modal
+            edgeModalShow: false,           // Show edge modal
+            typeModal: "",                  // type of modal, can be edit or create (TODO use enum)
+            objectInfo: null,               // info of selected object, can be node info or edge info
+            nameList:null,                  // list of all nodes or edges names
+            eh: null                        // edge handle object
+        };
     }
 
 
@@ -35,18 +38,32 @@ export class GraphEditor extends Component {
 
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
-            let nodesNameList = this.cy.elements().map(x => x.data().label);
+            let nameList = this.cy.elements().map(x => x.data().label);
             if (event.target === this.cy){
-                let newId = this.getNewID();
-                this.setState({modalShow: true, typeModal:"create", modalNodeCreateShow: true, nodesNameList:nodesNameList,
-                    newNodeId: newId, posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
+                this.setState({nodeModalShow: true, typeModal:"create", nameList:nameList,
+                    posX:renderedPosition.position.x, posY: renderedPosition.position.y, objectInfo:null});
             }
             else if (event.target.isNode()){
                 let clickedNode = event.target;
-                this.setState({modalShow: true, typeModal:"edit", nodeInfo:clickedNode, nodesNameList:nodesNameList});
+                this.setState({nodeModalShow: true, typeModal:"edit", objectInfo:clickedNode, nameList:nameList});
             }
             else if (event.target.isEdge()){
-                console.log("click on edge");
+                let clickedEdge = event.target;
+                // Get number of directed edge from source to target
+                const nEdges = clickedEdge.source().edgesTo(clickedEdge.target()).length;
+                // Set edge name
+                clickedEdge.data().label = clickedEdge.data().label ?
+                    clickedEdge.data().label : // If present, keep it
+                    nEdges === 1 ?             // Else create unique new name as source_target_nEdges
+                        `${clickedEdge.source().data().label}_${clickedEdge.target().data().label}` :
+                        `${clickedEdge.source().data().label}_${clickedEdge.target().data().label}_${nEdges}`;
+                // Set property objects: if presente keeep it, else create empty list
+                clickedEdge.data().property = clickedEdge.data().property ? clickedEdge.data().property : [];
+                clickedEdge.data().cardinality = clickedEdge.data().cardinality ?
+                    clickedEdge.data().cardinality :
+                    {max:"", min:""};
+
+                this.setState({edgeModalShow: true, typeModal:"edit", objectInfo:clickedEdge, nameList:nameList});
             }
         });
 
@@ -66,9 +83,20 @@ export class GraphEditor extends Component {
         console.log(e);
     };
 
+    editEdge = (data) => {
+        console.log("callback", data);
+        this.setState({objectInfo: this.state.objectInfo.data({
+                label: data.nName,
+                description: data.nDesc,
+                property: data.nProps,
+                cardinality: {max:data.cardMax, min:data.cardMin}
+            })});
+        console.log(this.cy.edges());
+    };
+
     editNode = (data) =>{
-        if(this.state.nodeInfo){
-            this.setState({nodeInfo: this.state.nodeInfo.data({
+        if(this.state.objectInfo){
+            this.setState({objectInfo: this.state.objectInfo.data({
                     label: data.nName,
                     description: data.nDesc,
                     property: data.nProps
@@ -77,7 +105,7 @@ export class GraphEditor extends Component {
         else{
             this.cy.add({
                 data: {
-                    id: this.state.newNodeId,
+                    id: this.getNewID(),
                     label: data.nName,
                     description: data.nDesc,
                     property: data.nProps },
@@ -125,10 +153,16 @@ export class GraphEditor extends Component {
 
                 />
 
-                <NodeModal nodesNameList={this.state.nodesNameList} callBack={this.editNode}
-                           nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
-                           open={this.state.modalShow}
-                           onClose={() => this.setState({modalShow: false})}/>
+                <NodeModal nameList={this.state.nameList} callBack={this.editNode}
+                           nodeInfo={this.state.objectInfo} typeModal={this.state.typeModal}
+                           open={this.state.nodeModalShow}
+                           onClose={() => this.setState({nodeModalShow: false})}/>
+
+                <EdgeModal nameList={this.state.nameList} callBack={this.editEdge}
+                           edgeInfo={this.state.objectInfo}
+                           open={this.state.edgeModalShow}
+                           onClose={() => this.setState({edgeModalShow: false})}/>
+
             </div>
         )
     }
@@ -200,4 +234,4 @@ const graphStyle = {
             }
         }
     ]
-}
+};
