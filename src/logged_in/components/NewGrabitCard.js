@@ -7,7 +7,7 @@ import {
 import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
 import {CREATE_QUERY} from "../../shared/costants/queries";
-import FormikTextField from "../../shared/inputs/FormikTextField";
+import FormikTextField from "../../shared/components/FormikTextField";
 
 const useStyles = makeStyles({
         card: {

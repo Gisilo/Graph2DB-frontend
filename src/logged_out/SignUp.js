@@ -12,7 +12,7 @@ import Copyright from "../shared/Copyright";
 import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
 import {SIGNUP_MUT} from "../shared/costants/queries";
-import FormikTextField from "../shared/inputs/FormikTextField";
+import FormikTextField from "../shared/components/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
 import {LOG_IN_LINK} from "../shared/costants/links";

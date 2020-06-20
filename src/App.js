@@ -1,15 +1,9 @@
 import React from 'react';
-
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import MainPage from './logged_in/components/layout/MainPage';
-import SignIn from "./logged_out/SignIn";
+import Login from "./logged_out/Login";
 import SignUp from "./logged_out/SignUp";
-import {AuthContext} from "./shared/services/authenticationService";
-import PrivateRoute from "./shared/services/PrivateRoute";
+import PrivateRoute from "./shared/components/PrivateRoute";
 import {LOG_IN_LINK, ROOT_LINK, SIGN_UP_LINK} from "./shared/costants/links";
 
 function NotFound() {
@@ -18,18 +12,17 @@ function NotFound() {
 
 function App() {
     return (
-        <AuthContext.Provider value={true}>
-            <Router>
-                <Switch>
-                    <Route path={ROOT_LINK} exact component={MainPage}/>
-                    <Route path={LOG_IN_LINK} component={SignIn}/>
-                    <Route path={SIGN_UP_LINK} component={SignUp}/>
-                    <PrivateRoute path="/ad" component={MainPage}/>
-                    <Route component={NotFound}/>
-                </Switch>
-            </Router>
-        </AuthContext.Provider>
+        <Router>
+            <Switch>
+                <Route path={ROOT_LINK} exact component={MainPage}/>
+                <Route path={LOG_IN_LINK} component={Login}/>
+                <Route path={SIGN_UP_LINK} component={SignUp}/>
+                <PrivateRoute path="/ad" component={MainPage}/>
+                <Route component={NotFound}/>
+            </Switch>
+        </Router>
     );
 }
+
 
 export default App;

@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {Form, Formik} from "formik";
-import FormikTextField from "../shared/inputs/FormikTextField";
+import FormikTextField from "../shared/components/FormikTextField";
 import {useMutation} from "@apollo/react-hooks";
 import {makeStyles} from "@material-ui/core/styles";
 import Copyright from "../shared/Copyright";
@@ -19,6 +19,8 @@ import {Link} from "react-router-dom";
 import {LOG_IN_MUT} from "../shared/costants/queries";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
+import * as yup from 'yup'
+import {authenticationService} from "../shared/services/authenticationService";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn(){
+export default function Login(){
 
     const classes = useStyles();
     const [signIn] = useMutation(LOG_IN_MUT);
@@ -70,9 +72,12 @@ export default function SignIn(){
                 </Typography>
                 <Formik
                     initialValues={{ username: "", password: ""}}
+                    validationSchema={yup.object().shape({
+                        username: yup.string().required('Username is required'),
+                        password: yup.string().required('Password is required')
+                    })}
                     onSubmit={(data, { setSubmitting }) => {
                         setSubmitting(true);
-                        console.log("submit: ", data);
                         // GraphQL Query to get user token
                         signIn(
                             {
@@ -82,21 +87,23 @@ export default function SignIn(){
                                 }
                             }).then(
                                 (response) => {
-                                    if (response.data.tokenAuth.success) {
+                                    const auth = response.data.tokenAuth;
+                                    if (auth.success) {
                                         setCredentialsError(false);
                                         setAlertSeverity("success");
                                         setAlertMessage("Sign in successful!");
+                                        authenticationService.login(auth.user, auth.token, auth.refreshToken)
                                     }
                                     else {
                                         setAlertSeverity("error");
                                         setCredentialsError(true);
-                                        const errors = response.data.tokenAuth.errors.nonFieldErrors;
+                                        const errors = auth.errors.nonFieldErrors;
                                         if (errors) setAlertMessage(errors[0].message);
                                         else setAlertMessage("Something went wrong with the registration process :-(");
                                     }
                                     openAlert();
                                 },
-                            (error) => console.error('sign in error', error)
+                            (error) => console.error('log in error', error)
                         );
                         //localStorage.setItem(AUTH_TOKEN, token)
                         setSubmitting(false);
@@ -137,7 +144,7 @@ export default function SignIn(){
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Sign In
+                                Log In
                             </Button>
                             <Grid container>
                                 <Grid item xs>
