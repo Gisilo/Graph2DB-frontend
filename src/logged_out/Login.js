@@ -11,16 +11,15 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {Form, Formik} from "formik";
 import FormikTextField from "../shared/components/FormikTextField";
-import {useMutation} from "@apollo/react-hooks";
 import {makeStyles} from "@material-ui/core/styles";
 import Copyright from "../shared/Copyright";
 import {SIGN_UP_LINK} from "../shared/costants/links";
-import {Link} from "react-router-dom";
-import {LOG_IN_MUT} from "../shared/costants/queries";
+import {Link, withRouter} from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import * as yup from 'yup'
 import {authenticationService} from "../shared/services/authenticationService";
+import {withApollo} from "@apollo/react-hoc";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -42,10 +41,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login(){
-
+function Login(props) {
+    const {client, history} = props;
     const classes = useStyles();
-    const [signIn] = useMutation(LOG_IN_MUT);
 
     const [open, setOpen] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState("Registration successful!");
@@ -71,44 +69,36 @@ export default function Login(){
                     Sign in
                 </Typography>
                 <Formik
-                    initialValues={{ username: "", password: ""}}
+                    initialValues={{username: "", password: ""}}
                     validationSchema={yup.object().shape({
                         username: yup.string().required('Username is required'),
                         password: yup.string().required('Password is required')
                     })}
-                    onSubmit={(data, { setSubmitting }) => {
+                    onSubmit={async (data, {setSubmitting}) => {
                         setSubmitting(true);
                         // GraphQL Query to get user token
-                        signIn(
-                            {
-                                variables: {
-                                    username: data.username,
-                                    password: data.password
-                                }
-                            }).then(
-                                (response) => {
-                                    const auth = response.data.tokenAuth;
-                                    if (auth.success) {
-                                        setCredentialsError(false);
-                                        setAlertSeverity("success");
-                                        setAlertMessage("Sign in successful!");
-                                        authenticationService.login(auth.user, auth.token, auth.refreshToken)
-                                    }
-                                    else {
-                                        setAlertSeverity("error");
-                                        setCredentialsError(true);
-                                        const errors = auth.errors.nonFieldErrors;
-                                        if (errors) setAlertMessage(errors[0].message);
-                                        else setAlertMessage("Something went wrong with the registration process :-(");
-                                    }
-                                    openAlert();
-                                },
-                            (error) => console.error('log in error', error)
-                        );
-                        //localStorage.setItem(AUTH_TOKEN, token)
+                        const auth = await authenticationService.login(client, data.username, data.password);
+                        if (auth.success) {
+                            setCredentialsError(false);
+                            setAlertSeverity("success");
+                            setAlertMessage("Sign in successful!");
+                            setTimeout(() => history.push('/'), 2000);
+                        } else {
+                            if (auth.failure) {
+                                setAlertSeverity("error");
+                                setAlertMessage("Something went wrong with the login process :-( Try again.");
+                            }
+                            else {
+                                setAlertSeverity("error");
+                                setCredentialsError(true);
+                                if (auth.errors) setAlertMessage(auth.errors[0].message);
+                                else setAlertMessage("Something went wrong with the login process :-( Try again.");
+                            }
+                        }
+                        openAlert();
                         setSubmitting(false);
                     }}>
-                    {() => (
+                    {(isSubmitting) => (
                         <Form className={classes.form}>
                             <FormikTextField
                                 variant="outlined"
@@ -138,6 +128,7 @@ export default function Login(){
                                 label="Remember me"
                             />
                             <Button
+                                disabled={!isSubmitting}
                                 type="submit"
                                 fullWidth
                                 variant="contained"
@@ -163,7 +154,7 @@ export default function Login(){
                 </Formik>
             </div>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <MuiAlert onClose={handleClose} severity={alertSeverity} elevation={6} variant="filled" >
+                <MuiAlert onClose={handleClose} severity={alertSeverity} elevation={6} variant="filled">
                     {alertMessage}
                 </MuiAlert>
             </Snackbar>
@@ -173,3 +164,5 @@ export default function Login(){
         </Container>
     );
 }
+
+export default withRouter(withApollo(Login));

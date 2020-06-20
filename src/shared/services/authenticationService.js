@@ -1,21 +1,49 @@
 import { BehaviorSubject } from 'rxjs';
+import {LOG_IN_MUT} from "../costants/queries";
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
 export const authenticationService = {
+    _login,
     login,
     logout,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value }
 };
 
-function login(user, token, refreshToken) {
+function _login(user, token, refreshToken) {
     // store user details and jwt token in local storage to keep user logged in between page refreshes
+    user.token = token;
+    user.refreshToken = refreshToken;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    currentUserSubject.next(user);
+}
+
+async function login(client, username, password) {
+    return await client.mutate({
+        mutation: LOG_IN_MUT,
+        variables: {
+            username: username,
+            password: password
+        }
+    }).then(response => {
+        const auth = response.data.tokenAuth;
+        if (auth.success) {
+            authenticationService._login(auth.user, auth.token, auth.refreshToken)
+            return {success: true};
+        }
+        else {
+            return {success: false, errors: auth.errors.nonFieldErrors, failure: false}
+        }
+    }, err => {
+        console.log("err", err);
+        return {success: false, failure: true}
+    });
+    // store user details and jwt token in local storage to keep user logged in between page refreshes
+    // user.token = token;
+    // user.refreshToken = refreshToken;
     // localStorage.setItem('currentUser', JSON.stringify(user));
     // currentUserSubject.next(user);
-    console.log(user)
-    console.log(token)
-    console.log(refreshToken)
 }
 
 function logout() {
@@ -23,3 +51,5 @@ function logout() {
     localStorage.removeItem('currentUser');
     currentUserSubject.next(null);
 }
+
+// function registration
