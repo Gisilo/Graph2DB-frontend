@@ -7,7 +7,7 @@ import {EditorScreen} from '../screens/EditorScreen';
 import {GrabitsPanel} from './GrabitsPanel';
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, createTab, ...other } = props;
 
     return (
         <div
@@ -18,7 +18,7 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                value===0 ? <GrabitsPanel createTab={props.cb}/> : <EditorScreen/>
+                value===0 ? <GrabitsPanel createTab={createTab}/> : <EditorScreen/>
             )}
         </div>
     );
@@ -83,7 +83,7 @@ export default function TabsContainer() {
                         )
                     }
                 </Tabs>
-            <TabPanel cb={createTab} value={value} index={0}/>
+            <TabPanel createTab={createTab} value={value} index={0}/>
             { tabs.map((e,i) => <TabPanel grabitID={e.id} key={i} value={value} index={i+1}/>) }
 
         </div>

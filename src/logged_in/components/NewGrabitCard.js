@@ -67,7 +67,7 @@ export default function NewGrabitCard(props) {
                             <FormikTextField type="text" label="Description (Optional)" name="description"
                                              multiline rows={2} rowsMax={4} fullWidth/>
 
-                            <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>
+                            <Button disabled={isSubmitting} type="submit" variant="outlined">Create</Button>
                         </Form>
                     )}
                 </Formik>
