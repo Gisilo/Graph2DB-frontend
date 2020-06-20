@@ -112,8 +112,11 @@ export function EdgeModal(props) {
                         nProps: props.edgeInfo ? props.edgeInfo.data().property : []}}
                     validationSchema={schema}
                     validate={(values)=>{
-                        if (props.nameList.concat(values.nName).filter(x => x === values.nName).length!==1)
-                            return {nName: "Edge name already used"}
+                        const oldName = props.edgeInfo ? props.edgeInfo.data().label : "";
+                        if (oldName !== values.nName && props.nameList.includes(values.nName))
+                            return {nName: "Name already used"};
+                        else if (oldName === values.nName && props.nameList.filter(x => x === values.nName).length !== 1)
+                            return {nName: "Name already used"};
                     }}
                     onSubmit={(data, { setSubmitting }) => {
                         setSubmitting(true);

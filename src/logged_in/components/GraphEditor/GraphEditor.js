@@ -19,7 +19,8 @@ export class GraphEditor extends Component {
             nodeModalShow: false,           // Show node modal
             edgeModalShow: false,           // Show edge modal
             typeModal: "",                  // type of modal, can be edit or create (TODO use enum)
-            objectInfo: null,               // info of selected object, can be node info or edge info
+            nodeInfo: null,                 // info of selected node
+            edgeInfo: null,                 // info of selected edge
             nameList:null,                  // list of all nodes or edges names
             eh: null                        // edge handle object
         };
@@ -41,11 +42,11 @@ export class GraphEditor extends Component {
             let nameList = this.cy.elements().map(x => x.data().label);
             if (event.target === this.cy){
                 this.setState({nodeModalShow: true, typeModal:"create", nameList:nameList,
-                    posX:renderedPosition.position.x, posY: renderedPosition.position.y, objectInfo:null});
+                    posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
             }
             else if (event.target.isNode()){
                 let clickedNode = event.target;
-                this.setState({nodeModalShow: true, typeModal:"edit", objectInfo:clickedNode, nameList:nameList});
+                this.setState({nodeModalShow:true, typeModal:"edit", nodeInfo:clickedNode, nameList:nameList});
             }
             else if (event.target.isEdge()){
                 let clickedEdge = event.target;
@@ -57,13 +58,13 @@ export class GraphEditor extends Component {
                     nEdges === 1 ?             // Else create unique new name as source_target_nEdges
                         `${clickedEdge.source().data().label}_${clickedEdge.target().data().label}` :
                         `${clickedEdge.source().data().label}_${clickedEdge.target().data().label}_${nEdges}`;
-                // Set property objects: if presente keeep it, else create empty list
+                // Set property objects: if present keep it, else create empty list
                 clickedEdge.data().property = clickedEdge.data().property ? clickedEdge.data().property : [];
                 clickedEdge.data().cardinality = clickedEdge.data().cardinality ?
                     clickedEdge.data().cardinality :
                     {max:"", min:""};
 
-                this.setState({edgeModalShow: true, typeModal:"edit", objectInfo:clickedEdge, nameList:nameList});
+                this.setState({edgeModalShow: true, edgeInfo:clickedEdge, nameList:nameList});
             }
         });
 
@@ -85,7 +86,7 @@ export class GraphEditor extends Component {
 
     editEdge = (data) => {
         console.log("callback", data);
-        this.setState({objectInfo: this.state.objectInfo.data({
+        this.setState({edgeInfo: this.state.edgeInfo.data({
                 label: data.nName,
                 description: data.nDesc,
                 property: data.nProps,
@@ -95,8 +96,8 @@ export class GraphEditor extends Component {
     };
 
     editNode = (data) =>{
-        if(this.state.objectInfo){
-            this.setState({objectInfo: this.state.objectInfo.data({
+        if(this.state.nodeInfo){
+            this.setState({nodeInfo: this.state.nodeInfo.data({
                     label: data.nName,
                     description: data.nDesc,
                     property: data.nProps
@@ -154,12 +155,12 @@ export class GraphEditor extends Component {
                 />
 
                 <NodeModal nameList={this.state.nameList} callBack={this.editNode}
-                           nodeInfo={this.state.objectInfo} typeModal={this.state.typeModal}
+                           nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
                            open={this.state.nodeModalShow}
                            onClose={() => this.setState({nodeModalShow: false})}/>
 
                 <EdgeModal nameList={this.state.nameList} callBack={this.editEdge}
-                           edgeInfo={this.state.objectInfo}
+                           edgeInfo={this.state.edgeInfo}
                            open={this.state.edgeModalShow}
                            onClose={() => this.setState({edgeModalShow: false})}/>
 

@@ -79,8 +79,15 @@ export function NodeModal(props) {
                     nProps: props.nodeInfo ? props.nodeInfo.data().property : []}}
                 validationSchema={schema}
                 validate={(values)=>{
-                    if (props.nameList.concat(values.nName).filter(x => x === values.nName).length!==1)
-                        return {nName: "Node name already used"}
+                    if (props.typeModal === "create" && props.nameList.includes(values.nName))
+                        return {nName: "Name already used"};
+                    else if (props.typeModal === "edit") {
+                        const oldName = props.nodeInfo ? props.nodeInfo.data().label : "";
+                        if (oldName !== values.nName && props.nameList.includes(values.nName))
+                            return {nName: "Name already used"};
+                        else if (oldName === values.nName && props.nameList.filter(x => x === values.nName).length !== 1)
+                            return {nName: "Name already used"};
+                    }
                 }}
                 onSubmit={(data, { setSubmitting }) => {
                     setSubmitting(true);
