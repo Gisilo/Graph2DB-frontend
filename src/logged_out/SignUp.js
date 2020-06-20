@@ -16,7 +16,7 @@ import FormikTextField from "../shared/components/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
 import {LOG_IN_LINK} from "../shared/costants/links";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,7 +38,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp() {
+function SignUp(props) {
+
+    const {history} = props;
+
     const classes = useStyles();
     const [register] = useMutation(SIGNUP_MUT);
 
@@ -87,6 +90,7 @@ export default function SignUp() {
                                 setPasswordError(false);
                                 setAlertSeverity("success");
                                 setAlertMessage("Registration successful!");
+                                setTimeout(() => history.push('/'), 2000);
                             }
                             else
                             {
@@ -210,3 +214,4 @@ export default function SignUp() {
         </Container>
     );
 }
+export default withRouter(SignUp);
