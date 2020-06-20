@@ -14,10 +14,9 @@ function App() {
     return (
         <Router>
             <Switch>
-                <Route path={ROOT_LINK} exact component={MainPage}/>
+                <PrivateRoute exact path={ROOT_LINK} component={MainPage}/>
                 <Route path={LOG_IN_LINK} component={Login}/>
                 <Route path={SIGN_UP_LINK} component={SignUp}/>
-                <PrivateRoute path="/ad" component={MainPage}/>
                 <Route component={NotFound}/>
             </Switch>
         </Router>
