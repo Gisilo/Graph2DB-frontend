@@ -7,7 +7,7 @@ import {EditorScreen} from '../screens/EditorScreen';
 import {GrabitsPanel} from './GrabitsPanel';
 
 function TabPanel(props) {
-    const { children, value, index, createTab, ...other } = props;
+    const { children, value, index, createTab, grabitID, ...other } = props;
 
     return (
         <div
@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
+    tabcontainer: {
+        width: '100%',
+    }
 }));
 
 export default function TabsContainer() {
@@ -74,7 +77,6 @@ export default function TabsContainer() {
                     textColor="primary"
                     variant="scrollable"
                     scrollButtons="on"
-                    aria-label="scrollable auto tabs example"
                 >
                     <Tab label="Grabits" {...a11yProps(0)} />
                     { tabs.map((e, i) =>
