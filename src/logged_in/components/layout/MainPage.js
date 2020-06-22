@@ -1,17 +1,21 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import NavBar from './NavBar';
-import TabsContainer from './TabsContainer';
-import SideNav from "./SideNav";
 import LabTabs from "./LabTabs";
-import {makeStyles} from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import NavBar from "./NavBar";
+import {EditorScreen} from "../screens/EditorScreen";
+import GrabitPage from "./GrabitsPage";
+import {GrabitsPanel} from "./GrabitsPanel";
 
 function MainPage(props) {
 	return (
-		<div>
-			<SideNav/>
-			<LabTabs/>
-		</div>
+		<Grid container>
+			<Grid item xs={12}>
+				<NavBar/>
+			</Grid>
+			<Grid item xs={12}>
+				<GrabitsPanel/>
+			</Grid>
+		</Grid>
 	);
 }
 

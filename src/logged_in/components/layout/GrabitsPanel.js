@@ -24,7 +24,7 @@ export function GrabitsPanel(props) {
     if (error) return `Error! ${error.message}`;
 
     return (
-        <Grid container spacing={2} className={classes.root} justify="center">
+        <Grid container spacing={2} justify="center">
             <Grid item xs={12} sm={6} md={3}>
                 <NewGrabitCard
                     createTab={props.createTab}
