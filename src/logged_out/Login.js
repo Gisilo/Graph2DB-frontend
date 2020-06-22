@@ -12,8 +12,8 @@ import Container from '@material-ui/core/Container';
 import {Form, Formik} from "formik";
 import FormikTextField from "../shared/components/FormikTextField";
 import {makeStyles} from "@material-ui/core/styles";
-import Copyright from "../shared/Copyright";
-import {SIGN_UP_LINK} from "../shared/costants/links";
+import Copyright from "../shared/components/Copyright";
+import {MY_GRABITS_URL, SIGN_UP_URL} from "../shared/costants/urls";
 import {Link, withRouter} from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -82,7 +82,7 @@ function Login(props) {
                             setCredentialsError(false);
                             setAlertSeverity("success");
                             setAlertMessage("Sign in successful!");
-                            setTimeout(() => history.push('/'), 2000);
+                            setTimeout(() => history.push(MY_GRABITS_URL), 2000);
                         } else {
                             if (auth.failure) {
                                 setAlertSeverity("error");
@@ -144,7 +144,7 @@ function Login(props) {
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link to={SIGN_UP_LINK} variant="body2">
+                                    <Link to={SIGN_UP_URL} variant="body2">
                                         {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>

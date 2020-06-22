@@ -8,14 +8,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Copyright from "../shared/Copyright";
+import Copyright from "../shared/components/Copyright";
 import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
 import {SIGNUP_MUT} from "../shared/costants/queries";
 import FormikTextField from "../shared/components/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
-import {LOG_IN_LINK} from "../shared/costants/links";
+import {LOG_IN_URL, MY_GRABITS_URL} from "../shared/costants/urls";
 import {Link, withRouter} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -90,7 +90,7 @@ function SignUp(props) {
                                 setPasswordError(false);
                                 setAlertSeverity("success");
                                 setAlertMessage("Registration successful!");
-                                setTimeout(() => history.push('/'), 2000);
+                                setTimeout(() => history.push(MY_GRABITS_URL), 2000);
                             }
                             else
                             {
@@ -194,7 +194,7 @@ function SignUp(props) {
                             </Button>
                             <Grid container justify="flex-end">
                                 <Grid item>
-                                    <Link to={LOG_IN_LINK} variant="body2">
+                                    <Link to={LOG_IN_URL} variant="body2">
                                         Already have an account? Log in
                                     </Link>
                                 </Grid>
