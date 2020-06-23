@@ -6,7 +6,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import {ExitToApp} from "@material-ui/icons";
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -14,6 +13,8 @@ import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplica
 import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import GrainIcon from '@material-ui/icons/Grain';
+import {withRouter} from "react-router-dom";
+import {ROOT_URL} from "../../../shared/costants/urls";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -56,10 +57,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavBar() {
+function NavBar(props) {
   const classes = useStyles();
+  const {history} = props;
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleMobileMenuClose = () => {
@@ -129,7 +130,7 @@ export default function NavBar() {
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={() => console.log("clicked dashboard")}
+                onClick={() => history.push(ROOT_URL)}
                 color="inherit"
             >
               <DashboardIcon />
@@ -248,3 +249,5 @@ export default function NavBar() {
     </div>
   );
 }
+
+export default withRouter(NavBar);
