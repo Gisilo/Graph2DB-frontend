@@ -13,28 +13,38 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined';
 import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import GrainIcon from '@material-ui/icons/Grain';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  title: {
     flexGrow: 1,
+    [theme.breakpoints.up('sm')]: {
+      textAlign: 'center',
+    },
   },
   grow: {
     flexGrow: 1,
   },
+  singleIcon: {
+    marginLeft: 1,
+    marginRight: 1,
+  },
   leftSection: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
     width: '100%',
+    display: 'none',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
+      marginLeft: theme.spacing(1),
       width: 'auto',
+      display: 'flex',
     },
   },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
+      marginRight: theme.spacing(1),
+      width: 'auto',
       display: 'flex',
     },
   },
@@ -72,29 +82,49 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => console.log("click")}>
+      <MenuItem onClick={() => console.log("click settings")}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <SettingsApplicationsOutlinedIcon />
         </IconButton>
-        <p>Profile</p>
+        <p>My Account</p>
       </MenuItem>
+      <MenuItem onClick={() => console.log("click feedback")}>
+      <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+      >
+        <FeedbackOutlinedIcon />
+      </IconButton>
+        <p>Feedback</p>
+      </MenuItem>
+        <MenuItem onClick={() => console.log("click logout")}>
+      <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+      >
+        <ExitToApp />
+      </IconButton>
+          <p>Log Out</p>
+        </MenuItem>
     </Menu>
   );
 
   return (
-    <div className={classes.root}>
+    <div className={classes.grow}>
       <AppBar position="fixed">
         <Toolbar variant="dense">
-          <Typography variant="h6" noWrap>
-            Grask
-          </Typography>
           <div className={classes.leftSection}>
             <IconButton
+                className={classes.singleIcon}
                 edge="start"
                 aria-label="account of current user"
                 aria-controls={menuId}
@@ -105,6 +135,18 @@ export default function NavBar() {
               <DashboardIcon />
             </IconButton>
             <IconButton
+                className={classes.singleIcon}
+                edge="start"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={() => console.log("clicked grain")}
+                color="inherit"
+            >
+              <GrainIcon />
+            </IconButton>
+            <IconButton
+                className={classes.singleIcon}
                 edge="start"
                 aria-label="account of current user"
                 aria-controls={menuId}
@@ -115,14 +157,11 @@ export default function NavBar() {
               <SaveAltIcon />
             </IconButton>
           </div>
-          <div className={classes.grow} />
+          <Typography variant="h6" className={classes.title} noWrap>Grask</Typography>
+          {/*<div className={classes.grow} />*/}
           <div className={classes.sectionDesktop}>
-
-            {/*<Button aria-label="account of current user"*/}
-            {/*        aria-controls={menuId}*/}
-            {/*        aria-haspopup="true" onClick={() => console.log("clicked grabits")}*/}
-            {/*        color="inherit">My Grabits</Button>*/}
             <IconButton
+                className={classes.singleIcon}
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
@@ -133,6 +172,7 @@ export default function NavBar() {
               <SettingsApplicationsOutlinedIcon />
             </IconButton>
             <IconButton
+                className={classes.singleIcon}
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
@@ -143,6 +183,7 @@ export default function NavBar() {
               <FeedbackOutlinedIcon />
             </IconButton>
             <IconButton
+                className={classes.singleIcon}
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
@@ -154,6 +195,42 @@ export default function NavBar() {
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
+            <div>
+              <IconButton
+                  className={classes.singleIcon}
+                  edge="start"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => console.log("clicked dashboard")}
+                  color="inherit"
+              >
+                <DashboardIcon />
+              </IconButton>
+              <IconButton
+                  className={classes.singleIcon}
+                  edge="start"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => console.log("clicked grain")}
+                  color="inherit"
+              >
+                <GrainIcon />
+              </IconButton>
+              <IconButton
+                  className={classes.singleIcon}
+                  edge="start"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => console.log("clicked convert to schema")}
+                  color="inherit"
+              >
+                <SaveAltIcon />
+              </IconButton>
+            </div>
+
             <IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}
