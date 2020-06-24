@@ -15,7 +15,7 @@ import {SIGNUP_MUT} from "../shared/costants/queries";
 import FormikTextField from "../shared/components/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
-import {LOG_IN_URL, MY_GRABITS_URL} from "../shared/costants/urls";
+import {LOG_IN_URL, ROOT_URL} from "../shared/costants/urls";
 import {Link, withRouter} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -90,7 +90,7 @@ function SignUp(props) {
                                 setPasswordError(false);
                                 setAlertSeverity("success");
                                 setAlertMessage("Registration successful!");
-                                setTimeout(() => history.push(MY_GRABITS_URL), 2000);
+                                setTimeout(() => history.push(ROOT_URL), 2000);
                             }
                             else
                             {

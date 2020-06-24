@@ -7,14 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import {ExitToApp} from "@material-ui/icons";
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined';
-import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import GrainIcon from '@material-ui/icons/Grain';
 import {withRouter} from "react-router-dom";
-import {ROOT_URL} from "../../../shared/costants/urls";
+import DashboardButton from "../navbar/DashboardButton";
+import EditorButton from "../navbar/EditorButton";
+import SchemaPageButton from "../navbar/SchemaPageButton";
+import SettingsButton from "../navbar/SettingsButton";
+import {SETTINGS_URL} from "../../../shared/costants/urls";
+import FeedbackButton from "../navbar/FeedbackButton";
+import LogoutButton from "../navbar/LogoutButton";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -25,10 +25,6 @@ const useStyles = makeStyles((theme) => ({
   },
   grow: {
     flexGrow: 1,
-  },
-  singleIcon: {
-    marginLeft: 1,
-    marginRight: 1,
   },
   leftSection: {
     position: 'relative',
@@ -71,8 +67,9 @@ function NavBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const menuId = 'primary-search-account-menu-desktop';
+  const mobileMenuId = 'primary-navbar-menu-mobile';
+  const menuId = 'primary-navbar-menu-desktop';
+
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -83,39 +80,18 @@ function NavBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => console.log("click settings")}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <SettingsApplicationsOutlinedIcon />
-        </IconButton>
-        <p>My Account</p>
+      <MenuItem onClick={() => history.push(SETTINGS_URL)}>
+        <SettingsButton menuId={mobileMenuId}/>
+        <p>Settings</p>
       </MenuItem>
       <MenuItem onClick={() => console.log("click feedback")}>
-      <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-      >
-        <FeedbackOutlinedIcon />
-      </IconButton>
+        <FeedbackButton menuId={mobileMenuId}/>
         <p>Feedback</p>
       </MenuItem>
-        <MenuItem onClick={() => console.log("click logout")}>
-      <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-      >
-        <ExitToApp />
-      </IconButton>
-          <p>Log Out</p>
-        </MenuItem>
+      <MenuItem onClick={() => console.log("click logout")}>
+        <LogoutButton menuId={mobileMenuId}/>
+        <p>Log Out</p>
+      </MenuItem>
     </Menu>
   );
 
@@ -124,114 +100,22 @@ function NavBar(props) {
       <AppBar position="fixed">
         <Toolbar variant="dense">
           <div className={classes.leftSection}>
-            <IconButton
-                className={classes.singleIcon}
-                edge="start"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => history.push(ROOT_URL)}
-                color="inherit"
-            >
-              <DashboardIcon />
-            </IconButton>
-            <IconButton
-                className={classes.singleIcon}
-                edge="start"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => console.log("clicked grain")}
-                color="inherit"
-            >
-              <GrainIcon />
-            </IconButton>
-            <IconButton
-                className={classes.singleIcon}
-                edge="start"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => console.log("clicked convert to schema")}
-                color="inherit"
-            >
-              <SaveAltIcon />
-            </IconButton>
+            <DashboardButton menuId={menuId}/>
+            <EditorButton menuId={menuId}/>
+            <SchemaPageButton menuId={menuId}/>
           </div>
           <Typography variant="h6" className={classes.title} noWrap>Grask</Typography>
-          {/*<div className={classes.grow} />*/}
           <div className={classes.sectionDesktop}>
-            <IconButton
-                className={classes.singleIcon}
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => console.log("clicked settings")}
-                color="inherit"
-            >
-              <SettingsApplicationsOutlinedIcon />
-            </IconButton>
-            <IconButton
-                className={classes.singleIcon}
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => console.log("clicked feedback")}
-                color="inherit"
-            >
-              <FeedbackOutlinedIcon />
-            </IconButton>
-            <IconButton
-                className={classes.singleIcon}
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => console.log("clicked log out")}
-                color="inherit"
-            >
-              <ExitToApp />
-            </IconButton>
+            <SettingsButton menuId={menuId}/>
+            <FeedbackButton menuId={menuId}/>
+            <LogoutButton menuId={menuId}/>
           </div>
           <div className={classes.sectionMobile}>
             <div>
-              <IconButton
-                  className={classes.singleIcon}
-                  edge="start"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={() => console.log("clicked dashboard")}
-                  color="inherit"
-              >
-                <DashboardIcon />
-              </IconButton>
-              <IconButton
-                  className={classes.singleIcon}
-                  edge="start"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={() => console.log("clicked grain")}
-                  color="inherit"
-              >
-                <GrainIcon />
-              </IconButton>
-              <IconButton
-                  className={classes.singleIcon}
-                  edge="start"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={() => console.log("clicked convert to schema")}
-                  color="inherit"
-              >
-                <SaveAltIcon />
-              </IconButton>
+              <DashboardButton menuId={menuId}/>
+              <EditorButton menuId={menuId}/>
+              <SchemaPageButton menuId={menuId}/>
             </div>
-
             <IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}

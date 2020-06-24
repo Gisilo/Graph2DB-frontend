@@ -16,7 +16,6 @@ function App() {
         <Router>
             <Switch>
                 <PrivateRoute exact path={ROOT_URL} component={MainPage}/>
-                <PrivateRoute path={MY_GRABITS_URL} component={GrabitPage}/>
                 <PrivateRoute path={EDITOR_URL} component={MainPage}/>
                 <Route path={LOG_IN_URL} component={Login}/>
                 <Route path={SIGN_UP_URL} component={SignUp}/>
