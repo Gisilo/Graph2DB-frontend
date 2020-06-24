@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMutation } from 'react-apollo';
 
-import { DELETE_QUERY } from '../../../shared/costants/queries'
+import { DELETE_QUERY } from '../../../common/costants/queries'
 
 
 function DeleteButton(props){

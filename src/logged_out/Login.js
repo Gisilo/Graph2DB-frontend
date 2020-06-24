@@ -10,15 +10,15 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {Form, Formik} from "formik";
-import FormikTextField from "../shared/components/FormikTextField";
+import FormikTextField from "../common/components/FormikTextField";
 import {makeStyles} from "@material-ui/core/styles";
-import Copyright from "../shared/components/Copyright";
-import {ROOT_URL, SIGN_UP_URL} from "../shared/costants/urls";
+import Copyright from "../common/components/Copyright";
+import {ROOT_URL, SIGN_UP_URL} from "../common/costants/urls";
 import {Link, withRouter} from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import * as yup from 'yup'
-import {authenticationService} from "../shared/services/authenticationService";
+import {authenticationService} from "../common/services/authenticationService";
 import {withApollo} from "@apollo/react-hoc";
 
 const useStyles = makeStyles((theme) => ({

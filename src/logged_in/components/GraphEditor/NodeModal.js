@@ -2,7 +2,7 @@
 import {FieldArray, Form, Formik} from "formik";
 import React from "react";
 import PropTypes from 'prop-types';
-import FormikTextField from '../../../shared/components/FormikTextField'
+import FormikTextField from '../../../common/components/FormikTextField'
 import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog} from '@material-ui/core'
 
 import * as yup from 'yup'

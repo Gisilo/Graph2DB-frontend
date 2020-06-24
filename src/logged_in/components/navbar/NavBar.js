@@ -15,7 +15,7 @@ import {
   LogoutButton,
   SchemaPageButton,
   FeedbackButton} from "./buttons";
-import {SETTINGS_URL} from "../../../shared/costants/urls";
+import {SETTINGS_URL} from "../../../common/costants/urls";
 
 const useStyles = makeStyles((theme) => ({
   title: {

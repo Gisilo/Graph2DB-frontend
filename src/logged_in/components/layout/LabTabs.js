@@ -5,18 +5,12 @@ import Tab from '@material-ui/core/Tab';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
-import {drawerWidth} from "./SideNav";
 import {EditorScreen} from "../screens/EditorScreen";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        // zIndex: theme.zIndex.drawer + 1,
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
     },
     content: {
         flexGrow: 1,
@@ -36,8 +30,8 @@ export default function LabTabs() {
     return (
         <div className={classes.root}>
             <TabContext value={value}>
-                <AppBar position="fixed" className={classes.appBar}>
-                    <TabList onChange={handleChange} aria-label="simple tabs example">
+                <AppBar position="fixed">
+                    <TabList onChange={handleChange} aria-label="simple tabs example" variant={"fullWidth"}>
                         <Tab label="Item One" value="1" />
                         <Tab label="Item Two" value="2" />
                         <Tab label="Item Three" value="3" />

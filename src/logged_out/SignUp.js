@@ -8,14 +8,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Copyright from "../shared/components/Copyright";
+import Copyright from "../common/components/Copyright";
 import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
-import {SIGNUP_MUT} from "../shared/costants/queries";
-import FormikTextField from "../shared/components/FormikTextField";
+import {SIGNUP_MUT} from "../common/costants/queries";
+import FormikTextField from "../common/components/FormikTextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
-import {LOG_IN_URL, ROOT_URL} from "../shared/costants/urls";
+import {LOG_IN_URL, ROOT_URL} from "../common/costants/urls";
 import {Link, withRouter} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
