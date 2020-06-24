@@ -1,8 +1,8 @@
 import React from 'react';
 import {COVERT_URL} from "../../../../common/costants/urls";
-import withRouter from "react-router-dom/es/withRouter";
 import NavBarIconButton from "./NavBarIconButton";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import {withRouter} from "react-router-dom";
 
 function SchemaPageButton(props) {
     const {menuId, history} = props;

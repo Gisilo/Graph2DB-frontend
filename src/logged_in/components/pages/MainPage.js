@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import NavBar from "../navbar/NavBar";
-import {GrabitsPanel} from "./GrabitsPanel";
+import {GrabitsPanel} from "../layout/GrabitsPanel";
 
 function MainPage() {
 	return (

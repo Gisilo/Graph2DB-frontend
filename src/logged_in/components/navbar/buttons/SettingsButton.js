@@ -1,8 +1,8 @@
 import React from 'react';
-import withRouter from "react-router-dom/es/withRouter";
 import NavBarIconButton from "./NavBarIconButton";
 import {SETTINGS_URL} from "../../../../common/costants/urls";
 import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined';
+import {withRouter} from "react-router-dom";
 
 function SettingsButton(props) {
     const {menuId, history} = props;
