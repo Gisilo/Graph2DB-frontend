@@ -1,7 +1,7 @@
 import React from 'react';
 import { GraphEditor } from '../GraphEditor/GraphEditor';
-
-// import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../buttons';
+import Grid from "@material-ui/core/Grid";
+import NavBar from "../navbar/NavBar";
 
 export class EditorPage extends React.Component {
 
@@ -18,9 +18,18 @@ export class EditorPage extends React.Component {
 		return this.editor.current.loadGraph(newGraph)
 	};
 
+	heightOffset = 50; // magic numbeeeeer
 	render() {
+		console.log("grabit id passed to editor", this.props.location.grabitID)
 		return (
-			<GraphEditor ref={this.editor} heightOffset={120}/>  //TODO: magic number 
+			<Grid container>
+				<Grid item xs={12}>
+					<NavBar/>
+				</Grid>
+				<Grid item xs={12}>
+					<GraphEditor ref={this.editor} heightOffset={this.heightOffset}/>
+				</Grid>
+			</Grid>
 		)
 	}
 
