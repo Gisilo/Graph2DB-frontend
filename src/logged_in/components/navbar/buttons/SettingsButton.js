@@ -1,7 +1,7 @@
 import React from 'react';
 import withRouter from "react-router-dom/es/withRouter";
 import NavBarIconButton from "./NavBarIconButton";
-import {SETTINGS_URL} from "../../../shared/costants/urls";
+import {SETTINGS_URL} from "../../../../shared/costants/urls";
 import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined';
 
 function SettingsButton(props) {

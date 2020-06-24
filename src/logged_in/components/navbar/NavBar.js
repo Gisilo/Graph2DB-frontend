@@ -8,13 +8,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import {withRouter} from "react-router-dom";
-import DashboardButton from "../navbar/DashboardButton";
-import EditorButton from "../navbar/EditorButton";
-import SchemaPageButton from "../navbar/SchemaPageButton";
-import SettingsButton from "../navbar/SettingsButton";
+import {
+  DashboardButton,
+  EditorButton,
+  SettingsButton,
+  LogoutButton,
+  SchemaPageButton,
+  FeedbackButton} from "./buttons";
 import {SETTINGS_URL} from "../../../shared/costants/urls";
-import FeedbackButton from "../navbar/FeedbackButton";
-import LogoutButton from "../navbar/LogoutButton";
 
 const useStyles = makeStyles((theme) => ({
   title: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {EDITOR_URL} from "../../../shared/costants/urls";
+import {EDITOR_URL} from "../../../../shared/costants/urls";
 import GrainIcon from '@material-ui/icons/Grain';
 import withRouter from "react-router-dom/es/withRouter";
 import NavBarIconButton from "./NavBarIconButton";
