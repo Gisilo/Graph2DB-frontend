@@ -3,7 +3,7 @@ import { GraphEditor } from '../GraphEditor/GraphEditor';
 
 // import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../buttons';
 
-export class EditorScreen extends React.Component {
+export class EditorPage extends React.Component {
 
 	constructor(props) {
 		super(props);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {EditorScreen} from '../screens/EditorScreen';
+import {EditorPage} from '../pages/EditorPage';
 import {GrabitsPanel} from './GrabitsPanel';
 
 function TabPanel(props) {
@@ -18,7 +18,7 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                value===0 ? <GrabitsPanel createTab={createTab}/> : <EditorScreen/>
+                value===0 ? <GrabitsPanel createTab={createTab}/> : <EditorPage/>
             )}
         </div>
     );
