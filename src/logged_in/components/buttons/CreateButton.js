@@ -3,12 +3,12 @@ import { Formik, ErrorMessage, Form } from 'formik';
 import { useMutation } from 'react-apollo';
 import { useState } from 'react';
 
-import { CREATE_QUERY } from '../../../shared/costants/queries'
+import { CREATE_MUT } from '../../../common/costants/queries'
 
 
 function MyVerticallyCenteredModal(props) {
 
-	const [addGrabit] = useMutation(CREATE_QUERY);
+	const [addGrabit] = useMutation(CREATE_MUT);
 
 	return (
 		//sostituire con material ui

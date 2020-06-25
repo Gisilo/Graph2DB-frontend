@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {EditorScreen} from '../screens/EditorScreen';
-import {GrabitsPanel} from './GrabitsPanel';
+import {EditorPage} from '../pages/EditorPage';
+import {GrabitsPanel} from '../pages/grabits_page/GrabitsPanel';
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, createTab, grabitID, ...other } = props;
 
     return (
         <div
@@ -18,7 +18,7 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                value===0 ? <GrabitsPanel createTab={props.cb}/> : <EditorScreen/>
+                value===0 ? <GrabitsPanel createTab={createTab}/> : <EditorPage/>
             )}
         </div>
     );
@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
+    tabcontainer: {
+        width: '100%',
+    }
 }));
 
 export default function TabsContainer() {
@@ -74,7 +77,6 @@ export default function TabsContainer() {
                     textColor="primary"
                     variant="scrollable"
                     scrollButtons="on"
-                    aria-label="scrollable auto tabs example"
                 >
                     <Tab label="Grabits" {...a11yProps(0)} />
                     { tabs.map((e, i) =>
@@ -83,7 +85,7 @@ export default function TabsContainer() {
                         )
                     }
                 </Tabs>
-            <TabPanel cb={createTab} value={value} index={0}/>
+            <TabPanel createTab={createTab} value={value} index={0}/>
             { tabs.map((e,i) => <TabPanel grabitID={e.id} key={i} value={value} index={i+1}/>) }
 
         </div>

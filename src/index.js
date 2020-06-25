@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './logged_in/styles/index.css';
+import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -22,7 +22,7 @@ const httpLink = createHttpLink({
 
 const csrfMiddleware = new ApolloLink((operation, forward) => {
     let csrftoken = Cookies.get('csrftoken');
-    console.log(csrftoken);
+    console.log('cookie', csrftoken);
     operation.setContext(({ headers = {} }) => ({
         headers: {
             ...headers,

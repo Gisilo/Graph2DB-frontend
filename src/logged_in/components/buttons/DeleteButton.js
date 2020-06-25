@@ -1,12 +1,12 @@
 import React from 'react';
 import { useMutation } from 'react-apollo';
 
-import { DELETE_QUERY } from '../../../shared/costants/queries'
+import { DELETE_MUT } from '../../../common/costants/queries'
 
 
 function DeleteButton(props){
 
-    const [deleteGrabitMutation] = useMutation(DELETE_QUERY);
+    const [deleteGrabitMutation] = useMutation(DELETE_MUT);
 
     const deleteGrabit = () => {
 

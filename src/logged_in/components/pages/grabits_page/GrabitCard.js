@@ -6,28 +6,32 @@ import {
   Button, Typography, IconButton
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {EDITOR_URL} from "../../../../common/costants/urls";
+import {withRouter} from "react-router-dom";
 
 const useStyles = makeStyles({
   card: {
-    maxWidth: 345,
-    top: '50%',
-    left: '50%',
-    borderRadius: 10,
-    backgroundSize: '200%',
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    transition: '0.6s',
-    backgroundImage: 'linear-gradient(45deg, #FFC312, #EE5A24, #00a8ff)',
-    '&:hover': {
-      backgroundPosition: 'right'
-    },
-    height: "100%",
+      marginLeft: 6,
+      marginRight: 6,
+      maxWidth: 345,
+      top: '50%',
+      left: '50%',
+      borderRadius: 10,
+      backgroundSize: '200%',
+      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      transition: '0.6s',
+      backgroundImage: 'linear-gradient(45deg, #FFC312, #EE5A24, #00a8ff)',
+      '&:hover': {
+          backgroundPosition: 'right'
+      },
+      height: "100%",
   }
 }
 );
 
-export default function GrabitCard(props) {
+function GrabitCard(props) {
   const classes = useStyles();
-  const { grabitID, grabitName, description, updateDate } = props;
+  const { grabitID, grabitName, description, updateDate, history } = props;
 
   return (
     <Card variant="outlined" className={classes.card}>
@@ -46,8 +50,10 @@ export default function GrabitCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={() => props.createTab({name: grabitName, id: grabitID})} size="small">Open Grabit</Button>
+        <Button onClick={() => history.push({pathname: EDITOR_URL, grabitID: grabitID})} size="small">Open Grabit</Button>
       </CardActions>
     </Card>
   );
 }
+
+export default withRouter(GrabitCard);
