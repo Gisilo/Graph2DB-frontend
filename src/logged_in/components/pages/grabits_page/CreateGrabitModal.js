@@ -8,17 +8,18 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Zoom from "@material-ui/core/Zoom";
 import {Form, Formik} from "formik";
 import FormikTextField from "../../../../common/components/FormikTextField";
-import * as yup from "yup";
 import {useMutation} from "@apollo/react-hooks";
 import {CREATE_MUT} from "../../../../common/costants/queries";
+import {withRouter} from "react-router-dom";
+import {EDITOR_URL} from "../../../../common/costants/urls";
 
 // This generates findDomNode warning, TODO: find alternative to forwardRef
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Zoom ref={ref} {...props} />;
 });
 
-export default function CreateGrabitModal(props) {
-    const {open, handleClose} = props;
+function CreateGrabitModal(props) {
+    const {open, handleClose, history} = props;
     const [addGrabit] = useMutation(CREATE_MUT);
 
     return (
@@ -40,10 +41,12 @@ export default function CreateGrabitModal(props) {
                                 nameGrabit: data.grabitName,
                                 descr: data.description
                             }
-                        }).then((success) => {
-                            console.log('success', success);
+                        }).then((response) => {
+                            console.log('success', response);
+                            const id = response.data.createGrabit.grabit.id;
+                            handleClose();
+                            setTimeout(() => history.push({pathname: EDITOR_URL, grabitID: id}), 500);
                         }, (error) => console.error('error', error));
-                        handleClose();
                         setSubmitting(false);
                     }}>
                     {(isSubmitting) =>
@@ -89,3 +92,5 @@ export default function CreateGrabitModal(props) {
         </div>
     );
 }
+
+export default withRouter(CreateGrabitModal);
