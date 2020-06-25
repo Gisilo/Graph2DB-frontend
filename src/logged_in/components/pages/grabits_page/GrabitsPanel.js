@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { GET_ALL_GRABITS_QUERY } from '../../../../common/costants/queries'
-import NewGrabitCard from "../../NewGrabitCard";
 import Fab from "@material-ui/core/Fab";
 import CreateGrabitModal from "./CreateGrabitModal";
 
@@ -49,7 +48,7 @@ export function GrabitsPanel(props) {
                 {/*</Grid>*/}
                 {
                     data.allGrabits.edges.map(
-                        (item, i) => {
+                        (item) => {
                             const node = item.node;
                             return (
                                 <Grid key={node.id} item xs={12} sm={6} md={3}>
