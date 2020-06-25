@@ -6,24 +6,24 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from "@material-ui/core/Slide";
+import Zoom from "@material-ui/core/Zoom";
 
-export default function FormDialog() {
-    const [open, setOpen] = React.useState(false);
+// This generates findDomNode warning, TODO: find alternative to forwardRef
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Zoom ref={ref} {...props} />;
+});
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+export default function CreateGrabitModal(props) {
+    const {open, handleClose} = props;
 
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open form dialog
-            </Button>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+                TransitionComponent={Transition}>
                 <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
