@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, LinearProgress } from '@material-ui/core';
-import GrabitCard from '../../GrabitCard';
+import GrabitCard from './GrabitCard';
 import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
