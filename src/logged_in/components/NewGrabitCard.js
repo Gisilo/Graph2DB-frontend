@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import {Form, Formik} from "formik";
 import {useMutation} from "@apollo/react-hooks";
-import {CREATE_QUERY} from "../../common/costants/queries";
+import {CREATE_MUT} from "../../common/costants/queries";
 import FormikTextField from "../../common/components/FormikTextField";
 
 const useStyles = makeStyles({
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 export default function NewGrabitCard(props) {
     const classes = useStyles();
-    const [addGrabit] = useMutation(CREATE_QUERY);
+    const [addGrabit] = useMutation(CREATE_MUT);
 
     return (
         <Card variant="outlined" className={classes.card}>

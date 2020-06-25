@@ -10,7 +10,7 @@ import {Form, Formik} from "formik";
 import FormikTextField from "../../../../common/components/FormikTextField";
 import * as yup from "yup";
 import {useMutation} from "@apollo/react-hooks";
-import {CREATE_QUERY} from "../../../../common/costants/queries";
+import {CREATE_MUT} from "../../../../common/costants/queries";
 
 // This generates findDomNode warning, TODO: find alternative to forwardRef
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -19,7 +19,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function CreateGrabitModal(props) {
     const {open, handleClose} = props;
-    const [addGrabit] = useMutation(CREATE_QUERY);
+    const [addGrabit] = useMutation(CREATE_MUT);
 
     return (
         <div>
