@@ -8,33 +8,32 @@ import {
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {EDITOR_URL} from "../../../../common/costants/urls";
 import {withRouter} from "react-router-dom";
+import {Color} from "@material-ui/lab/Alert/Alert";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
-      marginLeft: 6,
-      marginRight: 6,
-      maxWidth: 345,
-      top: '50%',
-      left: '50%',
-      borderRadius: 10,
-      backgroundSize: '200%',
-      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-      transition: '0.6s',
-      backgroundImage: 'linear-gradient(45deg, #FFC312, #EE5A24, #00a8ff)',
+      margin: 8,
+      transition: '0.2s',
       '&:hover': {
-          backgroundPosition: 'right'
+          transform: 'scale(1.1)',
+          boxShadow: "0 6px 12px 0 rgba(15, 15, 15, .2)",
       },
-      height: "100%",
+      width: "90%",
+      [theme.breakpoints.up('sm')]: {
+          width: '70%',
+      },
+      [theme.breakpoints.up('md')]: {
+          width: '60%',
+      },
   }
-}
-);
+}));
 
 function GrabitCard(props) {
   const classes = useStyles();
   const { grabitID, grabitName, description, updateDate, history } = props;
 
   return (
-    <Card variant="outlined" className={classes.card}>
+    <Card variant={"elevation"} elevation={2} className={classes.card}>
       <CardHeader
           action={
             <IconButton aria-label="settings">

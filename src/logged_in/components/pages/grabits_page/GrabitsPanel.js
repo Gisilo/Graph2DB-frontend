@@ -11,8 +11,6 @@ import CreateGrabitModal from "./CreateGrabitModal";
 const useStyles = makeStyles({
     root: {
         marginTop: 20,
-        paddingLeft: "20px",
-        paddingRight: "20px",
     },
     fab: {
         margin: 0,
@@ -40,7 +38,7 @@ export function GrabitsPanel(props) {
 
     return (
         <>
-            <Grid container justify="center" className={classes.root}>
+            <Grid container justify={"center"} className={classes.root}>
                 {/*<Grid item xs={12} sm={6} md={3}>*/}
                 {/*    <NewGrabitCard*/}
                 {/*        createTab={props.createTab}*/}
@@ -51,7 +49,7 @@ export function GrabitsPanel(props) {
                         (item) => {
                             const node = item.node;
                             return (
-                                <Grid key={node.id} item xs={12} sm={6} md={3}>
+                                <Grid item container justify={"center"} key={node.id} xs={12}>
                                     <GrabitCard
                                         grabitID={node.id}
                                         grabitName={node.nameProject}
