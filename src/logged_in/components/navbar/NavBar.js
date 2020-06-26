@@ -15,7 +15,8 @@ import {
   LogoutButton,
   SchemaPageButton,
   FeedbackButton} from "./buttons";
-import {SETTINGS_URL} from "../../../common/costants/urls";
+import {ROOT_URL, SETTINGS_URL} from "../../../common/costants/urls";
+import {authenticationService} from "../../../common/services/authenticationService";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -89,7 +90,10 @@ function NavBar(props) {
         <FeedbackButton menuId={mobileMenuId}/>
         <p>Feedback</p>
       </MenuItem>
-      <MenuItem onClick={() => console.log("click logout")}>
+      <MenuItem onClick={() => {
+        authenticationService.logout();
+        history.push(ROOT_URL);
+      }}>
         <LogoutButton menuId={mobileMenuId}/>
         <p>Log Out</p>
       </MenuItem>
