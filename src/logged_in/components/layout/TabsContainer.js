@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {EditorPage} from '../pages/EditorPage';
+import {EditorPage} from '../pages/editor_page/EditorPage';
 import {GrabitsPanel} from '../pages/grabits_page/GrabitsPanel';
 
 function TabPanel(props) {
