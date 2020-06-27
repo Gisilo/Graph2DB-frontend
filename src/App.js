@@ -7,12 +7,24 @@ import PrivateRoute from "./common/components/PrivateRoute";
 import {EDITOR_URL, LOG_IN_URL, ROOT_URL, SIGN_UP_URL} from "./common/costants/urls";
 import {EditorPage} from "./logged_in/components/pages/editor_page/EditorPage";
 
+import { createMuiTheme } from '@material-ui/core/styles';
+import {ThemeProvider} from "@material-ui/styles";
+
 function NotFound() {
     return<h1>404 Not Found</h1>; // TODO: temporary component, do a proper 404 page
 }
 
+const palette = {
+    primary: { main: '#1B7B34' },
+    secondary: { main: '#1fb58f' }
+};
+const themeName = 'Forest Green Mountain Meadow Grasshopper';
+
+const theme = createMuiTheme({ palette, themeName });
+
 function App() {
     return (
+        <ThemeProvider theme={theme}>
         <Router>
             <Switch>
                 <PrivateRoute exact path={ROOT_URL} component={MainPage}/>
@@ -22,6 +34,7 @@ function App() {
                 <Route component={NotFound}/>
             </Switch>
         </Router>
+        </ThemeProvider>
     );
 }
 

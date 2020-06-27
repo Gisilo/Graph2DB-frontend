@@ -1,8 +1,7 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {
-    Card,
-    CardHeader, CardContent, CardActions,
+    Card, CardContent, CardActions,
     Button, Typography, IconButton
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -121,10 +120,15 @@ function GrabitCard(props) {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button onClick={() => history.push({pathname: EDITOR_URL, grabitID: grabitID})}
-                            size="small">
+                    <Grid container justify="flex-end">
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => history.push({pathname: EDITOR_URL, grabitID: grabitID})}
+                        size="small">
                         Open Grabit
                     </Button>
+                    </Grid>
                 </CardActions>
             </Card>
             {renderMenu}
