@@ -8,6 +8,7 @@ function DashboardButton(props) {
     const {menuId, history} = props;
     return (
         <NavBarIconButton
+            tooltip="Dashboard"
             aria_label="dashboard button"
             onClick={() => history.push(ROOT_URL)}
             menuId={menuId}

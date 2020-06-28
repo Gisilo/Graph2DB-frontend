@@ -1,9 +1,9 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
-import NavBar from "../navbar/NavBar";
-import {GrabitsPanel} from "./grabits_page/GrabitsPanel";
+import NavBar from "../../navbar/NavBar";
+import {GrabitsPanel} from "./GrabitsPanel";
 
-function MainPage() {
+function DashboardPage() {
 	return (
 		<Grid container>
 			<Grid item xs={12}>
@@ -16,4 +16,4 @@ function MainPage() {
 	);
 }
 
-export default MainPage;
+export default DashboardPage;

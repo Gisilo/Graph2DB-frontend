@@ -8,6 +8,7 @@ function SchemaPageButton(props) {
     const {menuId, history} = props;
     return (
         <NavBarIconButton
+            tooltip="Convert a Grabit"
             aria_label="schema page button"
             onClick={() => history.push(COVERT_URL)}
             menuId={menuId}

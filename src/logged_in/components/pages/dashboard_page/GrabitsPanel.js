@@ -8,21 +8,21 @@ import { GET_ALL_GRABITS_QUERY } from '../../../../common/costants/queries'
 import Fab from "@material-ui/core/Fab";
 import CreateGrabitModal from "./CreateGrabitModal";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles( (theme) => ({
     root: {
         marginTop: 20,
-        paddingLeft: "20px",
-        paddingRight: "20px",
     },
     fab: {
-        margin: 0,
         top: 'auto',
         right: 30,
         bottom: 30,
         left: 'auto',
         position: 'fixed',
-    }
-});
+    },
+    extendedIcon: {
+        marginRight: theme.spacing(1),
+    },
+}));
 
 export function GrabitsPanel(props) {
     const classes = useStyles();
@@ -40,20 +40,15 @@ export function GrabitsPanel(props) {
 
     return (
         <>
-            <Grid container justify="center" className={classes.root}>
-                {/*<Grid item xs={12} sm={6} md={3}>*/}
-                {/*    <NewGrabitCard*/}
-                {/*        createTab={props.createTab}*/}
-                {/*    />*/}
-                {/*</Grid>*/}
+            <Grid container justify={"center"} className={classes.root}>
                 {
                     data.allGrabits.edges.map(
                         (item) => {
                             const node = item.node;
                             return (
-                                <Grid key={node.id} item xs={12} sm={6} md={3}>
+                                <Grid item container justify={"center"} key={node.id} xs={12}>
                                     <GrabitCard
-                                        grabitID={node.id}
+                                      grabitID={node.id}
                                         grabitName={node.nameProject}
                                         description={node.description}
                                         updateDate={node.updateDate}
@@ -65,12 +60,15 @@ export function GrabitsPanel(props) {
                 }
             </Grid>
             <Fab
+                variant="extended"
+                size="medium"
                 color="primary"
-                aria-label="add"
+                aria-label="add grabit"
                 className={classes.fab}
                 onClick={handleClickOpen}
             >
-                <AddIcon />
+                <AddIcon className={classes.extendedIcon}/>
+                Create Grabit
             </Fab>
             <CreateGrabitModal open={openModal} handleClose={handleClose}/>
         </>
