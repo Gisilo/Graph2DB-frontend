@@ -5,7 +5,7 @@ import {
     Button, Typography, IconButton
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {EDITOR_URL, SETTINGS_URL} from "../../../../common/costants/urls";
+import {EDITOR_URL} from "../../../../common/costants/urls";
 import {withRouter} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
