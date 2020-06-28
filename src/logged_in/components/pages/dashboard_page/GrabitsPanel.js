@@ -7,21 +7,22 @@ import AddIcon from '@material-ui/icons/Add';
 import { GET_ALL_GRABITS_QUERY } from '../../../../common/costants/queries'
 import Fab from "@material-ui/core/Fab";
 import CreateGrabitModal from "./CreateGrabitModal";
-import Tooltip from "@material-ui/core/Tooltip";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles( (theme) => ({
     root: {
         marginTop: 20,
     },
     fab: {
-        margin: 0,
         top: 'auto',
         right: 30,
         bottom: 30,
         left: 'auto',
         position: 'fixed',
-    }
-});
+    },
+    extendedIcon: {
+        marginRight: theme.spacing(1),
+    },
+}));
 
 export function GrabitsPanel(props) {
     const classes = useStyles();
@@ -59,14 +60,15 @@ export function GrabitsPanel(props) {
                 }
             </Grid>
             <Fab
+                variant="extended"
+                size="medium"
                 color="primary"
-                aria-label="add"
+                aria-label="add grabit"
                 className={classes.fab}
                 onClick={handleClickOpen}
             >
-                <Tooltip title="Create Grabit">
-                    <AddIcon />
-                </Tooltip>
+                <AddIcon className={classes.extendedIcon}/>
+                Create Grabit
             </Fab>
             <CreateGrabitModal open={openModal} handleClose={handleClose}/>
         </>
