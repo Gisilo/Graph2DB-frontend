@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {EditorPage} from '../pages/editor_page/EditorPage';
-import {GrabitsPanel} from '../pages/grabits_page/GrabitsPanel';
+import {GrabitsPanel} from '../pages/dashboard_page/GrabitsPanel';
 
 function TabPanel(props) {
     const { children, value, index, createTab, grabitID, ...other } = props;

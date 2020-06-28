@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import MainPage from './logged_in/components/pages/MainPage';
+import DashboardPage from './logged_in/components/pages/dashboard_page/DashboardPage';
 import Login from "./logged_out/Login";
 import SignUp from "./logged_out/SignUp";
 import PrivateRoute from "./common/components/PrivateRoute";
@@ -27,7 +27,7 @@ function App() {
         <ThemeProvider theme={theme}>
         <Router>
             <Switch>
-                <PrivateRoute exact path={ROOT_URL} component={MainPage}/>
+                <PrivateRoute exact path={ROOT_URL} component={DashboardPage}/>
                 <PrivateRoute path={EDITOR_URL} component={EditorPage}/>
                 <Route path={LOG_IN_URL} component={Login}/>
                 <Route path={SIGN_UP_URL} component={SignUp}/>
