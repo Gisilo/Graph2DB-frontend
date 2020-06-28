@@ -8,6 +8,7 @@ function SettingsButton(props) {
     const {menuId, history} = props;
     return (
         <NavBarIconButton
+            tooltip="My Account"
             aria_label="settings button"
             onClick={() => history.push(SETTINGS_URL)}
             menuId={menuId}

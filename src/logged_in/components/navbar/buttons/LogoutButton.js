@@ -9,6 +9,7 @@ function LogoutButton(props) {
     const {menuId, history} = props;
     return (
         <NavBarIconButton
+            tooltip="Log out"
             aria_label="log out button"
             onClick={() => {
                 authenticationService.logout();

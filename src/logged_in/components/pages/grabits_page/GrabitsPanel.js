@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { GET_ALL_GRABITS_QUERY } from '../../../../common/costants/queries'
 import Fab from "@material-ui/core/Fab";
 import CreateGrabitModal from "./CreateGrabitModal";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles({
     root: {
@@ -63,7 +64,9 @@ export function GrabitsPanel(props) {
                 className={classes.fab}
                 onClick={handleClickOpen}
             >
-                <AddIcon />
+                <Tooltip title="Create Grabit">
+                    <AddIcon />
+                </Tooltip>
             </Fab>
             <CreateGrabitModal open={openModal} handleClose={handleClose}/>
         </>
