@@ -66,7 +66,7 @@ function Login(props) {
                     <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Log in
                 </Typography>
                 <Formik
                     initialValues={{username: "", password: ""}}
@@ -81,7 +81,7 @@ function Login(props) {
                         if (auth.success) {
                             setCredentialsError(false);
                             setAlertSeverity("success");
-                            setAlertMessage("Sign in successful!");
+                            setAlertMessage("Logged in successful!");
                             setTimeout(() => history.push(ROOT_URL), 2000);
                         } else {
                             if (auth.failure) {
