@@ -41,9 +41,9 @@ export const LOAD_QUERY = gql`
     }`;
 
 export const DELETE_MUT = gql`
-    mutation DeleteGrabitByName($nameGrabit: String!) {
-        deleteGrabit(input: {nameProject: $nameGrabit}) {
-            msg
+    mutation DeleteGrabitByName($grabitName: String!) {
+        deleteGrabit(input: {nameProject: $grabitName}) {
+          msg
         }
     }`;
 

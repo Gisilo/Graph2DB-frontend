@@ -43,7 +43,9 @@ const useStyles = makeStyles((theme) => ({
 
 function GrabitCard(props) {
     const classes = useStyles();
-    const {grabitID, grabitName, description, updateDate, history} = props;
+
+
+    const {grabitID, grabitName, description, updateDate, removeGrabitFromList, history} = props;
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -77,7 +79,9 @@ function GrabitCard(props) {
                 <p>Edit Name/Description</p>
             </MenuItem>
             <Divider/>
-            <MenuItem onClick={() => console.log("delete grabit")}>
+            <MenuItem onClick={() => {
+                removeGrabitFromList();
+            }}>
                 <IconButton
                     aria-label={'edit grabit info'}
                     aria-controls={grabitMenuId}
