@@ -100,10 +100,10 @@ export function EdgeModal(props) {
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
             <DialogTitle id="simple-dialog-title">Information edge {props.edgeInfo && props.edgeInfo.data().label}</DialogTitle>
             <DialogContent>
-                <div>
-                    Edge from {props.edgeInfo && props.edgeInfo.target().data().label}
-                    to {props.edgeInfo && props.edgeInfo.source().data().label}
-                </div>
+                {props.typeModal === "create" && <div>Edge from {props.sourceNode.data().label}
+                    to {props.targetNode.data().label}</div>}
+                {props.typeModal === "edite" && <div>Edge from {props.edgeInfo && props.edgeInfo.target().data().label}
+                    to {props.edgeInfo && props.edgeInfo.source().data().label}</div>}
                 <Formik
                     initialValues={{ nName: props.edgeInfo ? props.edgeInfo.data().label : "",
                         nDesc: props.edgeInfo ? props.edgeInfo.data().description : "",

@@ -37,6 +37,32 @@ export class GraphEditor extends Component {
         //let la = this.cy.layout( this.options );
         //la.run();
 
+        this.cy.on('ehcomplete', (event, sourceNode, targetNode, addedEles) => {
+            let { position } = event;
+
+            let nameList = this.cy.elements().map(x => x.data().label);
+            let clickedEdge = event.target;
+            console.log("evente", event);
+            // Get number of directed edge from source to target
+            const nEdges = sourceNode.edgesTo(targetNode).length;
+            // Set edge name
+            clickedEdge.data().label = clickedEdge.data().label ?
+                clickedEdge.data().label : // If present, keep it
+                nEdges === 1 ?             // Else create unique new name as source_target_nEdges
+                    `${sourceNode.data().label}_${targetNode.data().label}` :
+                    `${sourceNode.data().label}_${targetNode.data().label}_${nEdges}`;
+            // Set property objects: if present keep it, else create empty list
+            clickedEdge.data().property = clickedEdge.data().property ? clickedEdge.data().property : [];
+            clickedEdge.data().cardinality = clickedEdge.data().cardinality ?
+                clickedEdge.data().cardinality :
+                {max:"", min:""};
+
+            this.setState({edgeModalShow: true, sourceNode:sourceNode, targetNode:targetNode,
+                edgeInfo:clickedEdge, typeModal:"create", nameList:nameList});
+
+            // ...
+        });
+
         // Double click event on canvas -> create new node
         this.cy.on('dblclick', (event, renderedPosition) => {
             let nameList = this.cy.elements().map(x => x.data().label);
@@ -64,7 +90,7 @@ export class GraphEditor extends Component {
                     clickedEdge.data().cardinality :
                     {max:"", min:""};
 
-                this.setState({edgeModalShow: true, edgeInfo:clickedEdge, nameList:nameList});
+                this.setState({edgeModalShow: true, edgeInfo:clickedEdge, typeModal:"edit", nameList:nameList});
             }
         });
 
