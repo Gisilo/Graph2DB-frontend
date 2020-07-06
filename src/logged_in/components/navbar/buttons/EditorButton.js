@@ -8,7 +8,7 @@ function EditorButton(props) {
     const {menuId, history} = props;
     return (
         <NavBarIconButton
-            tooltip="Edit a Grabit"
+            tooltip="Editor"
             aria_label="editor button"
             onClick={() => history.push(EDITOR_URL)}
             menuId={menuId}

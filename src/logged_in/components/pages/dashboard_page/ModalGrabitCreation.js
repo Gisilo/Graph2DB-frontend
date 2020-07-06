@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Zoom ref={ref} {...props} />;
 });
 
-function CreateGrabitModal(props) {
+function ModalGrabitCreation(props) {
     const {open, handleClose, history} = props;
     const [addGrabit] = useMutation(CREATE_MUT);
 
@@ -93,4 +93,4 @@ function CreateGrabitModal(props) {
     );
 }
 
-export default withRouter(CreateGrabitModal);
+export default withRouter(ModalGrabitCreation);

@@ -6,7 +6,7 @@ function FeedbackButton(props) {
     const {menuId} = props;
     return (
         <NavBarIconButton
-            tooltip="Give a feedback"
+            tooltip="Send a feedback"
             aria_label="feedback button"
             onClick={() => console.log("Feedback pressed")}
             menuId={menuId}
