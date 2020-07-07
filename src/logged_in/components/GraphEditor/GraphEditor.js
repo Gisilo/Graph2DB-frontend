@@ -90,7 +90,7 @@ export class GraphEditor extends Component {
                     clickedEdge.data().cardinality :
                     {max:"", min:""};
 
-                this.setState({edgeModalShow: true, edgeInfo:clickedEdge, typeModal:"edit", nameList:nameList});
+                this.setState({edgeModalShow: true, edgeInfo:clickedEdge, nameList:nameList});
             }
         });
 
