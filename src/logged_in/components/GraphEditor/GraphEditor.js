@@ -37,8 +37,7 @@ export class GraphEditor extends Component {
         //let la = this.cy.layout( this.options );
         //la.run();
 
-        this.cy.on('ehcomplete', (event, sourceNode, targetNode, addedEles) => {
-            let { position } = event;
+        this.cy.on('ehcomplete', (event, sourceNode, targetNode) => {
 
             let nameList = this.cy.elements().map(x => x.data().label);
             let clickedEdge = event.target;
