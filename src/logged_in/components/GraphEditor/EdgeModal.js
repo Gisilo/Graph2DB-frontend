@@ -1,9 +1,19 @@
 
-import {FieldArray, Form, Formik} from "formik";
+import {ErrorMessage, FieldArray, Form, Formik, useField} from "formik";
 import React from "react";
 import PropTypes from 'prop-types';
-import FormikTextField from '../../../common/components/FormikTextField'
-import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog} from '@material-ui/core'
+import FormikTextField from '../../../shared/inputs/FormikTextField'
+import {
+    Button,
+    Grid,
+    Slide,
+    DialogContent,
+    DialogTitle,
+    Dialog,
+    FormControl,
+    InputLabel,
+    Select, MenuItem
+} from '@material-ui/core'
 
 import * as yup from 'yup'
 import PropertyAdder from "./PropertyAdder";
@@ -53,7 +63,9 @@ const schema = yup.object({
                 .checkWithField('domain', 'Default value must be integer')
                 .when('required', {is: true, then:yup.mixed().required("Default value required")})
         })
-    ).unique("Name property already used", x => x.name)
+    ).unique("Name property already used", x => x.name),
+    cardMax: yup.string().oneOf(["zero", "one", "many"]).required("Maximum cardinality required"),
+    cardMin: yup.string().oneOf(["zero", "one", "many"]).required("Minimum cardinality required"),
 
 });
 
@@ -61,7 +73,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export function NodeModal(props) {
+const CardinalitySelect = ({ ...props }) => {
+
+    const [field, meta] = useField(props);
+    const errorText = meta.error && meta.touched ? meta.error : "";
+    return(<FormControl fullWidth>
+        <InputLabel>Select {props.type} cardinality</InputLabel>
+        <Select required {...field} type="select" helperText={errorText} error={!!errorText}>
+            <MenuItem value="zero">Zero</MenuItem>
+            <MenuItem value="one">One</MenuItem>
+            <MenuItem value="many">Many</MenuItem>
+        </Select>
+        <ErrorMessage component="p" name={props.name}
+                      className="MuiFormHelperText-root MuiFormHelperText-contained Mui-error"/>
+    </FormControl>)
+};
+
+export function EdgeModal(props) {
     const { onClose, open } = props;
 
     const handleClose = () => {
@@ -70,32 +98,33 @@ export function NodeModal(props) {
 
     return (
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
-            {props.typeModal === "create" && <DialogTitle id="simple-dialog-title">Create Node</DialogTitle>}
-            {props.typeModal === "edit" && <DialogTitle id="simple-dialog-title">Information node {props.nodeInfo.data().label}</DialogTitle>}
+            <DialogTitle id="simple-dialog-title">Information edge {props.edgeInfo && props.edgeInfo.data().label}</DialogTitle>
             <DialogContent>
-            <Formik
-                initialValues={{ nName: props.nodeInfo ? props.nodeInfo.data().label : "",
-                    nDesc: props.nodeInfo ? props.nodeInfo.data().description : "",
-                    nProps: props.nodeInfo ? props.nodeInfo.data().property : []}}
-                validationSchema={schema}
-                validate={(values)=>{
-                    if (props.typeModal === "create" && props.nameList.includes(values.nName))
-                        return {nName: "Name already used"};
-                    else if (props.typeModal === "edit") {
-                        const oldName = props.nodeInfo ? props.nodeInfo.data().label : "";
+                {props.typeModal === "create" && <div>Edge from {props.sourceNode.data().label}
+                    to {props.targetNode.data().label}</div>}
+                {props.typeModal === "edite" && <div>Edge from {props.edgeInfo && props.edgeInfo.target().data().label}
+                    to {props.edgeInfo && props.edgeInfo.source().data().label}</div>}
+                <Formik
+                    initialValues={{ nName: props.edgeInfo ? props.edgeInfo.data().label : "",
+                        nDesc: props.edgeInfo ? props.edgeInfo.data().description : "",
+                        cardMax: props.edgeInfo ? props.edgeInfo.data().cardinality.max : "",
+                        cardMin: props.edgeInfo ? props.edgeInfo.data().cardinality.min : "",
+                        nProps: props.edgeInfo ? props.edgeInfo.data().property : []}}
+                    validationSchema={schema}
+                    validate={(values)=>{
+                        const oldName = props.edgeInfo ? props.edgeInfo.data().label : "";
                         if (oldName !== values.nName && props.nameList.includes(values.nName))
                             return {nName: "Name already used"};
                         else if (oldName === values.nName && props.nameList.filter(x => x === values.nName).length !== 1)
                             return {nName: "Name already used"};
-                    }
-                }}
-                onSubmit={(data, { setSubmitting }) => {
-                    setSubmitting(true);
-                    console.log("submit: ", data);
-                    props.callBack(data);
-                    setSubmitting(false);
-                    handleClose();
-                }}
+                    }}
+                    onSubmit={(data, { setSubmitting }) => {
+                        setSubmitting(true);
+                        console.log("submit: ", data);
+                        props.callBack(data);
+                        setSubmitting(false);
+                        handleClose();
+                    }}
                 >
                     {({ values, isSubmitting, setFieldValue }) => (
                         <Form>
@@ -107,6 +136,14 @@ export function NodeModal(props) {
                                     <Grid item xs={12}>
                                         <FormikTextField multiline rows={2} rowsMax={4} id="ig1" variant="outlined"
                                                          label="Node Description" name="nDesc" type="input" fullWidth/>
+                                    </Grid>
+                                    <Grid item container>
+                                        <Grid item xs={3}>
+                                            <CardinalitySelect type="minimum" labelId="demo-simple-select-label" name="cardMin"/>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <CardinalitySelect type="maximum" labelId="demo-simple-select-label" name="cardMax"/>
+                                        </Grid>
                                     </Grid>
 
                                     <Grid item xs={12}>
@@ -142,13 +179,12 @@ export function NodeModal(props) {
                                                     </Grid>
 
                                                 </>
-                                                        )}
+                                            )}
                                         </FieldArray>
                                     </Grid>
 
                                     <Grid item xs={12} container justify="right">
-                                        {props.typeModal === 'create'&& <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>}
-                                        {props.typeModal === 'edit'&& <Button disabled={isSubmitting} type="submit" variant="primary">Save</Button>}
+                                        <Button disabled={isSubmitting} type="submit" variant="primary">Save</Button>
                                     </Grid>
 
                                 </Grid>
@@ -162,7 +198,7 @@ export function NodeModal(props) {
     );
 }
 
-NodeModal.propTypes = {
+EdgeModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
 };

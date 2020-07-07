@@ -37,7 +37,7 @@ export default function PropertyAdder(props) {
         const errorText = meta.error && meta.touched ? meta.error : "";
         return(<FormControl fullWidth>
             <InputLabel>Select domain</InputLabel>
-            <Select {...field} type="select" helperText={errorText} error={!!errorText} onChange={(e)=>{
+            <Select required {...field} type="select" helperText={errorText} error={!!errorText} onChange={(e)=>{
                 setSelectedDate(null);
                 props.setFieldValue(props.resetDefault, "");
                 field.onChange(e)}}>
@@ -63,7 +63,7 @@ export default function PropertyAdder(props) {
         <Grid item xs={12} container spacing={1}>
         <Grid item xs={3}>
             <FormikTextField id="outlined-basic" label="Property name"
-                             name={`nProps.${index}.name`} type="input" fullWidth/>
+                             name={`nProps.${index}.name`} type="input" required fullWidth/>
         </Grid>
         <Grid item xs={3}>
             <ModalSelect setFieldValue={props.setFieldValue} resetDefault={`nProps.${index}.default`} labelId="demo-simple-select-label" name={`nProps.${index}.domain`}/>
