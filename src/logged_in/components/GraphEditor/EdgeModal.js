@@ -2,7 +2,7 @@
 import {ErrorMessage, FieldArray, Form, Formik, useField} from "formik";
 import React from "react";
 import PropTypes from 'prop-types';
-import FormikTextField from '../../../shared/inputs/FormikTextField'
+import FormikTextField from '../../../common/components/FormikTextField'
 import {
     Button,
     Grid,
