@@ -100,10 +100,7 @@ export function EdgeModal(props) {
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
             <DialogTitle id="simple-dialog-title">Information edge {props.edgeInfo && props.edgeInfo.label}</DialogTitle>
             <DialogContent>
-                {props.typeModal === "create" && <div>Edge from {props.edgeInfo.sourceLabel}
-                    to {props.edgeInfo.targetLabel}</div>}
-                {props.typeModal === "edite" && <div>Edge from {props.edgeInfo && props.edgeInfo.sourceLabel}
-                    to {props.edgeInfo && props.edgeInfo.targetLabel}</div>}
+                <div>Edge from {props.edgeInfo && props.edgeInfo.sourceLabel} to {props.edgeInfo && props.edgeInfo.targetLabel}</div>
                 <Formik
                     initialValues={{ nName: props.edgeInfo ? props.edgeInfo.label : "",
                         nDesc: props.edgeInfo ? props.edgeInfo.description : "",
@@ -112,13 +109,18 @@ export function EdgeModal(props) {
                         nProps: props.edgeInfo ? props.edgeInfo.properties : []}}
                     validationSchema={schema}
                     validate={(values)=>{
-                        const oldName = props.edgeInfo ? props.edgeInfo.label : "";
-                        if (oldName !== values.nName && props.nameList.includes(values.nName))
+                        if (props.typeModal === "create" && props.nameList.includes(values.nName))
                             return {nName: "Name already used"};
-                        else if (oldName === values.nName && props.nameList.filter(x => x === values.nName).length !== 1)
-                            return {nName: "Name already used"};
+                        else if (props.typeModal === "edit"){
+                            const oldName = props.nodeInfo ? props.nodeInfo.data().label : "";
+                            if (oldName !== values.nName && props.nameList.includes(values.nName))
+                                return {nName: "Name already used"};
+                            else if (oldName === values.nName && props.nameList.filter(x => x === values.nName).length !== 1)
+                                return {nName: "Name already used"};
+                        }
                     }}
                     onSubmit={(data, { setSubmitting }) => {
+                        console.log(props.typeModal);
                         setSubmitting(true);
                         props.callBack(data);
                         setSubmitting(false);

@@ -63,13 +63,13 @@ export class GraphEditor extends Component {
                     posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
             }
             else if (event.target.isNode()){
-                let clickedNode = event.target;
+                let clickedNode = event.target.data();
                 this.setState({nodeModalShow:true, typeModal:"edit", nodeInfo:clickedNode, nameList:nameList});
             }
             else if (event.target.isEdge()){
                 let clickedEdge = event.target.data();
                 console.log(clickedEdge);
-                this.setState({edgeModalShow: true, edgeInfo:clickedEdge, nameList:nameList});
+                this.setState({edgeModalShow:true, typeModal:"create", edgeInfo:clickedEdge, nameList:nameList,});
             }
         });
 
@@ -83,7 +83,6 @@ export class GraphEditor extends Component {
         this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
     };
 
-
     logKey = (e) => {
         console.log(e);
     };
@@ -93,20 +92,24 @@ export class GraphEditor extends Component {
     };
 
     updateEdgeInfo = (edgeInfo, data) => {
+        console.log("data", data);
         edgeInfo.label = data.nName;
         edgeInfo.description = data.nDesc;
-        edgeInfo.property =  data.nProps;
+        edgeInfo.properties =  data.nProps;
         edgeInfo.cardinality = {max:data.cardMax, min:data.cardMin};
         return edgeInfo;
     };
 
+    updateNodeInfo = (nodeInfo, data) => {
+        console.log("data", data);
+        nodeInfo.label = data.nName;
+        nodeInfo.description = data.nDesc;
+        nodeInfo.properties =  data.nProps;
+    };
+
     editNode = (data) =>{
         if(this.state.nodeInfo){
-            this.setState({nodeInfo: this.state.nodeInfo.data({
-                    label: data.nName,
-                    description: data.nDesc,
-                    property: data.nProps
-                })});
+            this.setState({nodeInfo: this.updateNodeInfo(this.state.nodeInfo, data)});
         }
         else{
             this.cy.add({
@@ -114,7 +117,7 @@ export class GraphEditor extends Component {
                     id: this.getNewID(),
                     label: data.nName,
                     description: data.nDesc,
-                    property: data.nProps },
+                    properties: data.nProps },
                     position: { x: this.state.posX, y: this.state.posY }
                 }
             ).css({ 'background-color': 'blue' });
@@ -162,7 +165,7 @@ export class GraphEditor extends Component {
                            onClose={() => this.setState({nodeModalShow: false})}/>
 
                 <EdgeModal nameList={this.state.nameList} callBack={this.editEdge}
-                           edgeInfo={this.state.edgeInfo}
+                           edgeInfo={this.state.edgeInfo} typeModal={this.state.typeModal}
                            open={this.state.edgeModalShow}
                            onClose={() => this.setState({edgeModalShow: false})}/>
 

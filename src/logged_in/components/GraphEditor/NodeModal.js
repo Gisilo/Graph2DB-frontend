@@ -71,18 +71,18 @@ export function NodeModal(props) {
     return (
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
             {props.typeModal === "create" && <DialogTitle id="simple-dialog-title">Create Node</DialogTitle>}
-            {props.typeModal === "edit" && <DialogTitle id="simple-dialog-title">Information node {props.nodeInfo.data().label}</DialogTitle>}
+            {props.typeModal === "edit" && <DialogTitle id="simple-dialog-title">Information node {props.nodeInfo && props.nodeInfo.label}</DialogTitle>}
             <DialogContent>
             <Formik
-                initialValues={{ nName: props.nodeInfo ? props.nodeInfo.data().label : "",
-                    nDesc: props.nodeInfo ? props.nodeInfo.data().description : "",
-                    nProps: props.nodeInfo ? props.nodeInfo.data().property : []}}
+                initialValues={{ nName: props.nodeInfo ? props.nodeInfo.label : "",
+                    nDesc: props.nodeInfo ? props.nodeInfo.description : "",
+                    nProps: props.nodeInfo ? props.nodeInfo.properties : []}}
                 validationSchema={schema}
                 validate={(values)=>{
                     if (props.typeModal === "create" && props.nameList.includes(values.nName))
                         return {nName: "Name already used"};
                     else if (props.typeModal === "edit") {
-                        const oldName = props.nodeInfo ? props.nodeInfo.data().label : "";
+                        const oldName = props.nodeInfo ? props.nodeInfo.label : "";
                         if (oldName !== values.nName && props.nameList.includes(values.nName))
                             return {nName: "Name already used"};
                         else if (oldName === values.nName && props.nameList.filter(x => x === values.nName).length !== 1)
