@@ -98,21 +98,21 @@ export function EdgeModal(props) {
 
     return (
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
-            <DialogTitle id="simple-dialog-title">Information edge {props.edgeInfo && props.edgeInfo.data().label}</DialogTitle>
+            <DialogTitle id="simple-dialog-title">Information edge {props.edgeInfo && props.edgeInfo.label}</DialogTitle>
             <DialogContent>
-                {props.typeModal === "create" && <div>Edge from {props.sourceNode.data().label}
-                    to {props.targetNode.data().label}</div>}
-                {props.typeModal === "edite" && <div>Edge from {props.edgeInfo && props.edgeInfo.target().data().label}
-                    to {props.edgeInfo && props.edgeInfo.source().data().label}</div>}
+                {props.typeModal === "create" && <div>Edge from {props.edgeInfo.sourceLabel}
+                    to {props.edgeInfo.targetLabel}</div>}
+                {props.typeModal === "edite" && <div>Edge from {props.edgeInfo && props.edgeInfo.sourceLabel}
+                    to {props.edgeInfo && props.edgeInfo.targetLabel}</div>}
                 <Formik
-                    initialValues={{ nName: props.edgeInfo ? props.edgeInfo.data().label : "",
-                        nDesc: props.edgeInfo ? props.edgeInfo.data().description : "",
-                        cardMax: props.edgeInfo ? props.edgeInfo.data().cardinality.max : "",
-                        cardMin: props.edgeInfo ? props.edgeInfo.data().cardinality.min : "",
-                        nProps: props.edgeInfo ? props.edgeInfo.data().property : []}}
+                    initialValues={{ nName: props.edgeInfo ? props.edgeInfo.label : "",
+                        nDesc: props.edgeInfo ? props.edgeInfo.description : "",
+                        cardMax: props.edgeInfo ? props.edgeInfo.cardinality.max : "",
+                        cardMin: props.edgeInfo ? props.edgeInfo.cardinality.min : "",
+                        nProps: props.edgeInfo ? props.edgeInfo.properties : []}}
                     validationSchema={schema}
                     validate={(values)=>{
-                        const oldName = props.edgeInfo ? props.edgeInfo.data().label : "";
+                        const oldName = props.edgeInfo ? props.edgeInfo.label : "";
                         if (oldName !== values.nName && props.nameList.includes(values.nName))
                             return {nName: "Name already used"};
                         else if (oldName === values.nName && props.nameList.filter(x => x === values.nName).length !== 1)
@@ -120,7 +120,6 @@ export function EdgeModal(props) {
                     }}
                     onSubmit={(data, { setSubmitting }) => {
                         setSubmitting(true);
-                        console.log("submit: ", data);
                         props.callBack(data);
                         setSubmitting(false);
                         handleClose();

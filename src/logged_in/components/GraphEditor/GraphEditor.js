@@ -37,29 +37,22 @@ export class GraphEditor extends Component {
         //let la = this.cy.layout( this.options );
         //la.run();
 
-        this.cy.on('ehcomplete', (event, sourceNode, targetNode) => {
+        this.cy.on('ehcomplete', (event, sourceNode, targetNode, addedEles) => {
 
             let nameList = this.cy.elements().map(x => x.data().label);
-            let clickedEdge = event.target;
-            console.log("evente", event);
-            // Get number of directed edge from source to target
             const nEdges = sourceNode.edgesTo(targetNode).length;
-            // Set edge name
-            clickedEdge.data().label = clickedEdge.data().label ?
-                clickedEdge.data().label : // If present, keep it
-                nEdges === 1 ?             // Else create unique new name as source_target_nEdges
-                    `${sourceNode.data().label}_${targetNode.data().label}` :
-                    `${sourceNode.data().label}_${targetNode.data().label}_${nEdges}`;
-            // Set property objects: if present keep it, else create empty list
-            clickedEdge.data().property = clickedEdge.data().property ? clickedEdge.data().property : [];
-            clickedEdge.data().cardinality = clickedEdge.data().cardinality ?
-                clickedEdge.data().cardinality :
-                {max:"", min:""};
 
-            this.setState({edgeModalShow: true, sourceNode:sourceNode, targetNode:targetNode,
-                edgeInfo:clickedEdge, typeModal:"create", nameList:nameList});
+            let clickedEdge = addedEles[0].data();
+            clickedEdge.label = nEdges === 1 ?             // Else create unique new name as source_target_nEdges
+                `${sourceNode.data().label}_${targetNode.data().label}` :
+                `${sourceNode.data().label}_${targetNode.data().label}_${nEdges}`;
+            clickedEdge.description = "";
+            clickedEdge.cardinality = {max:"", min:""};
+            clickedEdge.properties = [];
+            clickedEdge.sourceLabel = sourceNode.data().label;
+            clickedEdge.targetLabel = targetNode.data().label;
 
-            // ...
+            this.setState({edgeModalShow: true, edgeInfo:clickedEdge, typeModal:"create", nameList:nameList});
         });
 
         // Double click event on canvas -> create new node
@@ -74,21 +67,8 @@ export class GraphEditor extends Component {
                 this.setState({nodeModalShow:true, typeModal:"edit", nodeInfo:clickedNode, nameList:nameList});
             }
             else if (event.target.isEdge()){
-                let clickedEdge = event.target;
-                // Get number of directed edge from source to target
-                const nEdges = clickedEdge.source().edgesTo(clickedEdge.target()).length;
-                // Set edge name
-                clickedEdge.data().label = clickedEdge.data().label ?
-                    clickedEdge.data().label : // If present, keep it
-                    nEdges === 1 ?             // Else create unique new name as source_target_nEdges
-                        `${clickedEdge.source().data().label}_${clickedEdge.target().data().label}` :
-                        `${clickedEdge.source().data().label}_${clickedEdge.target().data().label}_${nEdges}`;
-                // Set property objects: if present keep it, else create empty list
-                clickedEdge.data().property = clickedEdge.data().property ? clickedEdge.data().property : [];
-                clickedEdge.data().cardinality = clickedEdge.data().cardinality ?
-                    clickedEdge.data().cardinality :
-                    {max:"", min:""};
-
+                let clickedEdge = event.target.data();
+                console.log(clickedEdge);
                 this.setState({edgeModalShow: true, edgeInfo:clickedEdge, nameList:nameList});
             }
         });
@@ -99,7 +79,6 @@ export class GraphEditor extends Component {
     };
 
     loadGraph = (newGraph) => {
-        console.log("newGraph in editor", newGraph);
         this.cy.json({ elements: newGraph });
         this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
     };
@@ -110,14 +89,15 @@ export class GraphEditor extends Component {
     };
 
     editEdge = (data) => {
-        console.log("callback", data);
-        this.setState({edgeInfo: this.state.edgeInfo.data({
-                label: data.nName,
-                description: data.nDesc,
-                property: data.nProps,
-                cardinality: {max:data.cardMax, min:data.cardMin}
-            })});
-        console.log(this.cy.edges());
+        this.setState({edgeInfo: this.updateEdgeInfo(this.state.edgeInfo, data)});
+    };
+
+    updateEdgeInfo = (edgeInfo, data) => {
+        edgeInfo.label = data.nName;
+        edgeInfo.description = data.nDesc;
+        edgeInfo.property =  data.nProps;
+        edgeInfo.cardinality = {max:data.cardMax, min:data.cardMin};
+        return edgeInfo;
     };
 
     editNode = (data) =>{
@@ -139,7 +119,6 @@ export class GraphEditor extends Component {
                 }
             ).css({ 'background-color': 'blue' });
         }
-        console.log("dopo set state", this.cy.nodes().jsons())
 
     };
 
@@ -150,9 +129,7 @@ export class GraphEditor extends Component {
     getJSON = () =>{
         // get all: graph + style + more => this.cy.json()
         // get only nodes and edges
-        console.log("prime", this.cy.elements().jsons());
         this.state.eh.removeHandle();
-        console.log("dopo", this.cy.elements().jsons());
         return this.cy.elements().jsons()
     };
 
