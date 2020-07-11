@@ -43,7 +43,7 @@ export class GraphEditor extends Component {
             const nEdges = sourceNode.edgesTo(targetNode).length;
 
             let clickedEdge = addedEles[0].data();
-            clickedEdge.label = nEdges === 1 ?             // Else create unique new name as source_target_nEdges
+            clickedEdge.label = nEdges === 1 ?             // Create unique new name as source_target_nEdges
                 `${sourceNode.data().label}_${targetNode.data().label}` :
                 `${sourceNode.data().label}_${targetNode.data().label}_${nEdges}`;
             clickedEdge.description = "";
@@ -120,7 +120,7 @@ export class GraphEditor extends Component {
                     properties: data.nProps },
                     position: { x: this.state.posX, y: this.state.posY }
                 }
-            ).css({ 'background-color': 'blue' });
+            );
         }
 
     };
@@ -135,7 +135,6 @@ export class GraphEditor extends Component {
         this.state.eh.removeHandle();
         return this.cy.elements().jsons()
     };
-
 
     render() {
         
@@ -156,7 +155,6 @@ export class GraphEditor extends Component {
                     cy={(cy) => {
                         this.cy = cy;
                     }}
-
                 />
 
                 <NodeModal nameList={this.state.nameList} callBack={this.editNode}
@@ -177,10 +175,26 @@ export class GraphEditor extends Component {
 const graphStyle = {
     style: [
         {
+            selector: 'node',
+            css: {
+                'content': 'data(id)',
+                'background-color': 'green',
+                'color': 'black',
+                'border-width': '1px',
+                'border-color': 'black'
+            }
+        },
+        {
             selector: 'edge',
-            style: {
+            css: {
+                'line-color': 'light grey',
                 'curve-style': 'bezier',
-                'target-arrow-shape': 'triangle'
+                'target-arrow-shape': 'triangle',
+                'target-arrow-color': 'gey',
+                'arrow-scale': '1',
+                'content': 'data(label)',
+                'overlay-opacity': 0,
+                'edge-text-rotation': 'autorotate'
             }
         },
 
@@ -193,7 +207,7 @@ const graphStyle = {
                 'width': 10,
                 'height': 10,
                 'shape': 'ellipse',
-                'label': 'gb',
+                'label': '',
                 'overlay-opacity': 0,
                 'border-width': 12, // makes the handle easier to hit
                 'border-opacity': 0
