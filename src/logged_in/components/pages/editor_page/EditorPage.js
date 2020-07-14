@@ -1,5 +1,5 @@
 import React from 'react';
-import {GraphEditor} from '../../GraphEditor/GraphEditor';
+import GraphEditor from '../../GraphEditor/GraphEditor';
 import Grid from "@material-ui/core/Grid";
 import NavBar from "../../navbar/NavBar";
 import Fab from "@material-ui/core/Fab";

@@ -6,12 +6,16 @@ import { EdgeModal } from './EdgeModal'
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import dblclick from 'cytoscape-dblclick';
+import {useMutation, useQuery} from "@apollo/react-hooks";
+import {LOG_IN_MUT, SAVE_MUT} from "../../../common/costants/queries";
+import {withRouter} from "react-router-dom";
+import {withApollo} from "@apollo/react-hoc";
 
 cytoscape.use(dblclick);
 cytoscape.use(edgehandles);
 
 
-export class GraphEditor extends Component {
+class GraphEditor extends Component {
 
     constructor(props) {
         super(props);
@@ -87,8 +91,21 @@ export class GraphEditor extends Component {
         console.log(e);
     };
 
-    editEdge = (data) => {
+    saveEdge = (data) => {
         this.setState({edgeInfo: this.updateEdgeInfo(this.state.edgeInfo, data)});
+        this.props.client
+            .mutate({
+                mutation: SAVE_MUT,
+                variables: {
+                    id: "R3JhYml0Tm9kZTox",
+                    graph: this.getJSON()
+                },
+            }).then(
+            (response) => {
+                console.log("success", response);
+            },
+            (error) => console.error("error", error)
+        );
     };
 
     updateEdgeInfo = (edgeInfo, data) => {
@@ -107,7 +124,7 @@ export class GraphEditor extends Component {
         nodeInfo.properties =  data.nProps;
     };
 
-    editNode = (data) =>{
+    saveNode = (data) =>{
         if(this.state.nodeInfo){
             this.setState({nodeInfo: this.updateNodeInfo(this.state.nodeInfo, data)});
         }
@@ -157,12 +174,12 @@ export class GraphEditor extends Component {
                     }}
                 />
 
-                <NodeModal nameList={this.state.nameList} callBack={this.editNode}
+                <NodeModal nameList={this.state.nameList} callBack={this.saveNode}
                            nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
                            open={this.state.nodeModalShow}
                            onClose={() => this.setState({nodeModalShow: false})}/>
 
-                <EdgeModal nameList={this.state.nameList} callBack={this.editEdge}
+                <EdgeModal nameList={this.state.nameList} callBack={this.saveEdge}
                            edgeInfo={this.state.edgeInfo} typeModal={this.state.typeModal}
                            open={this.state.edgeModalShow}
                            onClose={() => this.setState({edgeModalShow: false})}/>
@@ -171,6 +188,7 @@ export class GraphEditor extends Component {
         )
     }
 }
+export default withApollo(GraphEditor);
 
 const graphStyle = {
     style: [

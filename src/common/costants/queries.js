@@ -19,11 +19,11 @@ export const CREATE_MUT = gql`
 `;
 
 export const SAVE_MUT = gql`
-  mutation CreateGrabitByName($nameGrabit: String!, $nGraph: String!) {
-    createGrabit(input: { name: $nameGrabit, graph: $nGraph }) {
+  mutation CreateGrabitByName($id: String!, $nGraph: String!) {
+    createGrabit(input: { id: $id, graph: $nGraph }) {
       msg
       grabit {
-        name
+        id
       }
     }
   }
