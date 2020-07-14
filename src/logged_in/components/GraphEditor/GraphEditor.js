@@ -69,7 +69,7 @@ export class GraphEditor extends Component {
             else if (event.target.isEdge()){
                 let clickedEdge = event.target.data();
                 console.log(clickedEdge);
-                this.setState({edgeModalShow:true, typeModal:"create", edgeInfo:clickedEdge, nameList:nameList,});
+                this.setState({edgeModalShow:true, typeModal:"edit", edgeInfo:clickedEdge, nameList:nameList,});
             }
         });
 

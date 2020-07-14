@@ -35,7 +35,6 @@ export function EdgeModal(props) {
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
             <DialogTitle id="simple-dialog-title">Information edge {props.edgeInfo && props.edgeInfo.label}</DialogTitle>
             <DialogContent>
-                <div>Edge from {props.edgeInfo && props.edgeInfo.sourceLabel} to {props.edgeInfo && props.edgeInfo.targetLabel}</div>
                 <Formik
                     initialValues={{ nName: props.edgeInfo ? props.edgeInfo.label : "",
                         nDesc: props.edgeInfo ? props.edgeInfo.description : "",
@@ -47,7 +46,7 @@ export function EdgeModal(props) {
                         if (props.typeModal === "create" && props.nameList.includes(values.nName))
                             return {nName: "Name already used"};
                         else if (props.typeModal === "edit"){
-                            const oldName = props.nodeInfo ? props.nodeInfo.data().label : "";
+                            const oldName = props.edgeInfo ? props.edgeInfo.label : "";
                             if (oldName !== values.nName && props.nameList.includes(values.nName))
                                 return {nName: "Name already used"};
                             else if (oldName === values.nName && props.nameList.filter(x => x === values.nName).length !== 1)
@@ -63,8 +62,12 @@ export function EdgeModal(props) {
                     }}
                 >
                     {({ values, isSubmitting, setFieldValue }) => (
+
                         <Form>
                             <Grid container>
+                                <Grid item xs={12}>
+                                    <div>Edge from {props.edgeInfo && props.edgeInfo.sourceLabel} to {props.edgeInfo && props.edgeInfo.targetLabel}</div>
+                                </Grid>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12}>
                                         <FormikTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant="outlined" required fullWidth/>
