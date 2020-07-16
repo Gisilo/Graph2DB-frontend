@@ -93,23 +93,10 @@ class GraphEditor extends Component {
 
     saveEdge = (data) => {
         this.setState({edgeInfo: this.updateEdgeInfo(this.state.edgeInfo, data)});
-        this.props.client
-            .mutate({
-                mutation: SAVE_MUT,
-                variables: {
-                    id: "R3JhYml0Tm9kZTox",
-                    graph: this.getJSON()
-                },
-            }).then(
-            (response) => {
-                console.log("success", response);
-            },
-            (error) => console.error("error", error)
-        );
+        this.saveGraphToDB("3", "1"); //TODO sostituire con dati veri
     };
 
     updateEdgeInfo = (edgeInfo, data) => {
-        console.log("data", data);
         edgeInfo.label = data.nName;
         edgeInfo.description = data.nDesc;
         edgeInfo.properties =  data.nProps;
@@ -118,10 +105,10 @@ class GraphEditor extends Component {
     };
 
     updateNodeInfo = (nodeInfo, data) => {
-        console.log("data", data);
         nodeInfo.label = data.nName;
         nodeInfo.description = data.nDesc;
         nodeInfo.properties =  data.nProps;
+        return nodeInfo;
     };
 
     saveNode = (data) =>{
@@ -139,18 +126,35 @@ class GraphEditor extends Component {
                 }
             );
         }
-
+        this.saveGraphToDB("3", "1");
     };
 
     // Get new node ID
     getNewID = () => this.cy.nodes().size() + 1;
 
     // Get JSON of graph
-    getJSON = () =>{
+    getGraphJSON = () =>{
         // get all: graph + style + more => this.cy.json()
         // get only nodes and edges
         this.state.eh.removeHandle();
         return this.cy.elements().jsons()
+    };
+
+    saveGraphToDB = (grabitID, owner) => {
+        this.props.client
+            .mutate({
+                mutation: SAVE_MUT,
+                variables: {
+                    id: grabitID,
+                    graph: this.getGraphJSON(),
+                    owner: owner
+                },
+            }).then(
+            (response) => {
+                console.log("success", response);
+            },
+            (error) => console.error("error", error)
+        );
     };
 
     render() {

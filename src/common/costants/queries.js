@@ -19,8 +19,8 @@ export const CREATE_MUT = gql`
 `;
 
 export const SAVE_MUT = gql`
-  mutation CreateGrabitByName($id: String!, $nGraph: String!) {
-    createGrabit(input: { id: $id, graph: $nGraph }) {
+  mutation CreateGrabitByName($id: String!, $owner: String!, $graph: String!) {
+    createGrabit(input: { id: $id, owner: $owner, graph: $graph }) {
       msg
       grabit {
         id
@@ -30,15 +30,11 @@ export const SAVE_MUT = gql`
 `;
 
 export const LOAD_QUERY = gql`
-  query GetGrabitByName($projectName: String!) {
-    allGrabits(name: $projectName) {
+  query GetGrabitByName($id: String!, $owner: String!) {
+    allGrabits(id: $id, owner: $owner) {
       edges {
         node {
-          id
           name
-          description
-          creationDate
-          updateDate
           graph
         }
       }
