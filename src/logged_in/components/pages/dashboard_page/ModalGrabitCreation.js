@@ -42,7 +42,7 @@ function ModalGrabitCreation(props) {
               variables: {
                 nameGrabit: data.grabitName,
                 descr: data.description,
-                userName: authenticationService.currentUserValue.pk,
+                  owner: authenticationService.currentUserID,
               },
             }).then(
               (response) => {

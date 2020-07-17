@@ -4,10 +4,10 @@ export const CREATE_MUT = gql`
   mutation CreateGrabit(
     $nameGrabit: String!
     $descr: String
-    $userName: String!
+    $owner: String!
   ) {
     createGrabit(
-      input: { name: $nameGrabit, description: $descr, owner: $userName }
+      input: { name: $nameGrabit, description: $descr, owner: $owner }
     ) {
       grabit {
         id
@@ -61,6 +61,29 @@ export const GET_ALL_GRABITS_QUERY = gql`
           updateDate
         }
       }
+    }
+  }
+`;
+
+export const GET_GRABITS_OF_OWNER = gql`
+  query GetGrabitsOfOwner($owner: String!) {
+    getGrabitsOfOwner(owner: $owner ) {
+      id
+      name
+      description
+      updateDate
+    }
+  }
+`;
+
+export const GET_GRABITS_BY_ID_AND_OWNER = gql`
+  query GetGrabitsByIdAndOwner($id: String!, $owner: String!){
+    getGrabitsByIdAndOwner(id: $id, owner: $owner ) {
+      id
+      name
+      description
+      updateDate
+      graph
     }
   }
 `;

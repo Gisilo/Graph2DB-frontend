@@ -3,10 +3,11 @@ import { LinearProgress } from "@material-ui/core";
 import { useQuery } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import { GET_ALL_GRABITS_QUERY } from "../../../../common/costants/queries";
+import { GET_GRABITS_OF_OWNER } from "../../../../common/costants/queries";
 import Fab from "@material-ui/core/Fab";
 import ModalGrabitCreation from "./ModalGrabitCreation";
 import GrabitList from "./GrabitList";
+import {authenticationService} from "../../../../common/services/authenticationService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,21 +25,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function GrabitsPanel(props) {
+export function GrabitsPanel() {
   const classes = useStyles();
 
   const [openModal, setOpenModal] = React.useState(false);
   const handleClickOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  const { loading, error, data } = useQuery(GET_ALL_GRABITS_QUERY);
+  const { loading, error, data } = useQuery(
+      GET_GRABITS_OF_OWNER,
+      {variables: { owner:authenticationService.currentUserID }
+  });
 
   if (loading) return <LinearProgress color="secondary" />;
-  if (error) return `Error! ${error.message}`;
+  if (error) return <div>`Error! ${error.message}`</div>;
 
   return (
     <div className={classes.root}>
-      <GrabitList grabits={data.allGrabits.edges.map((i) => i.node)} />
+      <GrabitList grabits={data.getGrabitsOfOwner} />
       <Fab
         variant="extended"
         size="medium"
