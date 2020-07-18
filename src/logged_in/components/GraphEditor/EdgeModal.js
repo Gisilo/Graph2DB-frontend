@@ -70,7 +70,7 @@ export function EdgeModal(props) {
                                 </Grid>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12}>
-                                        <FormikTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant="outlined" required fullWidth/>
+                                        <FormikTextField autoFocus id="outlined-basic" label="Node Name" name="nName" type="input" variant="outlined" required fullWidth/>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <FormikTextField multiline rows={2} rowsMax={4} id="ig1" variant="outlined"
