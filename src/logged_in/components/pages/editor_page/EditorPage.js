@@ -9,6 +9,7 @@ import {authenticationService} from "../../../../common/services/authenticationS
 import {useQuery} from "@apollo/react-hooks";
 import {GET_GRABITS_BY_ID_AND_OWNER} from "../../../../common/costants/queries";
 import {LinearProgress} from "@material-ui/core";
+const JSON5 = require('json5');
 
 
 const useStyles = makeStyles( (theme) => ({
@@ -40,8 +41,10 @@ export const EditorPage = (props) => {
     if (loading) return <LinearProgress color="secondary" />;
     if (error) return `Error! ${error.message}`;
 
-    console.log("DATATATAT", data.getGrabitsByIdAndOwner[0].graph);
-    const graph = JSON.parse(data.getGrabitsByIdAndOwner[0].graph);
+    let graph = [];
+    if (data.getGrabitsByIdAndOwner[0].graph !== ""){
+        graph = JSON.parse(data.getGrabitsByIdAndOwner[0].graph);
+    }
 
     return (
 
@@ -51,7 +54,7 @@ export const EditorPage = (props) => {
                     <NavBar/>
                 </Grid>
                 <Grid item xs={12}>
-                    <GraphEditor heightOffset={heightOffset} elements={graph}/>
+                    <GraphEditor heightOffset={heightOffset} graph={graph}/>
                 </Grid>
             </Grid>
             <Fab

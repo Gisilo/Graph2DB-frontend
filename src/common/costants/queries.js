@@ -29,19 +29,6 @@ export const SAVE_MUT = gql`
   }
 `;
 
-export const LOAD_QUERY = gql`
-  query GetGrabit($id: String!, $owner: String!) {
-    allGrabits(id: $id, owner: $owner) {
-      edges {
-        node {
-          name
-          graph
-        }
-      }
-    }
-  }
-`;
-
 export const DELETE_MUT = gql`
   mutation DeleteGrabit($grabitName: String!) {
     deleteGrabit(input: { name: $grabitName }) {

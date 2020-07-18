@@ -40,7 +40,6 @@ export function GrabitsPanel() {
   if (loading) return <LinearProgress color="secondary" />;
   if (error) return <div>`Error! ${error.message}`</div>;
   const grabitNames = data.getGrabitsOfOwner.map(grabit => grabit.name);
-  console.log("DTAT0", grabitNames);
 
   return (
     <div className={classes.root}>

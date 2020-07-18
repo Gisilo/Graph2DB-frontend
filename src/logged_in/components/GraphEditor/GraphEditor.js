@@ -146,7 +146,7 @@ class GraphEditor extends Component {
                 mutation: SAVE_MUT,
                 variables: {
                     id: grabitID,
-                    graph: this.getGraphJSON(),
+                    graph: JSON.stringify(this.getGraphJSON()),
                     owner: owner
                 },
             }).then(
@@ -166,7 +166,7 @@ class GraphEditor extends Component {
                     boxSelectionEnabled={true}
                     minZoom={0.5}
                     maxZoom={2}
-                    elements={[]}
+                    elements={this.props.graph}
                     stylesheet={graphStyle.style}
                     style={ { 
                         width: window.innerWidth, 
@@ -209,10 +209,10 @@ const graphStyle = {
         {
             selector: 'edge',
             css: {
-                'line-color': 'light grey',
+                'line-color': 'grey',
                 'curve-style': 'bezier',
                 'target-arrow-shape': 'triangle',
-                'target-arrow-color': 'gey',
+                'target-arrow-color': 'grey',
                 'arrow-scale': '1',
                 'content': 'data(label)',
                 'overlay-opacity': 0,
