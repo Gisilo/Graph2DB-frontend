@@ -19,7 +19,7 @@ export const CREATE_MUT = gql`
 `;
 
 export const SAVE_MUT = gql`
-  mutation CreateGrabitByName($id: String!, $owner: String!, $graph: String!) {
+  mutation SaveGrabit($id: String!, $owner: String!, $graph: String!) {
     createGrabit(input: { id: $id, owner: $owner, graph: $graph }) {
       msg
       grabit {
@@ -30,7 +30,7 @@ export const SAVE_MUT = gql`
 `;
 
 export const LOAD_QUERY = gql`
-  query GetGrabitByName($id: String!, $owner: String!) {
+  query GetGrabit($id: String!, $owner: String!) {
     allGrabits(id: $id, owner: $owner) {
       edges {
         node {
@@ -43,7 +43,7 @@ export const LOAD_QUERY = gql`
 `;
 
 export const DELETE_MUT = gql`
-  mutation DeleteGrabitByName($grabitName: String!) {
+  mutation DeleteGrabit($grabitName: String!) {
     deleteGrabit(input: { name: $grabitName }) {
       msg
     }

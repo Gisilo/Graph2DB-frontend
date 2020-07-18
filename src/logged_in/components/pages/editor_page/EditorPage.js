@@ -7,7 +7,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {authenticationService} from "../../../../common/services/authenticationService";
 import {useQuery} from "@apollo/react-hooks";
-import {LOAD_QUERY} from "../../../../common/costants/queries";
+import {GET_GRABITS_BY_ID_AND_OWNER} from "../../../../common/costants/queries";
 import {LinearProgress} from "@material-ui/core";
 
 
@@ -33,14 +33,15 @@ export const EditorPage = (props) => {
 
     const heightOffset = 50; // magic numbeeeeer
 
-    const { loading, error, data } = useQuery(LOAD_QUERY,
+    const { loading, error, data } = useQuery(GET_GRABITS_BY_ID_AND_OWNER,
         {variables: { id:id, owner:owner }
     });
 
     if (loading) return <LinearProgress color="secondary" />;
     if (error) return `Error! ${error.message}`;
 
-    console.log(data);
+    console.log("DATATATAT", data.getGrabitsByIdAndOwner[0].graph);
+    const graph = JSON.parse(data.getGrabitsByIdAndOwner[0].graph);
 
     return (
 
@@ -50,7 +51,7 @@ export const EditorPage = (props) => {
                     <NavBar/>
                 </Grid>
                 <Grid item xs={12}>
-                    <GraphEditor heightOffset={heightOffset} graph={data}/>
+                    <GraphEditor heightOffset={heightOffset} elements={graph}/>
                 </Grid>
             </Grid>
             <Fab

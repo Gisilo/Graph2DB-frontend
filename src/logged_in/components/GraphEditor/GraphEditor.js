@@ -93,7 +93,7 @@ class GraphEditor extends Component {
 
     saveEdge = (data) => {
         this.setState({edgeInfo: this.updateEdgeInfo(this.state.edgeInfo, data)});
-        this.saveGraphToDB("3", "1"); //TODO sostituire con dati veri
+        this.saveGraphToDB("2", "1"); //TODO sostituire con dati veri
     };
 
     updateEdgeInfo = (edgeInfo, data) => {
@@ -126,7 +126,7 @@ class GraphEditor extends Component {
                 }
             );
         }
-        this.saveGraphToDB("3", "1");
+        this.saveGraphToDB("2", "1");
     };
 
     // Get new node ID

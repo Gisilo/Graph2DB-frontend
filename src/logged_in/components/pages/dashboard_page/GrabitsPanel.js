@@ -39,10 +39,12 @@ export function GrabitsPanel() {
 
   if (loading) return <LinearProgress color="secondary" />;
   if (error) return <div>`Error! ${error.message}`</div>;
+  const grabitNames = data.getGrabitsOfOwner.map(grabit => grabit.name);
+  console.log("DTAT0", grabitNames);
 
   return (
     <div className={classes.root}>
-      <GrabitList grabits={data.getGrabitsOfOwner} />
+      <GrabitList grabits={data.getGrabitsOfOwner}/>
       <Fab
         variant="extended"
         size="medium"
@@ -54,7 +56,7 @@ export function GrabitsPanel() {
         <AddIcon className={classes.extendedIcon} />
         Create Grabit
       </Fab>
-      <ModalGrabitCreation open={openModal} handleClose={handleCloseModal} />
+      <ModalGrabitCreation open={openModal} handleClose={handleCloseModal} grabitNames={grabitNames} />
     </div>
   );
 }
