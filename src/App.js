@@ -5,7 +5,7 @@ import Login from "./logged_out/Login";
 import SignUp from "./logged_out/SignUp";
 import PrivateRoute from "./common/components/PrivateRoute";
 import {EDITOR_URL, LOG_IN_URL, ROOT_URL, SIGN_UP_URL} from "./common/costants/urls";
-import {EditorPage} from "./logged_in/components/pages/editor_page/EditorPage";
+import EditorPage from "./logged_in/components/pages/editor_page/EditorPage";
 
 import { createMuiTheme } from '@material-ui/core/styles';
 import {ThemeProvider} from "@material-ui/styles";

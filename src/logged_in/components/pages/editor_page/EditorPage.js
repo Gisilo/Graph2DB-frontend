@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import GraphEditor from '../../GraphEditor/GraphEditor';
 import Grid from "@material-ui/core/Grid";
 import NavBar from "../../navbar/NavBar";
@@ -6,10 +6,9 @@ import Fab from "@material-ui/core/Fab";
 import {makeStyles} from "@material-ui/core/styles";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {authenticationService} from "../../../../common/services/authenticationService";
-import {useQuery} from "@apollo/react-hooks";
-import {GET_GRABITS_BY_ID_AND_OWNER} from "../../../../common/costants/queries";
-import {LinearProgress} from "@material-ui/core";
-const JSON5 = require('json5');
+import {GET_GRABITS_BY_ID_AND_OWNER, CREATE_MUT} from "../../../../common/costants/queries";
+import {withApollo} from "@apollo/react-hoc";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 
 const useStyles = makeStyles( (theme) => ({
@@ -25,36 +24,32 @@ const useStyles = makeStyles( (theme) => ({
     },
 }));
 
-export const EditorPage = (props) => {
-    const classes = useStyles();
-    console.log("ID", props.history.location.grabitID);
-    console.log("UTENTE", authenticationService.currentUserValue.pk);
-    const id = props.history.location.grabitID;
-    const owner = authenticationService.currentUserValue.pk;
-
+const EditorPage = (props) => {
     const heightOffset = 50; // magic numbeeeeer
 
-    const { loading, error, data } = useQuery(GET_GRABITS_BY_ID_AND_OWNER,
-        {variables: { id:id, owner:owner }
-    });
+    const classes = useStyles();
+    const owner = authenticationService.currentUserValue.pk;
+    const [idGrabit, setIdGrabit] = useState(props.history.location.grabitID);
+    const [skip, setSkip] = useState(false);
+    const [graph, setGraph] = useState([]);
 
-    if (loading) return <LinearProgress color="secondary" />;
-    if (error) return `Error! ${error.message}`;
+    const query = () => queryGrabit(idGrabit, setIdGrabit, setGraph, owner, props.client);
+    const mutate = () => mutateGrabit(setIdGrabit, owner, props.client);
 
-    let graph = [];
-    if (data.getGrabitsByIdAndOwner[0].graph !== ""){
-        graph = JSON.parse(data.getGrabitsByIdAndOwner[0].graph);
+    loadOrCreate(query, mutate, idGrabit, skip, setSkip);
+
+    if (!idGrabit){
+        return <LinearProgress color="secondary" />;
     }
 
     return (
-
         <>
             <Grid container>
                 <Grid item xs={12}>
                     <NavBar/>
                 </Grid>
                 <Grid item xs={12}>
-                    <GraphEditor heightOffset={heightOffset} graph={graph}/>
+                    <GraphEditor heightOffset={heightOffset} graph={graph} idGrabit={idGrabit}/>
                 </Grid>
             </Grid>
             <Fab
@@ -69,5 +64,56 @@ export const EditorPage = (props) => {
             </Fab>
         </>
     );
-}
+};
+
+const loadOrCreate = (query, mutate, idGrabit, skip, setSkip) => {
+
+    if (skip) return;
+
+    if (!idGrabit) {
+        mutate();
+    } else {
+        query();
+    }
+    setSkip(true);
+
+};
+
+const queryGrabit = (idGrabit, setIdGrabit, setGraph, owner, client) => {
+    client.query({
+        query: GET_GRABITS_BY_ID_AND_OWNER,
+        variables: {id: idGrabit, owner: owner}
+    }).then(
+        (response) => {
+            setIdGrabit(response.data.getGrabitsByIdAndOwner[0].id);
+            const graph = response.data.getGrabitsByIdAndOwner[0].graph;
+            if (graph !== "") {
+                setGraph(JSON.parse(graph));
+            }
+        },
+        (err) => {
+            console.log("err", err);
+        }
+    );
+};
+
+const mutateGrabit = (setIdGrabit, owner, client) => {
+    client.mutate({
+        mutation: CREATE_MUT,
+        variables: {
+            nameGrabit: "Untitled", owner: owner,
+        },
+    })
+        .then(
+            (response) => {
+                console.log("response", response);
+                setIdGrabit(response.data.createGrabit.grabit.id);
+            },
+            (err) => {
+                console.log("err", err);
+            }
+        );
+};
+
+export default withApollo(EditorPage);
 

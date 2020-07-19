@@ -10,6 +10,7 @@ import {useMutation, useQuery} from "@apollo/react-hooks";
 import {LOG_IN_MUT, SAVE_MUT} from "../../../common/costants/queries";
 import {withRouter} from "react-router-dom";
 import {withApollo} from "@apollo/react-hoc";
+import {authenticationService} from "../../../common/services/authenticationService";
 
 cytoscape.use(dblclick);
 cytoscape.use(edgehandles);
@@ -93,7 +94,9 @@ class GraphEditor extends Component {
 
     saveEdge = (data) => {
         this.setState({edgeInfo: this.updateEdgeInfo(this.state.edgeInfo, data)});
-        this.saveGraphToDB("2", "1"); //TODO sostituire con dati veri
+        this.saveGraphToDB(
+            this.props.idGrabit,
+            authenticationService.currentUserValue.pk);
     };
 
     updateEdgeInfo = (edgeInfo, data) => {
@@ -126,7 +129,7 @@ class GraphEditor extends Component {
                 }
             );
         }
-        this.saveGraphToDB("2", "1");
+        this.saveGraphToDB(this.props.idGrabit, authenticationService.currentUserValue.pk);
     };
 
     // Get new node ID
