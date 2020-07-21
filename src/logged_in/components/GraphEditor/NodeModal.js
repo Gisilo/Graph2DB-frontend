@@ -22,6 +22,12 @@ export function NodeModal(props) {
         onClose();
     };
 
+    function onKeyDown(keyEvent) {
+        if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+            keyEvent.preventDefault();
+        }
+    }
+
     return (
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
             {props.typeModal === "create" && <DialogTitle id="simple-dialog-title">Create Node</DialogTitle>}
@@ -52,7 +58,7 @@ export function NodeModal(props) {
                 }}
                 >
                     {({ values, isSubmitting, setFieldValue }) => (
-                        <Form>
+                        <Form onKeyDown={onKeyDown}>
                             <Grid container>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12}>
