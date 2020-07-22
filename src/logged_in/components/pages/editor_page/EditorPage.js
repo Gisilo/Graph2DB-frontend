@@ -9,6 +9,8 @@ import {authenticationService} from "../../../../common/services/authenticationS
 import {GET_GRABITS_BY_ID_AND_OWNER, CREATE_MUT} from "../../../../common/costants/queries";
 import {withApollo} from "@apollo/react-hoc";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import {grabitNamesState} from "../dashboard_page/GrabitsPanel";
+import {useRecoilState} from "recoil";
 
 
 const useStyles = makeStyles( (theme) => ({
@@ -33,8 +35,9 @@ const EditorPage = (props) => {
     const [skip, setSkip] = useState(false);
     const [graph, setGraph] = useState([]);
 
+    const [grabitNames, setGrabitNames] = useRecoilState(grabitNamesState);
     const query = () => queryGrabit(idGrabit, setIdGrabit, setGraph, owner, props.client);
-    const mutate = () => mutateGrabit(setIdGrabit, owner, props.client);
+    const mutate = () => mutateGrabit(setIdGrabit, owner, grabitNames, setGrabitNames, props.client);
 
     loadOrCreate(query, mutate, idGrabit, skip, setSkip);
 
@@ -64,6 +67,22 @@ const EditorPage = (props) => {
             </Fab>
         </>
     );
+};
+
+const getMaxUntitledNumber = (names) => {
+    const re = new RegExp("^Untitled(-[0-9]+)?$");
+
+    const listNum = names.filter(name => re.test(name)).map(name => {
+        const split = name.split("-")[1];
+        if (split === undefined){
+            return 0
+        }
+        else return parseInt(split)
+    });
+    console.log(listNum);
+    const max = Math.max(...listNum);
+    console.log(max);
+    return max !== -Infinity ? max : -1;
 };
 
 const loadOrCreate = (query, mutate, idGrabit, skip, setSkip) => {
@@ -97,17 +116,21 @@ const queryGrabit = (idGrabit, setIdGrabit, setGraph, owner, client) => {
     );
 };
 
-const mutateGrabit = (setIdGrabit, owner, client) => {
+const mutateGrabit = (setIdGrabit, owner, grabitsNames, setGrabitNames, client) => {
+    const maxUntitled = getMaxUntitledNumber(grabitsNames);
+    console.log(maxUntitled);
+    const name = maxUntitled === -1 ? 'Untitled' : `Untitled-${maxUntitled+1}`;
     client.mutate({
         mutation: CREATE_MUT,
         variables: {
-            nameGrabit: "Untitled", owner: owner,
+            nameGrabit: name, owner: owner,
         },
     })
         .then(
             (response) => {
                 console.log("response", response);
                 setIdGrabit(response.data.createGrabit.grabit.id);
+                setGrabitNames([response.data.createGrabit.grabit.name, {...grabitsNames}])
             },
             (err) => {
                 console.log("err", err);

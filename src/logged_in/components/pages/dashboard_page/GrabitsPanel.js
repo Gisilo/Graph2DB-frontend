@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { LinearProgress } from "@material-ui/core";
 import { useQuery } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,6 +8,7 @@ import Fab from "@material-ui/core/Fab";
 import ModalGrabitCreation from "./ModalGrabitCreation";
 import GrabitList from "./GrabitList";
 import {authenticationService} from "../../../../common/services/authenticationService";
+import {atom, useRecoilState, useRecoilValue} from "recoil";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export const grabitNamesState = atom({
+  key: 'grabitNames', // unique ID (with respect to other atoms/selectors)
+  default: [], // default value (aka initial value)
+});
+
 export function GrabitsPanel() {
   const classes = useStyles();
 
@@ -32,14 +38,26 @@ export function GrabitsPanel() {
   const handleClickOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
+
+  const [grabitNames, setGrabitNames] = useRecoilState(grabitNamesState);
+
   const { loading, error, data } = useQuery(
       GET_GRABITS_OF_OWNER,
       {variables: { owner:authenticationService.currentUserID }
   });
 
+  useEffect(() => {
+    if (data){
+      setGrabitNames(data.getGrabitsOfOwner.map(grabit => grabit.name));
+    }
+  },
+      [data, setGrabitNames]);
+
   if (loading) return <LinearProgress color="secondary" />;
   if (error) return <div>`Error! ${error.message}`</div>;
-  const grabitNames = data.getGrabitsOfOwner.map(grabit => grabit.name);
+  //setGrabitNames(data.getGrabitsOfOwner.map(grabit => grabit.name));
+
+
 
   return (
     <div className={classes.root}>

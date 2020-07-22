@@ -30,6 +30,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-test-renderer": "^16.13.1",
+    "recoil": "0.0.10",
     "rxjs": "^6.5.5",
     "typeface-roboto": "0.0.75",
     "yup": "^0.29.1"
