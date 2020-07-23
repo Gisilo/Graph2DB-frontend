@@ -9,7 +9,7 @@ import {authenticationService} from "../../../../common/services/authenticationS
 import {GET_GRABITS_BY_ID_AND_OWNER, CREATE_MUT} from "../../../../common/costants/queries";
 import {withApollo} from "@apollo/react-hoc";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {grabitNamesState} from "../dashboard_page/GrabitsPanel";
+import {grabitIDState, grabitNamesState} from "../dashboard_page/GrabitsPanel";
 import {useRecoilState} from "recoil";
 
 
@@ -31,7 +31,7 @@ const EditorPage = (props) => {
 
     const classes = useStyles();
     const owner = authenticationService.currentUserValue.pk;
-    const [idGrabit, setIdGrabit] = useState(props.history.location.grabitID);
+    const [idGrabit, setIdGrabit] = useRecoilState(grabitIDState);
     const [skip, setSkip] = useState(false);
     const [graph, setGraph] = useState([]);
 
@@ -79,9 +79,7 @@ const getMaxUntitledNumber = (names) => {
         }
         else return parseInt(split)
     });
-    console.log(listNum);
     const max = Math.max(...listNum);
-    console.log(max);
     return max !== -Infinity ? max : -1;
 };
 
@@ -118,7 +116,6 @@ const queryGrabit = (idGrabit, setIdGrabit, setGraph, owner, client) => {
 
 const mutateGrabit = (setIdGrabit, owner, grabitsNames, setGrabitNames, client) => {
     const maxUntitled = getMaxUntitledNumber(grabitsNames);
-    console.log(maxUntitled);
     const name = maxUntitled === -1 ? 'Untitled' : `Untitled-${maxUntitled+1}`;
     client.mutate({
         mutation: CREATE_MUT,

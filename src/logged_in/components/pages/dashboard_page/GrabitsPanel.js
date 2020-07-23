@@ -31,13 +31,17 @@ export const grabitNamesState = atom({
   default: [], // default value (aka initial value)
 });
 
+export const grabitIDState = atom({
+  key: 'grabitID', // unique ID (with respect to other atoms/selectors)
+  default: '', // default value (aka initial value)
+});
+
 export function GrabitsPanel() {
   const classes = useStyles();
 
   const [openModal, setOpenModal] = React.useState(false);
   const handleClickOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
-
 
   const [grabitNames, setGrabitNames] = useRecoilState(grabitNamesState);
 
@@ -50,14 +54,11 @@ export function GrabitsPanel() {
     if (data){
       setGrabitNames(data.getGrabitsOfOwner.map(grabit => grabit.name));
     }
-  },
-      [data, setGrabitNames]);
+  }, [data, setGrabitNames]);
 
   if (loading) return <LinearProgress color="secondary" />;
   if (error) return <div>`Error! ${error.message}`</div>;
   //setGrabitNames(data.getGrabitsOfOwner.map(grabit => grabit.name));
-
-
 
   return (
     <div className={classes.root}>
