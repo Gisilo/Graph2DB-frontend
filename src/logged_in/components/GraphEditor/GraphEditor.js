@@ -11,10 +11,33 @@ import {LOG_IN_MUT, SAVE_MUT} from "../../../common/costants/queries";
 import {withRouter} from "react-router-dom";
 import {withApollo} from "@apollo/react-hoc";
 import {authenticationService} from "../../../common/services/authenticationService";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import TimelineIcon from '@material-ui/icons/Timeline';
+import Fab from "@material-ui/core/Fab";
+import {makeStyles} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 cytoscape.use(dblclick);
 cytoscape.use(edgehandles);
 
+const styles = (theme) => ({
+    addNodeFab: {
+        top: 'auto',
+        right: 30,
+        bottom: 30,
+        left: 'auto',
+        position: 'fixed',
+    },
+    layoutFab: {
+        top: 'auto',
+        right: 85,
+        bottom: 30,
+        left: 'auto',
+        position: 'fixed',
+    },
+});
 
 class GraphEditor extends Component {
 
@@ -33,14 +56,17 @@ class GraphEditor extends Component {
 
 
     componentDidMount = () => {
+        this.setupComponent();
+    };
+
+    setupComponent = () => {
+
         this.cy.dblclick(); // For double click
         let defaults = {};
         let eh = this.cy.edgehandles(defaults);
         this.setState({eh:eh});
         //eh.enableDrawMode();
         eh.disableDrawMode();
-        //let la = this.cy.layout( this.options );
-        //la.run();
 
         this.cy.on('ehcomplete', (event, sourceNode, targetNode, addedEles) => {
 
@@ -66,6 +92,7 @@ class GraphEditor extends Component {
             if (event.target === this.cy){
                 this.setState({nodeModalShow: true, typeModal:"create", nameList:nameList,
                     posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
+
             }
             else if (event.target.isNode()){
                 let clickedNode = event.target.data();
@@ -119,7 +146,10 @@ class GraphEditor extends Component {
             this.setState({nodeInfo: this.updateNodeInfo(this.state.nodeInfo, data)});
         }
         else{
+            console.log(this.getGraphJSON());
+            const colorClass = this.getNodeColor();
             this.cy.add({
+                classes: colorClass,
                 data: {
                     id: this.getNewID(),
                     label: data.nName,
@@ -127,9 +157,16 @@ class GraphEditor extends Component {
                     properties: data.nProps },
                     position: { x: this.state.posX, y: this.state.posY }
                 }
-            );
+            );//.css('background-color', color);
+
         }
         this.saveGraphToDB(this.props.idGrabit, authenticationService.currentUserValue.pk);
+
+    };
+
+    getNodeColor = () => {
+        const palette = ['dartmouth-green', 'goldenrod', 'mint', 'red-salsa', 'cinereous'];
+        return palette[Math.floor(Math.random() * (palette.length))];
     };
 
     // Get new node ID
@@ -179,7 +216,33 @@ class GraphEditor extends Component {
                     cy={(cy) => {
                         this.cy = cy;
                     }}
+                    layuot = {layout}
                 />
+                <Tooltip title={'Reorder Nodes'}>
+                    <Fab
+                        size="small"
+                        color="primary"
+                        aria-label="reorder nodes"
+                        className={this.props.classes.layoutFab}
+                        onClick={() => this.cy.layout( layout ).run()}
+                    >
+                        <TimelineIcon/>
+                    </Fab>
+                </Tooltip>
+
+                <Tooltip title={'Add New Node'}>
+                    <Fab
+                        size="small"
+                        color="primary"
+                        aria-label="add node"
+                        className={this.props.classes.addNodeFab}
+                        onClick={() => this.setState({nodeModalShow: true, typeModal:"create",
+                            nameList:this.cy.elements().map(x => x.data().label),
+                            posX:50, posY: 50, nodeInfo:null})}
+                    >
+                        <AddCircleOutlineIcon/>
+                    </Fab>
+                </Tooltip>
 
                 <NodeModal nameList={this.state.nameList} callBack={this.saveNode}
                            nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
@@ -195,18 +258,61 @@ class GraphEditor extends Component {
         )
     }
 }
-export default withApollo(GraphEditor);
+export default withStyles(styles, {withTheme: true})(withApollo(GraphEditor));
+
+const layout = {
+    name: 'cose',
+    animate: false,};
 
 const graphStyle = {
     style: [
         {
+            selector: '.dartmouth-green',
+            style: {
+                'background-color': '#1b7b34'
+            }
+        },
+        {
+            selector: '.goldenrod',
+            style: {
+                'background-color': '#eab126'
+            }
+        },
+        {
+            selector: '.mint',
+            style: {
+                'background-color': '#1FB58F'
+            }
+        },
+        {
+            selector: '.red-salsa',
+            style: {
+                'background-color': '#f24c4e'
+            }
+        },
+        {
+            selector: '.cinereous',
+            style: {
+                'background-color': '#93827f'
+            }
+        },
+        {
             selector: 'node',
             css: {
-                'content': 'data(id)',
-                'background-color': 'green',
+                'label': 'data(id)',
+                //'background-color': 'green',
                 'color': 'black',
                 'border-width': '1px',
                 'border-color': 'black'
+            }
+        },
+        {
+            selector: "edge[label]",
+            css: {
+                "label": "data(label)",
+                "text-rotation": "autorotate",
+                "text-margin-x": "10px",
+                "text-margin-y": "10px"
             }
         },
         {
@@ -217,7 +323,7 @@ const graphStyle = {
                 'target-arrow-shape': 'triangle',
                 'target-arrow-color': 'grey',
                 'arrow-scale': '1',
-                'content': 'data(label)',
+                //'label': 'data(label)',
                 'overlay-opacity': 0,
                 'edge-text-rotation': 'autorotate'
             }
