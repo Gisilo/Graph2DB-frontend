@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,6 +17,9 @@ import {
   FeedbackButton} from "./buttons";
 import {ROOT_URL, SETTINGS_URL} from "../../../common/costants/urls";
 import {authenticationService} from "../../../common/services/authenticationService";
+import {atom, useRecoilState} from "recoil";
+import {grabitNamesState} from "../pages/dashboard_page/GrabitsPanel";
+import {useSetRecoilState} from "recoil/dist";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -55,11 +58,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export const navBarHeightState = atom({
+  key: 'navBarHeight', // unique ID (with respect to other atoms/selectors)
+  default: 0, // default value (aka initial value)
+});
+
 function NavBar(props) {
+
+  const navBarRef = useRef(null);
   const classes = useStyles();
   const {history} = props;
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const setNavBarHeight = useSetRecoilState(navBarHeightState);
+
+  useEffect(() => {
+    setNavBarHeight(navBarRef.current.clientHeight);
+  }, [setNavBarHeight]);
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -68,6 +84,8 @@ function NavBar(props) {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+
 
   const mobileMenuId = 'primary-navbar-menu-mobile';
   const menuId = 'primary-navbar-menu-desktop';
@@ -101,7 +119,7 @@ function NavBar(props) {
   );
 
   return (
-    <div className={classes.grow}>
+    <div ref={navBarRef} className={classes.grow}>
       <AppBar position="fixed">
         <Toolbar variant="dense">
           <div className={classes.leftSection}>

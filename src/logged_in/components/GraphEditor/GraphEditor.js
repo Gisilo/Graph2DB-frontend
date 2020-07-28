@@ -1,28 +1,24 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 import { NodeModal } from './NodeModal'
 import { EdgeModal } from './EdgeModal'
 
-import cytoscape from 'cytoscape';
+import Cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import dblclick from 'cytoscape-dblclick';
-import {useMutation, useQuery} from "@apollo/react-hooks";
-import {LOG_IN_MUT, SAVE_MUT} from "../../../common/costants/queries";
-import {withRouter} from "react-router-dom";
+import {SAVE_MUT} from "../../../common/costants/queries";
 import {withApollo} from "@apollo/react-hoc";
 import {authenticationService} from "../../../common/services/authenticationService";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import TimelineIcon from '@material-ui/icons/Timeline';
 import Fab from "@material-ui/core/Fab";
-import {makeStyles} from "@material-ui/core/styles";
 import {withStyles} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
-cytoscape.use(dblclick);
-cytoscape.use(edgehandles);
+Cytoscape.use(dblclick);
+Cytoscape.use(edgehandles);
 
-const styles = (theme) => ({
+const styles = () => ({
     addNodeFab: {
         top: 'auto',
         right: 30,

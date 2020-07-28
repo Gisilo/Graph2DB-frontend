@@ -17,6 +17,7 @@
     "cytoscape": "^3.14.1",
     "cytoscape-dblclick": "^0.3.1",
     "cytoscape-edgehandles": "^3.6.0",
+    "cytoscape-popper": "^1.0.7",
     "date-fns": "^2.14.0",
     "formik": "^2.1.4",
     "formik-material-ui-pickers": "0.0.8",

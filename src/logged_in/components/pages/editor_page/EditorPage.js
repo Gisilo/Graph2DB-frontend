@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import GraphEditor from '../../GraphEditor/GraphEditor';
 import Grid from "@material-ui/core/Grid";
-import NavBar from "../../navbar/NavBar";
+import NavBar, {navBarHeightState} from "../../navbar/NavBar";
 import {makeStyles} from "@material-ui/core/styles";
 import {authenticationService} from "../../../../common/services/authenticationService";
 import {GET_GRABITS_BY_ID_AND_OWNER, CREATE_MUT} from "../../../../common/costants/queries";
@@ -9,6 +9,7 @@ import {withApollo} from "@apollo/react-hoc";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {grabitIDState, grabitNamesState} from "../dashboard_page/GrabitsPanel";
 import {useRecoilState} from "recoil";
+import {useRecoilValue} from "recoil/dist";
 
 
 const useStyles = makeStyles( (theme) => ({
@@ -25,7 +26,7 @@ const useStyles = makeStyles( (theme) => ({
 }));
 
 const EditorPage = (props) => {
-    const heightOffset = 50; // magic numbeeeeer
+    const heightOffset = useRecoilValue(navBarHeightState);
 
     const classes = useStyles();
     const owner = authenticationService.currentUserValue.pk;
