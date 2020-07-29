@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import { LinearProgress } from "@material-ui/core";
 import { useQuery } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,7 +8,7 @@ import Fab from "@material-ui/core/Fab";
 import ModalGrabitCreation from "./ModalGrabitCreation";
 import GrabitList from "./GrabitList";
 import {authenticationService} from "../../../../common/services/authenticationService";
-import {atom, useRecoilState, useRecoilValue} from "recoil";
+import {atom, useRecoilState} from "recoil";
 
 const useStyles = makeStyles((theme) => ({
   root: {

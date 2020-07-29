@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import GraphEditor from '../../GraphEditor/GraphEditor';
 import Grid from "@material-ui/core/Grid";
 import NavBar, {navBarHeightState} from "../../navbar/NavBar";
-import {makeStyles} from "@material-ui/core/styles";
 import {authenticationService} from "../../../../common/services/authenticationService";
 import {GET_GRABITS_BY_ID_AND_OWNER, CREATE_MUT} from "../../../../common/costants/queries";
 import {withApollo} from "@apollo/react-hoc";
@@ -12,23 +11,9 @@ import {useRecoilState} from "recoil";
 import {useRecoilValue} from "recoil/dist";
 
 
-const useStyles = makeStyles( (theme) => ({
-    fab: {
-        top: 'auto',
-        right: 30,
-        bottom: 30,
-        left: 'auto',
-        position: 'fixed',
-    },
-    extendedIcon: {
-        marginRight: theme.spacing(1),
-    },
-}));
-
 const EditorPage = (props) => {
     const heightOffset = useRecoilValue(navBarHeightState);
 
-    const classes = useStyles();
     const owner = authenticationService.currentUserValue.pk;
     const [idGrabit, setIdGrabit] = useRecoilState(grabitIDState);
     const [skip, setSkip] = useState(false);

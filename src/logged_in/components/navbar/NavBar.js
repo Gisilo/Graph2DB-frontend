@@ -17,8 +17,7 @@ import {
   FeedbackButton} from "./buttons";
 import {ROOT_URL, SETTINGS_URL} from "../../../common/costants/urls";
 import {authenticationService} from "../../../common/services/authenticationService";
-import {atom, useRecoilState} from "recoil";
-import {grabitNamesState} from "../pages/dashboard_page/GrabitsPanel";
+import {atom} from "recoil";
 import {useSetRecoilState} from "recoil/dist";
 
 const useStyles = makeStyles((theme) => ({

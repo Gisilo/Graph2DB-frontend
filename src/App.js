@@ -10,10 +10,7 @@ import EditorPage from "./logged_in/components/pages/editor_page/EditorPage";
 import { createMuiTheme } from '@material-ui/core/styles';
 import {ThemeProvider} from "@material-ui/styles";
 
-import {
-    atom,
-    RecoilRoot,
-} from 'recoil';
+import { RecoilRoot } from 'recoil';
 
 function NotFound() {
     return<h1>404 Not Found</h1>; // TODO: temporary component, do a proper 404 page
