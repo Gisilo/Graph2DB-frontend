@@ -26,7 +26,7 @@ export default function GrabitList(props) {
 
   return (
     <List aria-label="grabits list">
-      {grabits.map((grabit) => {
+      {grabits && grabits.sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate)).map((grabit) => {
         return (
           <ListItem key={grabit.id}>
             <Grid container justify="center">

@@ -14,6 +14,9 @@ import { withRouter } from "react-router-dom";
 import { EDITOR_URL } from "../../../../common/costants/urls";
 import { authenticationService } from "../../../../common/services/authenticationService";
 
+import * as yup from 'yup'
+
+
 // This generates findDomNode warning, TODO: find alternative to forwardRef
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom ref={ref} {...props} />;
@@ -34,7 +37,7 @@ function ModalGrabitCreation(props) {
         <DialogTitle id="form-dialog-title">Create new Grabit</DialogTitle>
         <Formik
           initialValues={{ grabitName: "", description: "" }}
-          // validationSchema={yup.object({grabitName: yup.string().required("Grabit name required")})}
+          validationSchema={yup.object({grabitName: yup.mixed().notOneOf(props.grabitNames, "Grabit name already used")})}
           onSubmit={(data, { setSubmitting }) => {
             setSubmitting(true);
             // query to create grabit
@@ -42,7 +45,7 @@ function ModalGrabitCreation(props) {
               variables: {
                 nameGrabit: data.grabitName,
                 descr: data.description,
-                userName: authenticationService.currentUserValue.pk,
+                  owner: authenticationService.currentUserID
               },
             }).then(
               (response) => {

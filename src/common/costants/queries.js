@@ -4,10 +4,10 @@ export const CREATE_MUT = gql`
   mutation CreateGrabit(
     $nameGrabit: String!
     $descr: String
-    $userName: String!
+    $owner: String!
   ) {
     createGrabit(
-      input: { name: $nameGrabit, description: $descr, owner: $userName }
+      input: { name: $nameGrabit, description: $descr, owner: $owner }
     ) {
       grabit {
         id
@@ -19,35 +19,18 @@ export const CREATE_MUT = gql`
 `;
 
 export const SAVE_MUT = gql`
-  mutation CreateGrabitByName($nameGrabit: String!, $nGraph: String!) {
-    createGrabit(input: { name: $nameGrabit, graph: $nGraph }) {
+  mutation SaveGrabit($id: String!, $owner: String!, $graph: String!) {
+    createGrabit(input: { id: $id, owner: $owner, graph: $graph }) {
       msg
       grabit {
-        name
-      }
-    }
-  }
-`;
-
-export const LOAD_QUERY = gql`
-  query GetGrabitByName($projectName: String!) {
-    allGrabits(name: $projectName) {
-      edges {
-        node {
-          id
-          name
-          description
-          creationDate
-          updateDate
-          graph
-        }
+        id
       }
     }
   }
 `;
 
 export const DELETE_MUT = gql`
-  mutation DeleteGrabitByName($grabitName: String!) {
+  mutation DeleteGrabit($grabitName: String!) {
     deleteGrabit(input: { name: $grabitName }) {
       msg
     }
@@ -65,6 +48,29 @@ export const GET_ALL_GRABITS_QUERY = gql`
           updateDate
         }
       }
+    }
+  }
+`;
+
+export const GET_GRABITS_OF_OWNER = gql`
+  query GetGrabitsOfOwner($owner: String!) {
+    getGrabitsOfOwner(owner: $owner ) {
+      id
+      name
+      description
+      updateDate
+    }
+  }
+`;
+
+export const GET_GRABITS_BY_ID_AND_OWNER = gql`
+  query GetGrabitsByIdAndOwner($id: String!, $owner: String!){
+    getGrabitsByIdAndOwner(id: $id, owner: $owner ) {
+      id
+      name
+      description
+      updateDate
+      graph
     }
   }
 `;

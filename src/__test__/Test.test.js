@@ -1,60 +1,20 @@
 import React from 'react';
 import { create } from "react-test-renderer";
-import { MockedProvider } from '@apollo/react-testing';
-import { SaveButton, CreateButton, DeleteButton, LoadButton} from '../logged_in/components/buttons';
+import {MockedProvider} from "@apollo/react-testing";
+import App from "../App";
 
 
 
-describe('Button Tests', () => {
-
-    test('SaveButton matches the snapshot', () => {
-        const button = create(
-            <MockedProvider addTypename={false}>
-                <SaveButton />
-            </MockedProvider>
+describe('App Tests', () => {
+     test("App matches the snapshot", () => {
+         const bar = create(
+             <MockedProvider>
+                 <App />
+             </MockedProvider>
         );
-        expect(button.toJSON()).toMatchSnapshot();
-    });
-
-    test('DeleteButton matches the snapshot', () => {
-        const button = create(
-            <MockedProvider addTypename={false}>
-                <DeleteButton />
-            </MockedProvider>
-        );
-        expect(button.toJSON()).toMatchSnapshot();
-    });
-
-    test('LoadButton matches the snapshot', () => {
-        const button = create(
-            <MockedProvider addTypename={false}>
-                <LoadButton />
-            </MockedProvider>
-        );
-        expect(button.toJSON()).toMatchSnapshot();
-    });
-
-    test("CreateButton matches the snapshot", () => {
-        const button = create(
-            <MockedProvider>
-                <CreateButton />
-            </MockedProvider>
-        );
-        expect(button.toJSON()).toMatchSnapshot();
-    });
-});
-
-
-// describe('NavBar Tests', () => {
-//     test("NavBar matches the snapshot", () => {
-//         const bar = create(
-//             <MockedProvider>
-//                 <NavBar />
-//             </MockedProvider>
-//         );
-//         expect(bar.toJSON()).toMatchSnapshot();
-//     });
-// });
+         expect(bar.toJSON()).toMatchSnapshot();
+     });
+ });
 
 
 // describe('Footer Tests', () => {

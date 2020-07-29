@@ -13,6 +13,9 @@ export const authenticationService = {
   get currentUserValue() {
     return currentUserSubject.value;
   },
+  get currentUserID(){
+    return currentUserSubject.value.pk;
+  }
 };
 
 function _login(user, token, refreshToken) {

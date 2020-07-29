@@ -1,17 +1,41 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 import { NodeModal } from './NodeModal'
 import { EdgeModal } from './EdgeModal'
 
-import cytoscape from 'cytoscape';
+import Cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import dblclick from 'cytoscape-dblclick';
+import {SAVE_MUT} from "../../../common/costants/queries";
+import {withApollo} from "@apollo/react-hoc";
+import {authenticationService} from "../../../common/services/authenticationService";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import TimelineIcon from '@material-ui/icons/Timeline';
+import Fab from "@material-ui/core/Fab";
+import {withStyles} from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
 
-cytoscape.use(dblclick);
-cytoscape.use(edgehandles);
+Cytoscape.use(dblclick);
+Cytoscape.use(edgehandles);
 
+const styles = () => ({
+    addNodeFab: {
+        top: 'auto',
+        right: 30,
+        bottom: 30,
+        left: 'auto',
+        position: 'fixed',
+    },
+    layoutFab: {
+        top: 'auto',
+        right: 85,
+        bottom: 30,
+        left: 'auto',
+        position: 'fixed',
+    },
+});
 
-export class GraphEditor extends Component {
+class GraphEditor extends Component {
 
     constructor(props) {
         super(props);
@@ -28,14 +52,18 @@ export class GraphEditor extends Component {
 
 
     componentDidMount = () => {
+        window.addEventListener('resize', this.updateDimensions);
+        this.setupComponent();
+    };
+
+    setupComponent = () => {
+
         this.cy.dblclick(); // For double click
         let defaults = {};
         let eh = this.cy.edgehandles(defaults);
         this.setState({eh:eh});
         //eh.enableDrawMode();
         eh.disableDrawMode();
-        //let la = this.cy.layout( this.options );
-        //la.run();
 
         this.cy.on('ehcomplete', (event, sourceNode, targetNode, addedEles) => {
 
@@ -61,6 +89,7 @@ export class GraphEditor extends Component {
             if (event.target === this.cy){
                 this.setState({nodeModalShow: true, typeModal:"create", nameList:nameList,
                     posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
+
             }
             else if (event.target.isNode()){
                 let clickedNode = event.target.data();
@@ -78,6 +107,10 @@ export class GraphEditor extends Component {
         });
     };
 
+    updateDimensions = () => {
+        this.setState(this.state);
+    };
+
     loadGraph = (newGraph) => {
         this.cy.json({ elements: newGraph });
         this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
@@ -87,12 +120,14 @@ export class GraphEditor extends Component {
         console.log(e);
     };
 
-    editEdge = (data) => {
+    saveEdge = (data) => {
         this.setState({edgeInfo: this.updateEdgeInfo(this.state.edgeInfo, data)});
+        this.saveGraphToDB(
+            this.props.idGrabit,
+            authenticationService.currentUserValue.pk);
     };
 
     updateEdgeInfo = (edgeInfo, data) => {
-        console.log("data", data);
         edgeInfo.label = data.nName;
         edgeInfo.description = data.nDesc;
         edgeInfo.properties =  data.nProps;
@@ -101,18 +136,21 @@ export class GraphEditor extends Component {
     };
 
     updateNodeInfo = (nodeInfo, data) => {
-        console.log("data", data);
         nodeInfo.label = data.nName;
         nodeInfo.description = data.nDesc;
         nodeInfo.properties =  data.nProps;
+        return nodeInfo;
     };
 
-    editNode = (data) =>{
+    saveNode = (data) =>{
         if(this.state.nodeInfo){
             this.setState({nodeInfo: this.updateNodeInfo(this.state.nodeInfo, data)});
         }
         else{
+            console.log(this.getGraphJSON());
+            const colorClass = this.getNodeColor();
             this.cy.add({
+                classes: colorClass,
                 data: {
                     id: this.getNewID(),
                     label: data.nName,
@@ -120,20 +158,44 @@ export class GraphEditor extends Component {
                     properties: data.nProps },
                     position: { x: this.state.posX, y: this.state.posY }
                 }
-            );
-        }
+            );//.css('background-color', color);
 
+        }
+        this.saveGraphToDB(this.props.idGrabit, authenticationService.currentUserValue.pk);
+
+    };
+
+    getNodeColor = () => {
+        const palette = ['dartmouth-green', 'goldenrod', 'mint', 'red-salsa', 'cinereous'];
+        return palette[Math.floor(Math.random() * (palette.length))];
     };
 
     // Get new node ID
     getNewID = () => this.cy.nodes().size() + 1;
 
     // Get JSON of graph
-    getJSON = () =>{
+    getGraphJSON = () =>{
         // get all: graph + style + more => this.cy.json()
         // get only nodes and edges
         this.state.eh.removeHandle();
         return this.cy.elements().jsons()
+    };
+
+    saveGraphToDB = (grabitID, owner) => {
+        this.props.client
+            .mutate({
+                mutation: SAVE_MUT,
+                variables: {
+                    id: grabitID,
+                    graph: JSON.stringify(this.getGraphJSON()),
+                    owner: owner
+                },
+            }).then(
+            (response) => {
+                console.log("success", response);
+            },
+            (error) => console.error("error", error)
+        );
     };
 
     render() {
@@ -145,24 +207,50 @@ export class GraphEditor extends Component {
                     boxSelectionEnabled={true}
                     minZoom={0.5}
                     maxZoom={2}
-                    elements={[]}
+                    elements={this.props.graph}
                     stylesheet={graphStyle.style}
                     style={ { 
-                        width: window.innerWidth, 
+                        width: window.innerWidth,
                         height: window.innerHeight - this.props.heightOffset} }
                     onKeyDown={this.logKey}
                     tabIndex="0"
                     cy={(cy) => {
                         this.cy = cy;
                     }}
+                    layuot = {layout}
                 />
+                <Tooltip title={'Reorder Nodes'}>
+                    <Fab
+                        size="small"
+                        color="primary"
+                        aria-label="reorder nodes"
+                        className={this.props.classes.layoutFab}
+                        onClick={() => this.cy.layout( layout ).run()}
+                    >
+                        <TimelineIcon/>
+                    </Fab>
+                </Tooltip>
 
-                <NodeModal nameList={this.state.nameList} callBack={this.editNode}
+                <Tooltip title={'Add New Node'}>
+                    <Fab
+                        size="small"
+                        color="primary"
+                        aria-label="add node"
+                        className={this.props.classes.addNodeFab}
+                        onClick={() => this.setState({nodeModalShow: true, typeModal:"create",
+                            nameList:this.cy.elements().map(x => x.data().label),
+                            posX:50, posY: 50, nodeInfo:null})}
+                    >
+                        <AddCircleOutlineIcon/>
+                    </Fab>
+                </Tooltip>
+
+                <NodeModal nameList={this.state.nameList} callBack={this.saveNode}
                            nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
                            open={this.state.nodeModalShow}
                            onClose={() => this.setState({nodeModalShow: false})}/>
 
-                <EdgeModal nameList={this.state.nameList} callBack={this.editEdge}
+                <EdgeModal nameList={this.state.nameList} callBack={this.saveEdge}
                            edgeInfo={this.state.edgeInfo} typeModal={this.state.typeModal}
                            open={this.state.edgeModalShow}
                            onClose={() => this.setState({edgeModalShow: false})}/>
@@ -171,28 +259,72 @@ export class GraphEditor extends Component {
         )
     }
 }
+export default withStyles(styles, {withTheme: true})(withApollo(GraphEditor));
+
+const layout = {
+    name: 'cose',
+    animate: false,};
 
 const graphStyle = {
     style: [
         {
+            selector: '.dartmouth-green',
+            style: {
+                'background-color': '#1b7b34'
+            }
+        },
+        {
+            selector: '.goldenrod',
+            style: {
+                'background-color': '#eab126'
+            }
+        },
+        {
+            selector: '.mint',
+            style: {
+                'background-color': '#1FB58F'
+            }
+        },
+        {
+            selector: '.red-salsa',
+            style: {
+                'background-color': '#f24c4e'
+            }
+        },
+        {
+            selector: '.cinereous',
+            style: {
+                'background-color': '#93827f'
+            }
+        },
+        {
             selector: 'node',
             css: {
-                'content': 'data(id)',
-                'background-color': 'green',
+                'label': 'data(id)',
+                //'background-color': 'green',
                 'color': 'black',
                 'border-width': '1px',
                 'border-color': 'black'
             }
         },
         {
+            selector: "edge[label]",
+            css: {
+                "label": "data(label)",
+                "text-rotation": "autorotate",
+                "text-margin-x": "10px",
+                "text-margin-y": "10px"
+            }
+        },
+        {
             selector: 'edge',
             css: {
-                'line-color': 'light grey',
+                'line-color': 'grey',
                 'curve-style': 'bezier',
                 'target-arrow-shape': 'triangle',
-                'target-arrow-color': 'gey',
+                'target-arrow-color': 'grey',
                 'arrow-scale': '1',
-                'content': 'data(label)',
+                //'label': 'data(label)',
                 'overlay-opacity': 0,
                 'edge-text-rotation': 'autorotate'
             }

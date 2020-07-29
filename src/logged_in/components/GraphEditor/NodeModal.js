@@ -22,6 +22,12 @@ export function NodeModal(props) {
         onClose();
     };
 
+    function onKeyDown(keyEvent) {
+        if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+            keyEvent.preventDefault();
+        }
+    }
+
     return (
         <Dialog fullWidth maxWidth={'md'} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} TransitionComponent={Transition}>
             {props.typeModal === "create" && <DialogTitle id="simple-dialog-title">Create Node</DialogTitle>}
@@ -52,11 +58,11 @@ export function NodeModal(props) {
                 }}
                 >
                     {({ values, isSubmitting, setFieldValue }) => (
-                        <Form>
+                        <Form onKeyDown={onKeyDown}>
                             <Grid container>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12}>
-                                        <FormikTextField id="outlined-basic" label="Node Name" name="nName" type="input" variant="outlined" required fullWidth/>
+                                        <FormikTextField autoFocus id="outlined-basic" label="Node Name" name="nName" type="input" variant="outlined" required fullWidth/>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <FormikTextField multiline rows={2} rowsMax={4} id="ig1" variant="outlined"

@@ -17,6 +17,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import {useSetRecoilState} from "recoil";
+import {grabitIDState} from "./GrabitsPanel";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -47,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
 
 function GrabitCard(props) {
   const classes = useStyles();
+
+  const setGrabitID = useSetRecoilState(grabitIDState);
 
   const {
     grabitID,
@@ -148,8 +152,11 @@ function GrabitCard(props) {
             <Button
               variant="outlined"
               color="secondary"
-              onClick={() =>
-                history.push({ pathname: EDITOR_URL, grabitID: grabitID })
+              onClick={() =>{
+                setGrabitID(grabitID);
+                history.push({ pathname: EDITOR_URL})
+              }
+
               }
               size="small"
             >
