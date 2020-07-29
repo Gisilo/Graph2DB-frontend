@@ -52,6 +52,7 @@ class GraphEditor extends Component {
 
 
     componentDidMount = () => {
+        window.addEventListener('resize', this.updateDimensions);
         this.setupComponent();
     };
 
@@ -104,6 +105,10 @@ class GraphEditor extends Component {
         this.cy.on('keydown', (e) => {
             console.log(e);
         });
+    };
+
+    updateDimensions = () => {
+        this.setState(this.state);
     };
 
     loadGraph = (newGraph) => {
@@ -205,7 +210,7 @@ class GraphEditor extends Component {
                     elements={this.props.graph}
                     stylesheet={graphStyle.style}
                     style={ { 
-                        width: window.innerWidth, 
+                        width: window.innerWidth,
                         height: window.innerHeight - this.props.heightOffset} }
                     onKeyDown={this.logKey}
                     tabIndex="0"

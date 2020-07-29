@@ -44,6 +44,7 @@ const EditorPage = (props) => {
         return <LinearProgress color="secondary" />;
     }
 
+
     return (
         <>
             <Grid container>
