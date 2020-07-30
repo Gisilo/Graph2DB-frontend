@@ -7,6 +7,11 @@ import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog } from '@materi
 
 import PropertyAdder from "./PropertyAdder";
 import { NODESCHEMA } from './ValidationModal';
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import {ThemeProvider} from "@material-ui/styles";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -14,6 +19,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const schema = NODESCHEMA;
+
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#F24C4E'},
+        secondary: { main: '#EAB126'}
+    },
+});
 
 export function NodeModal(props) {
     const { onClose, open } = props;
@@ -107,8 +119,17 @@ export function NodeModal(props) {
                                     </Grid>
 
                                     <Grid item xs={12} container justify="right">
-                                        {props.typeModal === 'create'&& <Button disabled={isSubmitting} type="submit" variant="primary">Create</Button>}
-                                        {props.typeModal === 'edit'&& <Button disabled={isSubmitting} type="submit" variant="primary">Save</Button>}
+
+                                        {props.typeModal === 'create'&& <Button disabled={isSubmitting} type="submit" variant="outlined">Create</Button>}
+                                        {props.typeModal === 'edit'&& <Button disabled={isSubmitting} type="submit" variant="outlined">Save</Button>}
+                                        {props.typeModal === 'edit'&& <ThemeProvider theme={theme}>
+                                            <Button variant="outlined" onClick={
+                                                () => {
+                                                    props.deleteNode(props.nodeInfo.id);
+                                                    handleClose();
+                                                }
+                                            } color="primary" startIcon={<DeleteIcon />}> Delete </Button>
+                                        </ThemeProvider>}
                                     </Grid>
 
                                 </Grid>

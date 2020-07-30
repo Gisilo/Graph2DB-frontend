@@ -89,7 +89,6 @@ class GraphEditor extends Component {
             if (event.target === this.cy){
                 this.setState({nodeModalShow: true, typeModal:"create", nameList:nameList,
                     posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
-
             }
             else if (event.target.isNode()){
                 let clickedNode = event.target.data();
@@ -97,14 +96,16 @@ class GraphEditor extends Component {
             }
             else if (event.target.isEdge()){
                 let clickedEdge = event.target.data();
-                console.log(clickedEdge);
                 this.setState({edgeModalShow:true, typeModal:"edit", edgeInfo:clickedEdge, nameList:nameList,});
             }
         });
 
-        this.cy.on('keydown', (e) => {
+        this.cy.on('select', 'node', (e) => {
             console.log(e);
+            const selectedNode = this.cy.$('node:selected').on('keyup', (ev) => {console.log(ev)});
+            console.log(selectedNode);
         });
+
     };
 
     updateDimensions = () => {
@@ -114,6 +115,13 @@ class GraphEditor extends Component {
     loadGraph = (newGraph) => {
         this.cy.json({ elements: newGraph });
         this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
+    };
+
+    deleteNode = (id) => {
+        const node = this.cy.getElementById(id);
+        this.cy.remove(node);
+        this.saveGraphToDB(this.props.idGrabit, authenticationService.currentUserValue.pk);
+
     };
 
     logKey = (e) => {
@@ -147,7 +155,6 @@ class GraphEditor extends Component {
             this.setState({nodeInfo: this.updateNodeInfo(this.state.nodeInfo, data)});
         }
         else{
-            console.log(this.getGraphJSON());
             const colorClass = this.getNodeColor();
             this.cy.add({
                 classes: colorClass,
@@ -213,7 +220,7 @@ class GraphEditor extends Component {
                         width: window.innerWidth,
                         height: window.innerHeight - this.props.heightOffset} }
                     onKeyDown={this.logKey}
-                    tabIndex="0"
+                    tabindex="0"
                     cy={(cy) => {
                         this.cy = cy;
                     }}
@@ -245,7 +252,7 @@ class GraphEditor extends Component {
                     </Fab>
                 </Tooltip>
 
-                <NodeModal nameList={this.state.nameList} callBack={this.saveNode}
+                <NodeModal nameList={this.state.nameList} callBack={this.saveNode} deleteNode={this.deleteNode}
                            nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
                            open={this.state.nodeModalShow}
                            onClose={() => this.setState({nodeModalShow: false})}/>
@@ -295,6 +302,15 @@ const graphStyle = {
             selector: '.cinereous',
             style: {
                 'background-color': '#93827f'
+            }
+        },
+        {
+            selector: ':selected',
+            css: {
+                'background-color': 'black',
+                'line-color': 'black',
+                'target-arrow-color': 'black',
+                'source-arrow-color': 'black'
             }
         },
         {
