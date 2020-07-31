@@ -89,7 +89,6 @@ class GraphEditor extends Component {
             if (event.target === this.cy){
                 this.setState({nodeModalShow: true, typeModal:"create", nameList:nameList,
                     posX:renderedPosition.position.x, posY: renderedPosition.position.y, nodeInfo:null});
-
             }
             else if (event.target.isNode()){
                 let clickedNode = event.target.data();
@@ -97,14 +96,28 @@ class GraphEditor extends Component {
             }
             else if (event.target.isEdge()){
                 let clickedEdge = event.target.data();
-                console.log(clickedEdge);
                 this.setState({edgeModalShow:true, typeModal:"edit", edgeInfo:clickedEdge, nameList:nameList,});
             }
         });
 
-        this.cy.on('keydown', (e) => {
+        this.cy.on('select', 'node', (e) => {
             console.log(e);
+            const selectedNode = this.cy.$('node:selected').on('keyup', (ev) => {console.log(ev)});
+            console.log(selectedNode);
         });
+
+        this.cy.on('select', 'edge', (e) => {
+            console.log(e);
+            const selectedEdge = this.cy.$('edge:selected');
+            selectedEdge.addClass('highlighted')
+        });
+
+        this.cy.on('unselect', 'edge', (e) => {
+            console.log(e);
+            const selectedEdge = this.cy.$('edge:unselected');
+            selectedEdge.removeClass('highlighted')
+        });
+
     };
 
     updateDimensions = () => {
@@ -114,6 +127,11 @@ class GraphEditor extends Component {
     loadGraph = (newGraph) => {
         this.cy.json({ elements: newGraph });
         this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
+    };
+
+    deleteElement = (id) => {
+        this.cy.remove('#' + id);
+        this.saveGraphToDB(this.props.idGrabit, authenticationService.currentUserValue.pk);
     };
 
     logKey = (e) => {
@@ -147,7 +165,6 @@ class GraphEditor extends Component {
             this.setState({nodeInfo: this.updateNodeInfo(this.state.nodeInfo, data)});
         }
         else{
-            console.log(this.getGraphJSON());
             const colorClass = this.getNodeColor();
             this.cy.add({
                 classes: colorClass,
@@ -213,7 +230,7 @@ class GraphEditor extends Component {
                         width: window.innerWidth,
                         height: window.innerHeight - this.props.heightOffset} }
                     onKeyDown={this.logKey}
-                    tabIndex="0"
+                    tabindex="0"
                     cy={(cy) => {
                         this.cy = cy;
                     }}
@@ -245,12 +262,12 @@ class GraphEditor extends Component {
                     </Fab>
                 </Tooltip>
 
-                <NodeModal nameList={this.state.nameList} callBack={this.saveNode}
+                <NodeModal nameList={this.state.nameList} callBack={this.saveNode} deleteElement={this.deleteElement}
                            nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
                            open={this.state.nodeModalShow}
                            onClose={() => this.setState({nodeModalShow: false})}/>
 
-                <EdgeModal nameList={this.state.nameList} callBack={this.saveEdge}
+                <EdgeModal nameList={this.state.nameList} callBack={this.saveEdge} deleteElement={this.deleteElement}
                            edgeInfo={this.state.edgeInfo} typeModal={this.state.typeModal}
                            open={this.state.edgeModalShow}
                            onClose={() => this.setState({edgeModalShow: false})}/>
@@ -292,9 +309,12 @@ const graphStyle = {
             }
         },
         {
-            selector: '.cinereous',
-            style: {
-                'background-color': '#93827f'
+            selector: ':selected',
+            css: {
+                'background-color': '#96EDD8',
+                'line-color': '#96EDD8',
+                'target-arrow-color': '#96EDD8',
+                'source-arrow-color': '#96EDD8'
             }
         },
         {
@@ -327,6 +347,14 @@ const graphStyle = {
                 //'label': 'data(label)',
                 'overlay-opacity': 0,
                 'edge-text-rotation': 'autorotate'
+            }
+        },
+        {
+            selector: 'edge.highlighted',
+            style: {
+                'line-color': '#96EDD8',
+                'background-color': '#96EDD8',
+                'target-arrow-color': '#96EDD8'
             }
         },
 
