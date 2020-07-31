@@ -7,7 +7,6 @@ import { Button, Grid, Slide, DialogContent, DialogTitle, Dialog } from '@materi
 
 import PropertyAdder from "./PropertyAdder";
 import { NODESCHEMA } from './ValidationModal';
-import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import {ThemeProvider} from "@material-ui/styles";

@@ -352,7 +352,6 @@ const graphStyle = {
         {
             selector: 'edge.highlighted',
             style: {
-                'line-border-color': 'black',
                 'line-color': '#96EDD8',
                 'background-color': '#96EDD8',
                 'target-arrow-color': '#96EDD8'
