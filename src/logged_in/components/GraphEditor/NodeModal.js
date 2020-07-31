@@ -125,7 +125,7 @@ export function NodeModal(props) {
                                         {props.typeModal === 'edit'&& <ThemeProvider theme={theme}>
                                             <Button variant="outlined" onClick={
                                                 () => {
-                                                    props.deleteNode(props.nodeInfo.id);
+                                                    props.deleteElement(props.nodeInfo.id);
                                                     handleClose();
                                                 }
                                             } color="primary" startIcon={<DeleteIcon />}> Delete </Button>

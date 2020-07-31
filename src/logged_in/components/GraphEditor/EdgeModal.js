@@ -15,6 +15,9 @@ import {
 import { EDGESCHEMA } from "./ValidationModal";
 import { CardinalitySelect } from "./CardinalitySelect";
 import PropertyAdder from "./PropertyAdder";
+import {ThemeProvider} from "@material-ui/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 
 const schema = EDGESCHEMA;
@@ -22,6 +25,13 @@ const schema = EDGESCHEMA;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#F24C4E'},
+        secondary: { main: '#EAB126'}
+    },
 });
 
 export function EdgeModal(props) {
@@ -124,6 +134,14 @@ export function EdgeModal(props) {
 
                                     <Grid item xs={12} container justify="right">
                                         <Button disabled={isSubmitting} type="submit" variant="primary">Save</Button>
+                                        {props.typeModal === 'edit'&& <ThemeProvider theme={theme}>
+                                            <Button variant="outlined" onClick={
+                                                () => {
+                                                    props.deleteElement(props.edgeInfo.id);
+                                                    handleClose();
+                                                }
+                                            } color="primary" startIcon={<DeleteIcon />}> Delete </Button>
+                                        </ThemeProvider>}
                                     </Grid>
 
                                 </Grid>

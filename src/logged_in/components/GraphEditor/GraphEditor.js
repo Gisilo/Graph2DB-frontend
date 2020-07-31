@@ -106,6 +106,18 @@ class GraphEditor extends Component {
             console.log(selectedNode);
         });
 
+        this.cy.on('select', 'edge', (e) => {
+            console.log(e);
+            const selectedEdge = this.cy.$('edge:selected');
+            selectedEdge.addClass('highlighted')
+        });
+
+        this.cy.on('unselect', 'edge', (e) => {
+            console.log(e);
+            const selectedEdge = this.cy.$('edge:unselected');
+            selectedEdge.removeClass('highlighted')
+        });
+
     };
 
     updateDimensions = () => {
@@ -117,11 +129,9 @@ class GraphEditor extends Component {
         this.setState({nodesNameList: this.cy.elements().map(x => x.data().label)});
     };
 
-    deleteNode = (id) => {
-        const node = this.cy.getElementById(id);
-        this.cy.remove(node);
+    deleteElement = (id) => {
+        this.cy.remove('#' + id);
         this.saveGraphToDB(this.props.idGrabit, authenticationService.currentUserValue.pk);
-
     };
 
     logKey = (e) => {
@@ -252,12 +262,12 @@ class GraphEditor extends Component {
                     </Fab>
                 </Tooltip>
 
-                <NodeModal nameList={this.state.nameList} callBack={this.saveNode} deleteNode={this.deleteNode}
+                <NodeModal nameList={this.state.nameList} callBack={this.saveNode} deleteElement={this.deleteElement}
                            nodeInfo={this.state.nodeInfo} typeModal={this.state.typeModal}
                            open={this.state.nodeModalShow}
                            onClose={() => this.setState({nodeModalShow: false})}/>
 
-                <EdgeModal nameList={this.state.nameList} callBack={this.saveEdge}
+                <EdgeModal nameList={this.state.nameList} callBack={this.saveEdge} deleteElement={this.deleteElement}
                            edgeInfo={this.state.edgeInfo} typeModal={this.state.typeModal}
                            open={this.state.edgeModalShow}
                            onClose={() => this.setState({edgeModalShow: false})}/>
@@ -299,18 +309,12 @@ const graphStyle = {
             }
         },
         {
-            selector: '.cinereous',
-            style: {
-                'background-color': '#93827f'
-            }
-        },
-        {
             selector: ':selected',
             css: {
-                'background-color': 'black',
-                'line-color': 'black',
-                'target-arrow-color': 'black',
-                'source-arrow-color': 'black'
+                'background-color': '#96EDD8',
+                'line-color': '#96EDD8',
+                'target-arrow-color': '#96EDD8',
+                'source-arrow-color': '#96EDD8'
             }
         },
         {
@@ -343,6 +347,15 @@ const graphStyle = {
                 //'label': 'data(label)',
                 'overlay-opacity': 0,
                 'edge-text-rotation': 'autorotate'
+            }
+        },
+        {
+            selector: 'edge.highlighted',
+            style: {
+                'line-border-color': 'black',
+                'line-color': '#96EDD8',
+                'background-color': '#96EDD8',
+                'target-arrow-color': '#96EDD8'
             }
         },
 
