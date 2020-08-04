@@ -24,6 +24,7 @@ export const SAVE_MUT = gql`
       msg
       grabit {
         id
+        graph
       }
     }
   }
