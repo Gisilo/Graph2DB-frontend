@@ -49,7 +49,7 @@ const client = new ApolloClient({
     link: concat(csrfMiddleware, httpLink),
     //link: httpLink,
     cache: new InMemoryCache(),
-    defaultOptions: DefaultOptions,
+    //defaultOptions: DefaultOptions,
 });
 
 ReactDOM.render(

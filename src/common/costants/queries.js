@@ -30,8 +30,8 @@ export const SAVE_MUT = gql`
 `;
 
 export const DELETE_MUT = gql`
-  mutation DeleteGrabit($grabitName: String!) {
-    deleteGrabit(input: { name: $grabitName }) {
+  mutation DeleteGrabit($grabitName: String!, $owner: String!) {
+    deleteGrabit(input: { name: $grabitName, owner: $owner}) {
       msg
     }
   }

@@ -5,6 +5,7 @@ import ListItem from "@material-ui/core/ListItem";
 import { useMutation } from "@apollo/react-hooks";
 import { DELETE_MUT } from "../../../../common/costants/queries";
 import { Grid } from "@material-ui/core";
+import {authenticationService} from "../../../../common/services/authenticationService";
 
 export default function GrabitList(props) {
   const [deleteGrabit] = useMutation(DELETE_MUT);
@@ -14,6 +15,7 @@ export default function GrabitList(props) {
     deleteGrabit({
       variables: {
         grabitName: name,
+        owner: authenticationService.currentUserValue.pk,
       },
     }).then(
       (response) => {
