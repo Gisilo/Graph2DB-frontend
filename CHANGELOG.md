@@ -6,8 +6,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 2020-08-05
+- Frontend rework
+- Account system
+- Database refactor
+
+### Added
+- Add modal for grabit creation.
+- Creation of modals for manage nodes and edges.
+- Add properties in modals.
+- Define properties with name, domain, default and mandatory value.
+- Remove nodes and edges via button in their models.
+- Add graph layout.
+- Add dashboard for choice user's project.
+- Autosave system on nodes and edges creation.
+- Add color palette and style on nodes.
+- Use MaterialUI componenets.
+- Windows resize.
+- Use real nav bar height in the editor page.
+- Change update time model field from date to datetime.
+- Create user models in backend and bind it to its grabit.
+- Creation of untitled grabit directly on editor page.
+- Add Django graphAuth for backend user authentication.
+- Create login and singup page.
+- Set fix zoom level.
+
+
 ## [0.0.1] - 2020-04-30
 - Prototype to create, load, save and delete graphs called Grabits.
+
 ### Added
 - Added snapshot match tests for components and API calls in the backend.
 - Installed Apollo to use the GraphQL server, used by the four buttons to communicate with the backend.
